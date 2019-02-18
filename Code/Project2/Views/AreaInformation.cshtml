@@ -1,0 +1,14 @@
+﻿@model BGModern.Models.ResortModel
+
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<div class="container" style="width:100%; padding:0 0 0 0;">
+    <div class="row" style="width:100%; margin:0 0 0 0; padding:0 0 0 0;">
+        <div class="area-information">
+            <div><h5>@Model.AreaInformation.PageHeading</h5></div>
+            <div>@Html.Raw(@Model.AreaInformation.PageText)</div>
+        </div>
+    </div>
+</div>

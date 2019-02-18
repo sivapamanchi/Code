@@ -1,0 +1,69 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Components
+
+@model RenderingModel
+@{
+
+    var bgcontext = new BlueGreenContext();
+
+    var owner = bgcontext.bxgOwner;
+    
+    //var value = Session["IsTravelerPlusEmployee"];
+    //var ownernumber = Session["ownernumber"];
+
+    FormsAuthenticationTicket ticket1 = null;
+    var result = Request.Cookies[System.Web.Security.FormsAuthentication.FormsCookieName];
+    if (result != null)
+    {
+        ticket1 = System.Web.Security.FormsAuthentication.Decrypt(result.Value);
+    }
+
+    var OwnerInfo = Request.Cookies["OwnerInfo"];
+    var isAuth = Sitecore.Context.User.IsAuthenticated;
+
+
+}
+
+
+
+<style>
+    .home {
+        margin: 3em;
+        min-height: 300px;
+    }
+</style>
+@if( owner != null)
+{
+    <p>OwnerId = @owner.ownerID</p>
+    <p>remaining points = @owner.PointsTotal</p>
+    <p>Balance = @owner.PaymentBalance</p>
+    <p>OwnerType = @bgcontext.GetOwnerType()</p>
+    <p>OwnerExpiration: @bgcontext.OwnerExpiration</p>
+}
+<div class="site-content cover-image" id="site-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-9">
+                <div class="home">
+                    <a class="btn btn-primary btn-block" href="/signin">Sign In</a>
+                    <a class="btn btn-primary btn-block" href="/signinhelp">Sign In Help</a>
+                    <a class="btn btn-primary btn-block" href="/Register">Register</a>
+                    <a class="btn btn-primary btn-block" href="/forgotpassword">Forgot Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (ticket1 != null)
+{
+    <p>UserName: @ticket1.Name </p>
+
+}
+<p>IsAuth: @isAuth</p>
+
+@if (OwnerInfo != null)
+{
+    @OwnerInfo.Value
+}

@@ -1,0 +1,62 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<NotEnoughPoints>
+
+@{
+
+}
+<div class="hidden js-showsavepointspopup"></div>
+
+
+<div class="alert alert-info hidden js-message-usefuturePoints" role="alert">
+    <div class="row">
+        <div class="col-md-10">
+            <p>This reservation will use Points from your next use year and will be reflected in your Future Points balance.</p>
+            <p class="js-button-futurepoints"> Click to agree and continue.</p>
+        </div>
+        <div class="col-md-2 js-button-futurepoints">
+            <a href="/owner/confirm-reservation" role="button" class="pull-right-md btn btn-primary">Continue</a>
+        </div>
+       
+    </div>
+
+</div>
+
+
+<div class="hidden-print panel panel-inverse hidden js-verif-section">
+    <div class="panel-body">
+
+        <div class="alert alert-danger" role="alert">
+            <p class="js-verif-globallerror"></p>
+        </div>
+
+        <div class="col-border col-border-inverse js-totalrequiredpoint">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-center font-size-large">@Editable(Model, x => x.TotalPointsRequired) <strong class="text-danger js-verif-totalpoints"></strong></p>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-center font-size-large">@Editable(Model, x => x.TotalEligiblePoints) <strong class="js-verif-totaleligible"></strong></p>
+                </div>
+            </div><!-- .row -->
+        </div><!-- .col-border -->
+        <table class="table-collapse table-striped js-pointsdetails">
+            <thead>
+                <tr>
+                    <th class="text-left">@Editable(Model, x => x.PointType)</th>
+                    <th class="text-left">@Editable(Model, x => x.AvailablePoints)</th>
+                    <th class="text-left">@Editable(Model, x => x.ExpirationDate)</th>
+                    <th>@Editable(Model, x => x.Eligibility)</th>
+                </tr>
+            </thead>
+            <tbody class="js-verif-tableaccount"></tbody>
+        </table>
+
+        <p class="h3 text-center">@Editable(Model, x => x.BorrowPointsMessage)</p>
+    </div><!-- .panel-body -->
+
+</div><!-- .panel -->

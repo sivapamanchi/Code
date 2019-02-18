@@ -1,0 +1,22 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<FeaturedItem>
+
+@{
+
+}
+
+<div class="page-header">
+    <h1 class="h1">@Editable(Model, x => x.PageTitle)</h1>
+</div><!-- .page-header -->
+@if (Model.DisplayOnLanding)
+{
+    <div class="hidden-print page-media">
+        @Html.Raw(ImageUtils.BuildImageTag(Model.FeaturedImage, Model.SiteSettings.RemoteImageUrl))
+    </div><!-- .page-media -->
+}
+@Html.Raw(Editable(Model, x => x.Content))

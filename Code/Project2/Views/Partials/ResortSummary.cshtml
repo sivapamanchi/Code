@@ -1,0 +1,57 @@
+﻿@using BGModern.Models;
+@model ResortModel
+
+<div class="resortText">
+    <div class="resortName" style="margin-left:auto; margin-right:auto;">@Model.Name</div>
+    @if(@Model.IncludeBorderLine != null && @Model.IncludeBorderLine)
+    { 
+    <div class="resortPoints" style="margin-left:auto; margin-right:auto;">
+        <img height="1" src="@Html.GetFullSitePath()/Content/Images/blank.gif" width="100%" style="background-color: black" border="0"><br>
+    </div>
+    }
+    <div class="resortPoints" style="margin-left:auto; margin-right:auto;">
+        <img height="5" src="@Html.GetFullSitePath()/Content/Images/blank.gif" width="152" border="0"><br>
+    </div>
+    <div style="margin-left:auto; margin-right:auto;">
+        <div style="margin-left:auto; margin-right:auto;">
+            <div style="float:right; margin-left:5px;">
+                <div style="background-color:#efefef; padding:28px; ">
+                    <a class="resorttextlink" href="@Model.Url">
+                        <img src="@Model.Thumbnail" style="border:solid; border-width:1px; border-color:black; width:100px; height:94px;">
+                    </a>
+                </div>
+                @if (@Model.VacationClubOwner)
+                { 
+                <div style="padding:24px; ">
+                    <a href="@Html.GetParentSitePath()/BGModern/home?resortID=@Model.LegacyID">
+                        <img src="~/Content/Images/makeReserv_Btn.gif" alt="Make a Reservation" />
+                    </a>
+                </div>
+                }
+            </div>
+            <p class="resortAddress">
+                @Model.Address1<br />
+                @Model.City, @Model.State &nbsp;@Model.Zip
+                @if (@Model.IncludePhone != null && @Model.IncludePhone)
+                { 
+                  <br />@Model.Phone  
+                }
+            </p>
+            <div class="text">
+                @Html.Raw(@Model.Summary)
+            </div>
+        </div>
+        <div style="margin-left:auto; margin-right:auto;">
+            <br />
+            <a class="resortTextlink" name="ResDetail_ResortID_@Model.ID" href="@Model.Url">See Resort Detail</a>
+            <img src="~/Content/Images/blank.gif" /><img src="~/Content/Images/blank.gif" /><img src="~/Content/Images/blank.gif" />
+            <img src="~/Content/Images/blank.gif" /><img src="~/Content/Images/blank.gif" /><img src="~/Content/Images/blank.gif" />
+            @if (@Model.VacationClubOwner)
+            { 
+            <a class="resortTextlink" name="ResRequest_ResortID_@Model.ID" href="@Html.GetParentSitePath()/owner/calcPoints.aspx?resortID=@Model.LegacyID&amp;lid=@Model.LegacyID">
+                Calculate Points
+            </a>
+            }
+        </div>
+    </div>
+</div>

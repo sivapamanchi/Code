@@ -1,0 +1,55 @@
+﻿@using BGSitecore.Models
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+@using Sitecore.Mvc
+
+@model SelectAccountViewModel
+
+<div class="site-content cover-image js-signin" id="site-content" @Html.Raw(ImageUtils.BuildBackgroundImage(Model.BackGroundImage, Model.SiteSettings.RemoteImageUrl))>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 col-lg-5 col-primary">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1 class="h1 color-primary text-lowercase">@Model.PageTitle</h1>
+                        <p>@Model.PageSummary</p>
+
+                        @using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Sitecore().FormHandler("Login", "SelectAccount")
+                            <fieldset class="form-group">
+                                <legend class="sr-only">@Model.MainMenuDisplayName</legend>
+                                @foreach (var item in Model.AccountList)
+                                {
+                                    <div class="radio">
+                                        <label class="control-label">
+                                            @{
+                                                string id = "rbtn_" + item.Key;
+                                                int indexOfItem = Model.AccountList.ToList().IndexOf(item);
+                                            }
+                                            @if (indexOfItem == 0)
+                                            {
+                                                @Html.RadioButtonFor(m => m.selectedAccount, item.Key, new { id, Name = "selectedAccount", Value = item.Key, @checked = "checked" })
+                                            }
+                                            else
+                                            {
+                                                @Html.RadioButtonFor(m => m.selectedAccount, item.Key, new { id, Name = "selectedAccount", Value = item.Key })
+                                            }
+                                            @Html.Label(id, @item.Value)
+                                        </label>
+                                    </div><!--.radio -->
+                                                }
+                            </fieldset><!-- .form-group -->
+                            <div class="form-group">
+                                  <button class="btn btn-primary btn-block">@SitecoreUtils.getLocalString("SelectAccount_Continue")</button>
+                            </div><!-- .form-group -->
+                        }
+                    </div><!-- .panel-body -->
+                </div>
+            </div>
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div><!-- .site-content -->
+
+

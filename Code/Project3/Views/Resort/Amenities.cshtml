@@ -1,0 +1,46 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortAmenities>
+
+@{
+
+}
+@if (Model.ResortAmmenties != null && Model.ResortAmmenties.Count() > 0 &&
+     Model.VillaAmmenties != null && Model.VillaAmmenties.Count() > 0 &&
+     Model.AreaAmmenties != null && Model.AreaAmmenties.Count() > 0)
+{
+   
+        <div class="expandable">
+            <div class="expandable-content expandable-content-md">
+
+                <div class="row">
+                        @DisplayAmenities(Model.ResortHeader, Model.ResortAmmenties)
+                        @DisplayAmenities(Model.VillaHeader, Model.VillaAmmenties)
+                        @DisplayAmenities(Model.AreaHeader, Model.AreaAmmenties)
+                </div><!-- .row -->
+
+            </div><!-- .expandable-content -->
+            <a href="#" class="expandable-trigger"><i class="fa fa-plus" aria-hidden="true"></i>More Info</a>
+        </div><!-- .expandable -->
+   
+}
+
+
+@helper DisplayAmenities(string sectionHeader, IEnumerable<Amenities> amenities)
+{
+    if (amenities != null && amenities.Count() > 0)
+    {
+        <div class="col-xs-12 col-md-4">
+            <h4 class="h3 margin-bottom-xs-15 first-word">@sectionHeader</h4>
+            <ul class="list-unstyled list-amenities">
+                @foreach (Amenities item in amenities)
+                {
+                    <li>@item.DisplayName </li>
+                }
+            </ul>
+        </div>
+    }
+}

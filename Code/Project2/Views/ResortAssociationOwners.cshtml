@@ -1,0 +1,11 @@
+﻿@model BGModern.Models.ResortModel
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<br />
+<div class="row association-owners">
+    <div class="col-lg-9">
+        @Html.Raw(Model.AssociationOwners.Information)
+    </div>
+</div>

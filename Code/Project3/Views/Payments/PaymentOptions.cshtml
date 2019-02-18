@@ -1,0 +1,45 @@
+﻿@using BGSitecore.Models.Payments
+@using BGSitecore.Utils;
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<PaymentOptions>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-6">
+        <div class="form-group ">
+            <div class="form-group ">
+                <label class="control-label" for="account"><strong>@Sitecore.Globalization.Translate.Text("Payment_Association")</strong></label>
+                <input type="text" name="association" id="association" class="form-control" value="@(Model.AccountInfo!=null?Model.AccountInfo.GroupTitle :"")" required="" disabled="">
+            </div><!-- .form-group -->
+        </div><!-- .form-group -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group" id="payment-methods">
+            <label class="control-label"><strong>@Sitecore.Globalization.Translate.Text("PaymentOptions_Payment_Method")</strong></label>
+            @{
+                if (Model != null && Model.AllPaymentOptions != null && Model.AllPaymentOptions.Count() > 0)
+                {
+                    foreach (var paymentOption in Model.AllPaymentOptions.Where(x => x.IsDisplay(Model.AccountInfo)))
+                    {
+                        <div class="radio">
+                            <label class="control-label">
+                                <input name="payment-method" id="@paymentOption.Code" value="@paymentOption.DisplayName" data-target="@("#" + UiUtils.SpaceToHyphen(@paymentOption.DisplayName))" @(paymentOption.IsDefault?"checked":"") type="radio">@Editable(paymentOption, x => x.DisplayName)
+                            </label>
+                        </div><!--.radio -->
+                    }
+                }
+            }
+
+        </div>
+
+    </div>
+</div>
+<div id="payment-forms">
+    @foreach (var paymentOption in Model.AllPaymentOptions.Where(x => x.IsDisplay(Model.AccountInfo)))
+    {
+        var clas = paymentOption.IsDefault ? "in" : "";
+        <div class="collapse @clas" id="@UiUtils.SpaceToHyphen(@paymentOption.DisplayName)" aria-expanded="@(paymentOption.IsDefault?"true":"false")">
+            @Html.Partial(paymentOption.ViewName, paymentOption.GetModal(Model.AccountInfo))
+        </div><!-- .collapse -->
+    }
+</div>

@@ -1,0 +1,19 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+    string currentState = "";
+
+}
+<div class="search-results js-search-results js-searchresultdisplay">
+    @Html.Partial("/Views/SearchResult/SearchResultState.cshtml", Model)
+</div><!-- .search-results -->
+
+<div class="hidden js-messagefiltererror" role="alert">
+    @Html.Raw(Model.FilerNoResultFound)
+</div>

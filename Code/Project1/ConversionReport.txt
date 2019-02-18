@@ -1,0 +1,1307 @@
+﻿This report shows the steps taken to convert your Web application from ASP.NET 1.1 to ASP.NET 2.0. 
+There may be some unresolved conversion issues you will need to manually fix. 
+For more information, please refer to http://go.microsoft.com/fwlink/?LinkId=46995 or search for the help topic "Converting from Visual Studio .NET 2002 or 2003".
+Conversion Started on project file BluegreenOnline.vbproj at January 29 2007, 13:51:57.
+
+=========================ERRORS===================
+ERROR: The following files were not migrated because they were not found in the project file or the associated 'BuildAction' is set to 'None'.
+You may need to exclude these files from the project after the conversion process in order to compile your web site: 
+File List == explore\resortdetailtest.aspx,owner\calcpointsa.aspx,owner\vacationguard_old.aspx,webform1.aspx,ms\userinfods.xsd,
+travelerplus\owner\resortdeals.aspx,ms\editownerinfodeleteconfirm.aspx.vb,ms\resortmanagement.aspx.vb,ms\testimonialmanagement.aspx.vb,
+resorts\new folder\popwindowmapdriving.aspx,ms\fileuploadtest.aspx,ms\includes\cmslaunchpanel.ascx,encorerewardsprocess\referralcollection.vb,
+saleskiosk\popwindowmap.aspx,saleskiosk\test.aspx.vb,explore\prntfndlyrd.aspx,ms\faqsmanagement.aspx.vb,saleskiosk\popwindowweather.aspx,
+ms\testimonialsmanagement.aspx.vb,ms\logonds.xsd,encorerewardsprocess\dividendawardintervalfees.vb,ms\editownerinfodetail.aspx.vb,oasis.html.aspx.vb,
+ms\editresortimages.aspx.vb,ms\editfeaturedeleteconfirm.aspx,travelerplus\survey.aspx,loginhelp.aspx,ms\contactdeleteconfirm.aspx,ms\removecategory.aspx,
+ms\ownerinfomanagement.aspx,saleskiosk\bluegreenonlineloginvc.aspx,poploginhelp.aspx,ms\editresort.aspx.vb,ms\editspecialdeleteconfirm.aspx,
+ms\addcategory.aspx,saleskiosk\test.aspx,ms\logon.aspx.vb,ms\editfeaturesdetail.aspx,explore\poptestimonialvideo_orig.aspx,
+saleskiosk\gettestimonials.aspx.vb,ms\includes\incdispadmininfo.aspx.vb,ms\editfaqdeleteconfirm.aspx.vb,owner\helpwin_b_g.aspx,ms\resortmanagement.aspx,
+owner\owneraccount_new.aspx,saleskiosk\popwindowweather.aspx.vb,ms\logonds.vb,owner\test.aspx,owner\home_quickpoll.aspx,ms\global.asax,ms\faqds.vb,
+ms\removecategory.aspx.vb,ms\editfeaturedeleteconfirm.aspx.vb,ms\testimonialsmanagement.aspx,ms\testimonialmanagement.aspx,
+owner\reservrequest.aspx.vb,ms\editfaqsorder.aspx,ucmenu.ascx.vb,encorerewardsprocess\dividendawardcartcollection.vb,ms\editspecialsdetail.aspx,
+encorerewardsprocess\dividendaward.vb,includes\archive\dynamicspecials.ascx,includes\topavailableresorts.ascx.vb,includes\archive\dynamicspecials.ascx.vb,
+ms\editspecialsorder.aspx,encorerewardsprocess\dividendawardmaintenancefee.vb,saleskiosk\faq.aspx,owner\prntfndlyrd1.aspx,
+ms\includes\incdispadmininfo.aspx,encorerewardsprocess\encoreownerdb.vb,ms\editresortamenities.aspx,ms\featuresmanagement.aspx,saleskiosk\getweather.aspx.vb,
+ms\includes\top.ascx,encorerewardsprocess\dividendawardclubdues.vb,owner\helpwin_y_z.aspx,ms\global.asax.vb,ucmenu.ascx,
+ms\testimonialsaddcategory.aspx.vb,saleskiosk\searchresults.aspx.vb,ms\includes\cmslaunchpanel.ascx.vb,webform1.aspx.vb,ms\editfeaturesimages.aspx,
+ms\userinfods.vb,saleskiosk\faq.aspx.vb,ms\default.aspx.vb,ms\editfaqsorder.aspx.vb,encorerewardsprocess\dividendawardbonustime.vb,
+saleskiosk\getweather.aspx,owner\index.aspx,redeemRewards_new.aspx,ms\includes\rollovers.ascx,ms\edituserdetail.aspx,
+encorerewardsprocess\pendingowner.vb,enrollencore.aspx,ms\formrefresh.aspx,encorerewardsprocess\accounttransaction.vb,ms\edituserdeleteconfirm.aspx,
+owner\faqdetails.aspx.vb,owner\vcpreferred.ascx,ms\editfaqdeleteconfirm.aspx,encorerewardsprocess\propertycomparer.vb,
+saleskiosk\bluegreenonlinelogin.aspx,ms\formrefresh.aspx.vb,owner\index.aspx.vb,ms\editfeaturesorder.aspx,ms\editcontact.aspx,ms\editfaqsdetail.aspx,
+encorerewards\helpwinstatus.aspx,encorerewardsprocess\assemblyinfo.vb,ms\clsdbconnectivity.vb,saleskiosk\getphotos.aspx.vb,
+encorerewardsprocess\dividendawardcart.vb,encorerewards\includes\redeemdividendsnav_revert.ascx,ms\contactmanagement.aspx.vb,ms\includes\dispadmininfo.ascx,
+encorerewardsprocess\dividendawardgiftcard.vb,ms\editspecialsimages.aspx,saleskiosk\bluegreenonlinelogin.aspx.vb,ms\featuresmanagement.aspx.vb,ms\resortdetail.aspx,
+saleskiosk\getownercount.aspx,ms\editresort.aspx,ms\resortdetail.aspx.vb,poploginhelp.aspx.vb,ms\sendoffermanagement.aspx.vb,ms\editfeaturesimages.aspx.vb,
+saleskiosk\listresorts.aspx.vb,owner\reservrequestwait.aspx,ms\editspecialsimages.aspx.vb,ms\specialsmanagement.aspx,ms\edittestimonials.aspx.vb,
+owner\reservrequestwait.aspx.vb,ms\testimonialsdeleteconfirm.aspx,encorerewardsprocess\pendingownerdb.vb,saleskiosk\searchresults.aspx,
+ms\specialsmanagement.aspx.vb,ms\editcontact.aspx.vb,ms\contactmanagement.aspx,ms\editownerinfoorder.aspx,saleskiosk\index.aspx,
+saleskiosk\getownercount.aspx.vb,resorts\new folder\popwindowmap.aspx,ms\includes\dispadmininfo.ascx.vb,ms\includes\sessionsecurity.ascx,
+ms\usermanagement.aspx.vb,owner\helpwin_n.aspx,owner\helpwin_p_q.aspx,saleskiosk\login.aspx,ms\editresortprofile.aspx,
+encorerewardsprocess\dividendawarddb.vb,owner\pymthist.aspx,ms\edituserdeleteconfirm.aspx.vb,owner\faqdetails.aspx,encorerewardsprocess\referraldb.vb,
+saleskiosk\clsdbconnectivity.vb,ms\editfaqsdetail.aspx.vb,ms\editownerinfoorder.aspx.vb,encorerewardsprocess\dividendawardcartdb.vb,
+encorerewardsprocess\accounttransactioncollection.vb,ms\assemblyinfo.vb,encorerewardsprocess\dividendawardcollection.vb,ms\ldapauthentication.vb,ms\contactdeleteconfirm.aspx.vb,
+explore\prntfndlyrd.aspx.vb,saleskiosk\bluegreenonlineloginvc.aspx.vb,ms\includes\sessionsecurity.ascx.vb,ms\testimonialsaddcategory.aspx,
+saleskiosk\login.aspx.vb,ms\editresortamenities.aspx.vb,ms\includes\top.ascx.vb,encorerewardsprocess\encoreowner.vb,
+encorerewardsprocess\dividendawardrcifees.vb,ms\editfeaturesdetail.aspx.vb,ms\default.aspx,ms\includes\rollovers.ascx.vb,ms\editspecialsdetail.aspx.vb,
+saleskiosk\getphotos.aspx,ms\addcategory.aspx.vb,ms\editspecialdeleteconfirm.aspx.vb,ms\editresortprofile.aspx.vb,
+ms\testimonialsdeleteconfirm.aspx.vb,encorerewardsprocess\referral.vb,ms\fileuploadtest.aspx.vb,ms\editownerinfodeleteconfirm.aspx,ms\editresortimages.aspx,
+ms\editspecialsorder.aspx.vb,ms\sendoffermanagement.aspx,ms\edittestimonials.aspx,ms\edituserdetail.aspx.vb,ms\logon.aspx,ms\faqds.xsd,
+encorerewards\ownersnapshot.ascx,includes\navigationdropdownsencore.ascx,owner\boatslipres2.aspx,ms\faqsmanagement.aspx,ms\ownerinfomanagement.aspx.vb,
+includes\topavailableresorts.ascx,ms\editfeaturesorder.aspx.vb,owner\reservrequest.aspx,saleskiosk\popwindowmap.aspx.vb,saleskiosk\gettestimonials.aspx,
+ms\usermanagement.aspx,encorerewardsprocess\accounttransactiondb.vb,ms\editownerinfodetail.aspx,saleskiosk\listresorts.aspx,
+saleskiosk\dump\popwindowmap.aspx,owner\vcpreferred.ascx.vb.
+
+=========================WARNINGS=================
+Warning: An extra class 'clsLoginAccount' has been found in code-behind file 'LoginProcess.aspx.vb'. New file 'LoginProcess_aspx_vb_clsLoginAccount.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    LoginProcess.aspx.vb (Line 676)
+Warning: An extra class 'sitemap1' has been found in code-behind file 'corporate\sitemap.aspx.vb'. New file 'corporate\sitemap_aspx_vb_sitemap1.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    corporate\sitemap.aspx.vb (Line 3)
+Warning: Code-behind file 'encorerewards\featuredetail.aspx.vb' is marked as code-behind for 'encorerewards\specialdetail.aspx' too. This may cause build errors.
+Warning: An extra class 'clsQuoteType' has been found in code-behind file 'explore\vcTestimonialsDetail.aspx.vb'. New file 'explore\vcTestimonialsDetail_aspx_vb_clsQuoteType.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    explore\vcTestimonialsDetail.aspx.vb (Line 88)
+Warning: An extra class 'cMenuObj' has been found in code-behind file 'includes\ucMenu.ascx.vb'. New file 'includes\ucMenu_ascx_vb_cMenuObj.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    includes\ucMenu.ascx.vb (Line 726)
+Warning: An extra class 'clsOwnerPointsSaved' has been found in code-behind file 'owner\ownerPoints.aspx.vb'. New file 'owner\ownerPoints_aspx_vb_clsOwnerPointsSaved.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    owner\ownerPoints.aspx.vb (Line 113)
+Warning: An extra class 'clsOwnerPointsAnnual' has been found in code-behind file 'owner\ownerPoints.aspx.vb'. New file 'owner\ownerPoints_aspx_vb_clsOwnerPointsAnnual.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    owner\ownerPoints.aspx.vb (Line 114)
+Warning: An extra class 'vcPreferred' has been found in code-behind file 'owner\vcPreferred.aspx.vb'. New file 'owner\vcPreferred_aspx_vb_vcPreferred.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    owner\vcPreferred.aspx.vb (Line 3)
+Warning: An extra class 'cWeather' has been found in code-behind file 'resorts\popwindowWeather.aspx.vb'. New file 'resorts\popwindowWeather_aspx_vb_cWeather.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    resorts\popwindowWeather.aspx.vb (Line 133)
+Warning: An extra class 'cWeatherStatistics' has been found in code-behind file 'resorts\popwindowWeather.aspx.vb'. New file 'resorts\popwindowWeather_aspx_vb_cWeatherStatistics.vb' has been created for this class and moved to the 'App_Code\Migrated' folder.    resorts\popwindowWeather.aspx.vb (Line 134)
+Warning: This web project was converted as a file-based web application. If your site contained any IIS meta-information, e.g. sub-folders marked as virtual directories, it is recommended that you close this web site and re-open it using the Open Web Site command and selecting the Local IIS tab.
+
+=========================COMMENTS=================
+Web.Config: Added 'xhtmlConformance' attribute.
+Web.Config: added a reference for assembly IBM.Data.DB2.iSeries.
+Added folder Web References\BluegreenOnline\RCIHotWeeksPull.
+Moved file Web References\RCIHotWeeksPull\RCIHotWeeksInventoryPull.disco to the Web References\BluegreenOnline\RCIHotWeeksPull\ directory.
+Moved file Web References\RCIHotWeeksPull\RCIHotWeeksInventoryPull.wsdl to the Web References\BluegreenOnline\RCIHotWeeksPull\ directory.
+Warning: Renamed file Web References\RCIHotWeeksPull\Reference.map to file RCIHotWeeksInventoryPull.discomap.
+Moved file Web References\RCIHotWeeksPull\RCIHotWeeksInventoryPull.discomap to the Web References\BluegreenOnline\RCIHotWeeksPull\ directory.
+Added folder Web References\BluegreenOnline\TSWInterface.
+Moved file Web References\TSWInterface\tswinterface.disco to the Web References\BluegreenOnline\TSWInterface\ directory.
+Moved file Web References\TSWInterface\tswinterface.wsdl to the Web References\BluegreenOnline\TSWInterface\ directory.
+Warning: Renamed file Web References\TSWInterface\Reference.map to file tswinterface.discomap.
+Moved file Web References\TSWInterface\tswinterface.discomap to the Web References\BluegreenOnline\TSWInterface\ directory.
+Added folder Web References\BluegreenOnline\TSWIntermediary.
+Moved file Web References\TSWIntermediary\svcSearchAvailability.disco to the Web References\BluegreenOnline\TSWIntermediary\ directory.
+Moved file Web References\TSWIntermediary\svcSearchAvailability.wsdl to the Web References\BluegreenOnline\TSWIntermediary\ directory.
+Warning: Renamed file Web References\TSWIntermediary\Reference.map to file svcSearchAvailability.discomap.
+Moved file Web References\TSWIntermediary\svcSearchAvailability.discomap to the Web References\BluegreenOnline\TSWIntermediary\ directory.
+Removed attribute Codebehind from file AccountNumberLookup.aspx.
+Warning: Access level of 'BluegreenOnline.AccountNumberLookup' changed to 'Partial' in file AccountNumberLookup.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file AccountNumberLookup.aspx.vb.    AccountNumberLookup.aspx.vb (Line 13)
+Removed attribute Codebehind from file default.aspx.
+Warning: Access level of 'BluegreenOnline._default' changed to 'Partial' in file default.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file default.aspx.vb.    default.aspx.vb (Line 19)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file default.aspx.
+Removed attribute Codebehind from file enroll.aspx.
+Warning: Access level of 'BluegreenOnline.enroll' changed to 'Partial' in file enroll.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file enroll.aspx.vb.    enroll.aspx.vb (Line 14)
+Removed attribute Codebehind from file enrollSuccess.aspx.
+Warning: Access level of 'BluegreenOnline.enrollSuccess' changed to 'Partial' in file enrollSuccess.aspx.vb (Line 6).
+Warning: Removed comment lines before designplaceholder declaration from file enrollSuccess.aspx.vb.    enrollSuccess.aspx.vb (Line 18)
+Removed attribute Codebehind from file enrollUnsuccess.aspx.
+Warning: Access level of 'BluegreenOnline.enrollUnsuccess' changed to 'Partial' in file enrollUnsuccess.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file enrollUnsuccess.aspx.vb.    enrollUnsuccess.aspx.vb (Line 13)
+Removed attribute Codebehind from file error404.aspx.
+Warning: Access level of 'BluegreenOnline.error404' changed to 'Partial' in file error404.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file error404.aspx.vb.    error404.aspx.vb (Line 13)
+Removed attribute Codebehind from file errorGeneric.aspx.
+Warning: Access level of 'BluegreenOnline.errorGeneric' changed to 'Partial' in file errorGeneric.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file errorGeneric.aspx.vb.    errorGeneric.aspx.vb (Line 13)
+Removed attribute Codebehind from file forgotPassword.aspx.
+Warning: Access level of 'BluegreenOnline.forgotPassword' changed to 'Partial' in file forgotPassword.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file forgotPassword.aspx.vb.    forgotPassword.aspx.vb (Line 13)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file forgotPassword.aspx.
+Removed attribute Codebehind from file forgotPasswordSent.aspx.
+Warning: Access level of 'BluegreenOnline.forgotPasswordSent' changed to 'Partial' in file forgotPasswordSent.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file forgotPasswordSent.aspx.vb.    forgotPasswordSent.aspx.vb (Line 13)
+Removed attribute Codebehind from file Global.asax.
+Removed attribute Codebehind from file legal.aspx.
+Warning: Access level of 'BluegreenOnline.legal' changed to 'Partial' in file legal.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file legal.aspx.vb.    legal.aspx.vb (Line 13)
+Removed attribute Codebehind from file login.aspx.
+Warning: Access level of 'BluegreenOnline.LoginChoice' changed to 'Partial' in file login.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file login.aspx.vb.    login.aspx.vb (Line 16)
+Removed attribute Codebehind from file LoginProcess.aspx.
+Warning: Access level of 'BluegreenOnline.LoginProcess' changed to 'Partial' in file LoginProcess.aspx.vb (Line 5).
+Warning: Removed comment lines before designplaceholder declaration from file LoginProcess.aspx.vb.    LoginProcess.aspx.vb (Line 15)
+Removed attribute CodeBehind from file loginUnsuccessful.aspx.
+Warning: Access level of 'BluegreenOnline.loginUnsuccessful' changed to 'Partial' in file loginUnsuccessful.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file loginUnsuccessful.aspx.vb.    loginUnsuccessful.aspx.vb (Line 14)
+Removed attribute Codebehind from file LoginWait.aspx.
+Warning: Access level of 'BluegreenOnline.LoginWait' changed to 'Partial' in file LoginWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file LoginWait.aspx.vb.    LoginWait.aspx.vb (Line 16)
+Removed attribute Codebehind from file NewsletterSignup.aspx.
+Warning: Access level of 'BluegreenOnline.NewsletterSignup' changed to 'Partial' in file NewsletterSignup.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file NewsletterSignup.aspx.vb.    NewsletterSignup.aspx.vb (Line 13)
+Removed attribute CodeBehind from file Oasis.aspx.
+Warning: Access level of 'BluegreenOnline.Oasis' changed to 'Partial' in file Oasis.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file Oasis.aspx.vb.    Oasis.aspx.vb (Line 16)
+Removed attribute Codebehind from file privacy.aspx.
+Warning: Access level of 'BluegreenOnline.privacy' changed to 'Partial' in file privacy.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file privacy.aspx.vb.    privacy.aspx.vb (Line 13)
+Removed attribute Codebehind from file resortDetailRedirect.aspx.
+Warning: Access level of 'BluegreenOnline.resortDetailRedirect' changed to 'Partial' in file resortDetailRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file resortDetailRedirect.aspx.vb.    resortDetailRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file SalesLogin.aspx.
+Warning: Access level of 'BluegreenOnline.SalesLogin' changed to 'Partial' in file SalesLogin.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file SalesLogin.aspx.vb.    SalesLogin.aspx.vb (Line 13)
+Removed attribute Codebehind from file siteMaintenance.aspx.
+Warning: Access level of 'BluegreenOnline.siteMaintenance' changed to 'Partial' in file siteMaintenance.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file siteMaintenance.aspx.vb.    siteMaintenance.aspx.vb (Line 13)
+Removed attribute Codebehind from file sitemap.aspx.
+Warning: Access level of 'BluegreenOnline.sitemap' changed to 'Partial' in file sitemap.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file sitemap.aspx.vb.    sitemap.aspx.vb (Line 13)
+Removed attribute Codebehind from file sitemapCorp.aspx.
+Warning: Access level of 'BluegreenOnline.sitemapCorp' changed to 'Partial' in file sitemapCorp.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file sitemapCorp.aspx.vb.    sitemapCorp.aspx.vb (Line 13)
+Removed attribute Codebehind from file terms.aspx.
+Warning: Access level of 'BluegreenOnline.terms' changed to 'Partial' in file terms.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file terms.aspx.vb.    terms.aspx.vb (Line 13)
+Removed attribute CodeBehind from file bonustime\makereserv.aspx.
+Warning: Access level of 'BluegreenOnline.makeReservBT' changed to 'Partial' in file bonustime\makeReserv.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\makereserv.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\makeReserv.aspx.vb.    bonustime\makeReserv.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\modifycomplete.aspx.
+Warning: Access level of 'BluegreenOnline.modifyComplete' changed to 'Partial' in file bonustime\modifyComplete.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\modifycomplete.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\modifyComplete.aspx.vb.    bonustime\modifyComplete.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\modifyconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.modifyConfirm' changed to 'Partial' in file bonustime\modifyConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\modifyconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\modifyConfirm.aspx.vb.    bonustime\modifyConfirm.aspx.vb (Line 14)
+Removed attribute Codebehind from file bonustime\modifyresults.aspx.
+Warning: Access level of 'BluegreenOnline.modifyResults' changed to 'Partial' in file bonustime\modifyResults.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\modifyresults.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\modifyResults.aspx.vb.    bonustime\modifyResults.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\modifywait.aspx.
+Warning: Access level of 'BluegreenOnline.modifyWait' changed to 'Partial' in file bonustime\modifyWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\modifyWait.aspx.vb.    bonustime\modifyWait.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\poparrivaldate.aspx.
+Warning: Access level of 'BluegreenOnline.popArrivalDate' changed to 'Partial' in file bonustime\popArrivalDate.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\popArrivalDate.aspx.vb.    bonustime\popArrivalDate.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\popcancelconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.popCancelConfirm' changed to 'Partial' in file bonustime\popCancelConfirm.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\popCancelConfirm.aspx.vb.    bonustime\popCancelConfirm.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\popcvv.aspx.
+Warning: Access level of 'BluegreenOnline.popCVV' changed to 'Partial' in file bonustime\popCVV.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\popCVV.aspx.vb.    bonustime\popCVV.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\pophowmuchdoesitcost.aspx.
+Warning: Access level of 'BluegreenOnline.popHowMuchDoesItCost' changed to 'Partial' in file bonustime\popHowMuchDoesItCost.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\popHowMuchDoesItCost.aspx.vb.    bonustime\popHowMuchDoesItCost.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\popterms.aspx.
+Warning: Access level of 'BluegreenOnline.popTerms' changed to 'Partial' in file bonustime\popTerms.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\popTerms.aspx.vb.    bonustime\popTerms.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\popwhencanibook.aspx.
+Warning: Access level of 'BluegreenOnline.popWhenCanIBook' changed to 'Partial' in file bonustime\popWhenCanIBook.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\popWhenCanIBook.aspx.vb.    bonustime\popWhenCanIBook.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\reservcancel.aspx.
+Warning: Access level of 'BluegreenOnline.reservCancel' changed to 'Partial' in file bonustime\reservCancel.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\reservcancel.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\reservCancel.aspx.vb.    bonustime\reservCancel.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\reservcomplete.aspx.
+Warning: Access level of 'BluegreenOnline.reservCompleteBT' changed to 'Partial' in file bonustime\reservComplete.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\reservcomplete.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\reservComplete.aspx.vb.    bonustime\reservComplete.aspx.vb (Line 27)
+Removed attribute Codebehind from file bonustime\reservconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.reservConfirmBT' changed to 'Partial' in file bonustime\reservConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\reservconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\reservConfirm.aspx.vb.    bonustime\reservConfirm.aspx.vb (Line 26)
+Removed attribute Codebehind from file bonustime\reservhistory.aspx.
+Warning: Access level of 'BluegreenOnline.reservHistory1' changed to 'Partial' in file bonustime\reservHistory.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\reservhistory.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\reservHistory.aspx.vb.    bonustime\reservHistory.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\reservlist.aspx.
+Warning: Access level of 'BluegreenOnline.reservList' changed to 'Partial' in file bonustime\reservList.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\reservlist.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\reservList.aspx.vb.    bonustime\reservList.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\reservmodify.aspx.
+Warning: Access level of 'BluegreenOnline.reservModify' changed to 'Partial' in file bonustime\reservModify.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\reservmodify.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\reservModify.aspx.vb.    bonustime\reservModify.aspx.vb (Line 13)
+Removed attribute Codebehind from file bonustime\resortdetail.aspx.
+Warning: Access level of 'BluegreenOnline.resortDetail3' changed to 'Partial' in file bonustime\resortDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\resortDetail.aspx.vb.    bonustime\resortDetail.aspx.vb (Line 13)
+Removed attribute CodeBehind from file bonustime\searchresults.aspx.
+Warning: Access level of 'BluegreenOnline.searchResultsBT' changed to 'Partial' in file bonustime\searchResults.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file bonustime\searchresults.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\searchResults.aspx.vb.    bonustime\searchResults.aspx.vb (Line 14)
+Removed attribute Codebehind from file bonustime\searchwait.aspx.
+Warning: Access level of 'BluegreenOnline.searchWaitBT' changed to 'Partial' in file bonustime\searchWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\searchWait.aspx.vb.    bonustime\searchWait.aspx.vb (Line 13)
+Removed attribute TargetSchema from file bonustime\includes\footer.ascx.
+Removed attribute Codebehind from file bonustime\includes\footer.ascx.
+Warning: Access level of 'BluegreenOnline.footerBT' changed to 'Partial' in file bonustime\includes\footer.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\includes\footer.ascx.vb.    bonustime\includes\footer.ascx.vb (Line 13)
+Removed attribute TargetSchema from file bonustime\includes\leftbanners.ascx.
+Removed attribute Codebehind from file bonustime\includes\leftbanners.ascx.
+Warning: Access level of 'BluegreenOnline.LeftBanners' changed to 'Partial' in file bonustime\includes\LeftBanners.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\includes\LeftBanners.ascx.vb.    bonustime\includes\LeftBanners.ascx.vb (Line 13)
+Removed attribute TargetSchema from file bonustime\includes\navigationdropdowns.ascx.
+Removed attribute Codebehind from file bonustime\includes\navigationdropdowns.ascx.
+Warning: Access level of 'BluegreenOnline.navigationDropDownsBT' changed to 'Partial' in file bonustime\includes\navigationDropDowns.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\includes\navigationDropDowns.ascx.vb.    bonustime\includes\navigationDropDowns.ascx.vb (Line 13)
+Removed attribute TargetSchema from file bonustime\includes\newsearch.ascx.
+Removed attribute Codebehind from file bonustime\includes\newsearch.ascx.
+Warning: Access level of 'BluegreenOnline.NewSearch' changed to 'Partial' in file bonustime\includes\NewSearch.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\includes\NewSearch.ascx.vb.    bonustime\includes\NewSearch.ascx.vb (Line 13)
+Removed attribute TargetSchema from file bonustime\includes\popstrip.ascx.
+Removed attribute Codebehind from file bonustime\includes\popstrip.ascx.
+Warning: Access level of 'BluegreenOnline.popstripBT' changed to 'Partial' in file bonustime\includes\popstrip.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file bonustime\includes\popstrip.ascx.vb.    bonustime\includes\popstrip.ascx.vb (Line 13)
+Removed attribute Codebehind from file corporate\404error.aspx.
+Warning: Access level of 'BluegreenOnline._404error' changed to 'Partial' in file corporate\404error.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\404error.aspx.vb.    corporate\404error.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\aboutbgstory.aspx.
+Warning: Access level of 'BluegreenOnline.aboutBGstory' changed to 'Partial' in file corporate\aboutBGstory.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\aboutBGstory.aspx.vb.    corporate\aboutBGstory.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\aboutoverview.aspx.
+Warning: Access level of 'BluegreenOnline.aboutOverview' changed to 'Partial' in file corporate\aboutOverview.aspx.vb (Line 7).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\aboutOverview.aspx.vb.    corporate\aboutOverview.aspx.vb (Line 18)
+Removed attribute CodeBehind from file corporate\aboutprodserv.aspx.
+Warning: Access level of 'BluegreenOnline.aboutProdServ' changed to 'Partial' in file corporate\aboutProdServ.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\aboutProdServ.aspx.vb.    corporate\aboutProdServ.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\aboutstrategic.aspx.
+Warning: Access level of 'BluegreenOnline.aboutStrategic' changed to 'Partial' in file corporate\aboutStrategic.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\aboutStrategic.aspx.vb.    corporate\aboutStrategic.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\bgrmanagement.aspx.
+Warning: Access level of 'BluegreenOnline.bgrManagement' changed to 'Partial' in file corporate\bgrManagement.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\bgrManagement.aspx.vb.    corporate\bgrManagement.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\bluegreenresorts.aspx.
+Warning: Access level of 'BluegreenOnline.bluegreenResorts' changed to 'Partial' in file corporate\bluegreenResorts.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\bluegreenResorts.aspx.vb.    corporate\bluegreenResorts.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\contact.aspx.
+Warning: Access level of 'BluegreenOnline.contact2' changed to 'Partial' in file corporate\contact.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\contact.aspx.vb.    corporate\contact.aspx.vb (Line 15)
+Removed attribute Codebehind from file corporate\contactconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.contactConfirm' changed to 'Partial' in file corporate\contactConfirm.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\contactConfirm.aspx.vb.    corporate\contactConfirm.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\hr.aspx.
+Warning: Access level of 'BluegreenOnline.hr' changed to 'Partial' in file corporate\hr.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\hr.aspx.vb.    corporate\hr.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\hrbenefits.aspx.
+Warning: Access level of 'BluegreenOnline.hrBenefits' changed to 'Partial' in file corporate\hrBenefits.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\hrBenefits.aspx.vb.    corporate\hrBenefits.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\hrculture.aspx.
+Warning: Access level of 'BluegreenOnline.hrCulture' changed to 'Partial' in file corporate\hrCulture.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\hrCulture.aspx.vb.    corporate\hrCulture.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\hrtestimonials.aspx.
+Warning: Access level of 'BluegreenOnline.hrTestimonials' changed to 'Partial' in file corporate\hrTestimonials.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\hrTestimonials.aspx.vb.    corporate\hrTestimonials.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\index.aspx.
+Warning: Access level of 'BluegreenOnline.index2' changed to 'Partial' in file corporate\index.aspx.vb (Line 7).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\index.aspx.vb.    corporate\index.aspx.vb (Line 17)
+Removed attribute CodeBehind from file corporate\investors.aspx.
+Warning: Access level of 'BluegreenOnline.investors' changed to 'Partial' in file corporate\investors.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\investors.aspx.vb.    corporate\investors.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\legal.aspx.
+Warning: Access level of 'BluegreenOnline.legal1' changed to 'Partial' in file corporate\legal.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\legal.aspx.vb.    corporate\legal.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\missionvision.aspx.
+Warning: Access level of 'BluegreenOnline.missionVision' changed to 'Partial' in file corporate\missionVision.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\missionVision.aspx.vb.    corporate\missionVision.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\philanthropy.aspx.
+Warning: Access level of 'BluegreenOnline.philanthropy' changed to 'Partial' in file corporate\philanthropy.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\philanthropy.aspx.vb.    corporate\philanthropy.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\popuparda.aspx.
+Warning: Access level of 'BluegreenOnline.popupARDA' changed to 'Partial' in file corporate\popupARDA.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\popupARDA.aspx.vb.    corporate\popupARDA.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prawards.aspx.
+Warning: Access level of 'BluegreenOnline.prAwards' changed to 'Partial' in file corporate\prAwards.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prAwards.aspx.vb.    corporate\prAwards.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prcoprofile.aspx.
+Warning: Access level of 'BluegreenOnline.prCoProfile' changed to 'Partial' in file corporate\prCoProfile.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prCoProfile.aspx.vb.    corporate\prCoProfile.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\pressroom.aspx.
+Warning: Access level of 'BluegreenOnline.pressRoom' changed to 'Partial' in file corporate\pressRoom.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\pressRoom.aspx.vb.    corporate\pressRoom.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prgraphics.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphics' changed to 'Partial' in file corporate\prGraphics.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphics.aspx.vb.    corporate\prGraphics.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicscolorfulplaces.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsColorfulPlaces' changed to 'Partial' in file corporate\prGraphicsColorfulPlaces.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsColorfulPlaces.aspx.vb.    corporate\prGraphicsColorfulPlaces.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicscommunities.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsCommunities' changed to 'Partial' in file corporate\prGraphicsCommunities.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsCommunities.aspx.vb.    corporate\prGraphicsCommunities.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prgraphicsconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsConfirm' changed to 'Partial' in file corporate\prGraphicsConfirm.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsConfirm.aspx.vb.    corporate\prGraphicsConfirm.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicscorporate.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsCorporate' changed to 'Partial' in file corporate\prGraphicsCorporate.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsCorporate.aspx.vb.    corporate\prGraphicsCorporate.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsditto.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsDitto' changed to 'Partial' in file corporate\prGraphicsDitto.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsDitto.aspx.vb.    corporate\prGraphicsDitto.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicseho.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsEho' changed to 'Partial' in file corporate\prGraphicsEho.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsEho.aspx.vb.    corporate\prGraphicsEho.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsfloridakeys.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsFloridaKeys' changed to 'Partial' in file corporate\prGraphicsFloridaKeys.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsFloridaKeys.aspx.vb.    corporate\prGraphicsFloridaKeys.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsgas.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsGAS' changed to 'Partial' in file corporate\prGraphicsGAS.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsGAS.aspx.vb.    corporate\prGraphicsGAS.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsgvd.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsGVD' changed to 'Partial' in file corporate\prGraphicsGVD.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsGVD.aspx.vb.    corporate\prGraphicsGVD.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsinstitute.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsInstitute' changed to 'Partial' in file corporate\prGraphicsInstitute.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsInstitute.aspx.vb.    corporate\prGraphicsInstitute.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicslinville.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsLinville' changed to 'Partial' in file corporate\prGraphicsLinville.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsLinville.aspx.vb.    corporate\prGraphicsLinville.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsmyrtlebeach.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsMyrtleBeach' changed to 'Partial' in file corporate\prGraphicsMyrtleBeach.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsMyrtleBeach.aspx.vb.    corporate\prGraphicsMyrtleBeach.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsnevada.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsNevada' changed to 'Partial' in file corporate\prGraphicsNevada.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsNevada.aspx.vb.    corporate\prGraphicsNevada.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsorlando.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsOrlando' changed to 'Partial' in file corporate\prGraphicsOrlando.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsOrlando.aspx.vb.    corporate\prGraphicsOrlando.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsormondbeach.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsOrmondBeach' changed to 'Partial' in file corporate\prGraphicsOrmondBeach.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsOrmondBeach.aspx.vb.    corporate\prGraphicsOrmondBeach.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrebigcedar.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReBigCedar' changed to 'Partial' in file corporate\prGraphicsReBigCedar.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReBigCedar.aspx.vb.    corporate\prGraphicsReBigCedar.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsreboyne.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReBoyne' changed to 'Partial' in file corporate\prGraphicsReBoyne.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReBoyne.aspx.vb.    corporate\prGraphicsReBoyne.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrecarolina.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReCarolina' changed to 'Partial' in file corporate\prGraphicsReCarolina.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReCarolina.aspx.vb.    corporate\prGraphicsReCarolina.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrechristmas.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReChristmas' changed to 'Partial' in file corporate\prGraphicsReChristmas.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReChristmas.aspx.vb.    corporate\prGraphicsReChristmas.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrefalls.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReFalls' changed to 'Partial' in file corporate\prGraphicsReFalls.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReFalls.aspx.vb.    corporate\prGraphicsReFalls.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrefountains.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReFountains' changed to 'Partial' in file corporate\prGraphicsReFountains.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReFountains.aspx.vb.    corporate\prGraphicsReFountains.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsregrande.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReGrande' changed to 'Partial' in file corporate\prGraphicsReGrande.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReGrande.aspx.vb.    corporate\prGraphicsReGrande.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrehammocks.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReHammocks' changed to 'Partial' in file corporate\prGraphicsReHammocks.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReHammocks.aspx.vb.    corporate\prGraphicsReHammocks.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrehershey.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReHershey' changed to 'Partial' in file corporate\prGraphicsReHershey.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReHershey.aspx.vb.    corporate\prGraphicsReHershey.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrelaurel.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReLaurel' changed to 'Partial' in file corporate\prGraphicsReLaurel.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReLaurel.aspx.vb.    corporate\prGraphicsReLaurel.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrelodge.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReLodge' changed to 'Partial' in file corporate\prGraphicsReLodge.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReLodge.aspx.vb.    corporate\prGraphicsReLodge.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsremountain.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReMountain' changed to 'Partial' in file corporate\prGraphicsReMountain.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReMountain.aspx.vb.    corporate\prGraphicsReMountain.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrentals.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsRentals' changed to 'Partial' in file corporate\prGraphicsRentals.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsRentals.aspx.vb.    corporate\prGraphicsRentals.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsrepatrickhenry.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsRePatrickHenry' changed to 'Partial' in file corporate\prGraphicsRePatrickHenry.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsRePatrickHenry.aspx.vb.    corporate\prGraphicsRePatrickHenry.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsreseabreeze.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReSeabreeze' changed to 'Partial' in file corporate\prGraphicsReSeabreeze.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReSeabreeze.aspx.vb.    corporate\prGraphicsReSeabreeze.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsreseaglass.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReSeaGlass' changed to 'Partial' in file corporate\prGraphicsReSeaGlass.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReSeaGlass.aspx.vb.    corporate\prGraphicsReSeaGlass.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsreshenandoah.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReShenandoah' changed to 'Partial' in file corporate\prGraphicsReShenandoah.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReShenandoah.aspx.vb.    corporate\prGraphicsReShenandoah.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsreshore.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReShore' changed to 'Partial' in file corporate\prGraphicsReShore.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReShore.aspx.vb.    corporate\prGraphicsReShore.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsresolara.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReSolara' changed to 'Partial' in file corporate\prGraphicsReSolara.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReSolara.aspx.vb.    corporate\prGraphicsReSolara.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsresortman.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsResortMan' changed to 'Partial' in file corporate\prGraphicsResortMan.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsResortMan.aspx.vb.    corporate\prGraphicsResortMan.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsresorts.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsResorts' changed to 'Partial' in file corporate\prGraphicsResorts.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsResorts.aspx.vb.    corporate\prGraphicsResorts.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsresunshine.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsReSunshine' changed to 'Partial' in file corporate\prGraphicsReSunshine.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsReSunshine.aspx.vb.    corporate\prGraphicsReSunshine.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicssouthfl.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsSouthFl' changed to 'Partial' in file corporate\prGraphicsSouthFl.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsSouthFl.aspx.vb.    corporate\prGraphicsSouthFl.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsst_augustine.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsSt_Augustine' changed to 'Partial' in file corporate\prGraphicsSt_Augustine.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsSt_Augustine.aspx.vb.    corporate\prGraphicsSt_Augustine.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicstennessee.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsTennessee' changed to 'Partial' in file corporate\prGraphicsTennessee.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsTennessee.aspx.vb.    corporate\prGraphicsTennessee.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicstravelerplus.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsTravelerPlus' changed to 'Partial' in file corporate\prGraphicsTravelerPlus.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsTravelerPlus.aspx.vb.    corporate\prGraphicsTravelerPlus.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\prgraphicsvacationclub.aspx.
+Warning: Access level of 'BluegreenOnline.prGraphicsVacationClub' changed to 'Partial' in file corporate\prGraphicsVacationClub.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prGraphicsVacationClub.aspx.vb.    corporate\prGraphicsVacationClub.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prindustry.aspx.
+Warning: Access level of 'BluegreenOnline.prIndustry' changed to 'Partial' in file corporate\prIndustry.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prIndustry.aspx.vb.    corporate\prIndustry.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prindustrynews.aspx.
+Warning: Access level of 'BluegreenOnline.prIndustryNews' changed to 'Partial' in file corporate\prIndustryNews.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prIndustryNews.aspx.vb.    corporate\prIndustryNews.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prinquiry.aspx.
+Warning: Access level of 'BluegreenOnline.prInquiry' changed to 'Partial' in file corporate\prInquiry.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prInquiry.aspx.vb.    corporate\prInquiry.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\prreleases.aspx.
+Warning: Access level of 'BluegreenOnline.prReleases' changed to 'Partial' in file corporate\prReleases.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\prReleases.aspx.vb.    corporate\prReleases.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\resortdetail.aspx.
+Warning: Access level of 'BluegreenOnline.resortDetailCORP' changed to 'Partial' in file corporate\resortDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\resortDetail.aspx.vb.    corporate\resortDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\sitemap.aspx.
+Removed attribute Codebehind from file corporate\specialdetail.aspx.
+Warning: Access level of 'BluegreenOnline.specialDetail2' changed to 'Partial' in file corporate\specialDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\specialDetail.aspx.vb.    corporate\specialDetail.aspx.vb (Line 13)
+Removed attribute CodeBehind from file corporate\resort_locator\index.aspx.
+Warning: Access level of 'BluegreenOnline.index3' changed to 'Partial' in file corporate\resort_locator\index.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\resort_locator\index.aspx.vb.    corporate\resort_locator\index.aspx.vb (Line 13)
+Removed attribute Codebehind from file corporate\resort_locator\resort_locator.aspx.
+Warning: Access level of 'BluegreenOnline.resort_Locator' changed to 'Partial' in file corporate\resort_locator\resort_Locator.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file corporate\resort_locator\resort_Locator.aspx.vb.    corporate\resort_locator\resort_Locator.aspx.vb (Line 13)
+Removed attribute CodeBehind from file encorerewards\checkout.aspx.
+Warning: Access level of 'BluegreenOnline.checkout' changed to 'Partial' in file encorerewards\checkout.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\checkout.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\checkout.aspx.vb.    encorerewards\checkout.aspx.vb (Line 25)
+Removed attribute CodeBehind from file encorerewards\checkoutconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.checkoutConfirm' changed to 'Partial' in file encorerewards\checkoutConfirm.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\checkoutconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\checkoutConfirm.aspx.vb.    encorerewards\checkoutConfirm.aspx.vb (Line 15)
+'Reference' tag with reference to '~/encorerewards/redeemRewards.aspx' added to file encorerewards\checkoutconfirm.aspx.
+Removed attribute CodeBehind from file encorerewards\checkoutreview.aspx.
+Warning: Access level of 'BluegreenOnline.checkoutReview' changed to 'Partial' in file encorerewards\checkoutReview.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\checkoutreview.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\checkoutReview.aspx.vb.    encorerewards\checkoutReview.aspx.vb (Line 15)
+Removed attribute Codebehind from file encorerewards\default.aspx.
+Warning: Access level of 'BluegreenOnline._defaultEncore' changed to 'Partial' in file encorerewards\default.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\default.aspx.vb.    encorerewards\default.aspx.vb (Line 19)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file encorerewards\default.aspx.
+Removed attribute CodeBehind from file encorerewards\dop.aspx.
+Warning: Access level of 'BluegreenOnline.dop' changed to 'Partial' in file encorerewards\dop.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\dop.aspx.vb.    encorerewards\dop.aspx.vb (Line 13)
+Removed attribute Codebehind from file encorerewards\enroll.aspx.
+Warning: Access level of 'BluegreenOnline.enroll1' changed to 'Partial' in file encorerewards\enroll.aspx.vb (Line 5).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\enroll.aspx.vb.    encorerewards\enroll.aspx.vb (Line 14)
+Removed attribute Codebehind from file encorerewards\featuredetail.aspx.
+Warning: Access level of 'BluegreenOnline.FeatureDetail2' changed to 'Partial' in file encorerewards\FeatureDetail.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\featuredetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\FeatureDetail.aspx.vb.    encorerewards\FeatureDetail.aspx.vb (Line 16)
+Removed attribute Codebehind from file encorerewards\forgotpassword.aspx.
+Warning: Access level of 'BluegreenOnline.forgotPasswordER' changed to 'Partial' in file encorerewards\forgotPassword.aspx.vb (Line 5).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\forgotPassword.aspx.vb.    encorerewards\forgotPassword.aspx.vb (Line 15)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file encorerewards\forgotpassword.aspx.
+Removed attribute Codebehind from file encorerewards\forgotpasswordsent.aspx.
+Warning: Access level of 'BluegreenOnline.forgotPasswordSentER' changed to 'Partial' in file encorerewards\forgotPasswordSent.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\forgotPasswordSent.aspx.vb.    encorerewards\forgotPasswordSent.aspx.vb (Line 13)
+Removed attribute Codebehind from file encorerewards\index.aspx.
+Warning: Access level of 'BluegreenOnline.EncoreIndex' changed to 'Partial' in file encorerewards\index.aspx.vb (Line 6).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\index.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\index.aspx.vb.    encorerewards\index.aspx.vb (Line 18)
+Removed attribute CodeBehind from file encorerewards\loginunsuccessful.aspx.
+Warning: Access level of 'BluegreenOnline.loginUnsuccessfulER' changed to 'Partial' in file encorerewards\loginUnsuccessful.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\loginUnsuccessful.aspx.vb.    encorerewards\loginUnsuccessful.aspx.vb (Line 15)
+Removed attribute CodeBehind from file encorerewards\redeemRewards.aspx.
+Warning: Access level of 'BluegreenOnline.redeemRewards' changed to 'Partial' in file encorerewards\redeemRewards.aspx.vb (Line 6).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\redeemRewards.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\redeemRewards.aspx.vb.    encorerewards\redeemRewards.aspx.vb (Line 18)
+Removed attribute Codebehind from file encorerewards\searchwait.aspx.
+Warning: Access level of 'BluegreenOnline.searchWaitER' changed to 'Partial' in file encorerewards\searchWait.aspx.vb (Line 5).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\searchWait.aspx.vb.    encorerewards\searchWait.aspx.vb (Line 15)
+Removed attribute Codebehind from file encorerewards\sendoffers.aspx.
+Warning: Access level of 'BluegreenOnline.sendOffers' changed to 'Partial' in file encorerewards\sendOffers.aspx.vb (Line 7).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\sendoffers.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\sendOffers.aspx.vb.    encorerewards\sendOffers.aspx.vb (Line 19)
+Removed attribute Codebehind from file encorerewards\specialdetail.aspx.
+Removed attribute Codebehind from file encorerewards\trackreferrals.aspx.
+Warning: Access level of 'BluegreenOnline.trackReferrals' changed to 'Partial' in file encorerewards\trackReferrals.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\trackreferrals.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\trackReferrals.aspx.vb.    encorerewards\trackReferrals.aspx.vb (Line 25)
+Removed attribute CodeBehind from file encorerewards\updatereferralinfo.aspx.
+Warning: Access level of 'BluegreenOnline.updateReferralInfo' changed to 'Partial' in file encorerewards\updateReferralInfo.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file encorerewards\updatereferralinfo.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\updateReferralInfo.aspx.vb.    encorerewards\updateReferralInfo.aspx.vb (Line 15)
+Removed attribute TargetSchema from file encorerewards\includes\leftnav.ascx.
+Removed attribute Codebehind from file encorerewards\includes\leftnav.ascx.
+Warning: Access level of 'BluegreenOnline.LeftNav' changed to 'Partial' in file encorerewards\includes\LeftNav.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\includes\LeftNav.ascx.vb.    encorerewards\includes\LeftNav.ascx.vb (Line 13)
+Removed attribute TargetSchema from file encorerewards\includes\ownersnapshot.ascx.
+Removed attribute Codebehind from file encorerewards\includes\ownersnapshot.ascx.
+Warning: Access level of 'BluegreenOnline.OwnerSnapshot' changed to 'Partial' in file encorerewards\includes\OwnerSnapshot.ascx.vb (Line 5).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\includes\OwnerSnapshot.ascx.vb.    encorerewards\includes\OwnerSnapshot.ascx.vb (Line 15)
+Removed attribute TargetSchema from file encorerewards\includes\redeemdividendsnav.ascx.
+Removed attribute Codebehind from file encorerewards\includes\redeemdividendsnav.ascx.
+Warning: Access level of 'BluegreenOnline.RedeemDividendsNav' changed to 'Partial' in file encorerewards\includes\RedeemDividendsNav.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file encorerewards\includes\RedeemDividendsNav.ascx.vb.    encorerewards\includes\RedeemDividendsNav.ascx.vb (Line 12)
+Removed attribute Codebehind from file explore\contact.aspx.
+Warning: Access level of 'BluegreenOnline.contact' changed to 'Partial' in file explore\contact.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\contact.aspx.vb.    explore\contact.aspx.vb (Line 14)
+Removed attribute Codebehind from file explore\featuredetail.aspx.
+Warning: Access level of 'BluegreenOnline.FeatureDetail' changed to 'Partial' in file explore\FeatureDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\FeatureDetail.aspx.vb.    explore\FeatureDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\helpclub.aspx.
+Warning: Access level of 'BluegreenOnline.helpClub1' changed to 'Partial' in file explore\helpClub.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\helpClub.aspx.vb.    explore\helpClub.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\home.aspx.
+Warning: Access level of 'BluegreenOnline.Home1' changed to 'Partial' in file explore\Home.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\Home.aspx.vb.    explore\Home.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\index.aspx.
+Warning: Access level of 'BluegreenOnline.index1' changed to 'Partial' in file explore\index.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\index.aspx.vb.    explore\index.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\learnfaqs.aspx.
+Warning: Access level of 'BluegreenOnline.learnFAQs' changed to 'Partial' in file explore\learnFAQs.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\learnFAQs.aspx.vb.    explore\learnFAQs.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\learnindustry.aspx.
+Warning: Access level of 'BluegreenOnline.learnIndustry' changed to 'Partial' in file explore\learnIndustry.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\learnIndustry.aspx.vb.    explore\learnIndustry.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\learnmore.aspx.
+Warning: Access level of 'BluegreenOnline.learnMore' changed to 'Partial' in file explore\learnMore.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\learnMore.aspx.vb.    explore\learnMore.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\learnmoreconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.learnMoreConfirm' changed to 'Partial' in file explore\learnMoreConfirm.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\learnMoreConfirm.aspx.vb.    explore\learnMoreConfirm.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\learnnews.aspx.
+Warning: Access level of 'BluegreenOnline.learnNews' changed to 'Partial' in file explore\learnNews.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\learnNews.aspx.vb.    explore\learnNews.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\learnpreviewcenters.aspx.
+Warning: Access level of 'BluegreenOnline.learnPreviewCenters' changed to 'Partial' in file explore\learnPreviewCenters.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\learnPreviewCenters.aspx.vb.    explore\learnPreviewCenters.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\poptestimonialvideo.aspx.
+Warning: Access level of 'BluegreenOnline.popTestimonialVideo' changed to 'Partial' in file explore\popTestimonialVideo.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\popTestimonialVideo.aspx.vb.    explore\popTestimonialVideo.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\resortdetail.aspx.
+Warning: Access level of 'BluegreenOnline.resortDetail' changed to 'Partial' in file explore\resortDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\resortDetail.aspx.vb.    explore\resortDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\resortsearch.aspx.
+Warning: Access level of 'BluegreenOnline.resortSearch' changed to 'Partial' in file explore\resortSearch.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\resortSearch.aspx.vb.    explore\resortSearch.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\resortspecials.aspx.
+Warning: Access level of 'BluegreenOnline.resortSpecials' changed to 'Partial' in file explore\resortSpecials.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\resortSpecials.aspx.vb.    explore\resortSpecials.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\searchresults.aspx.
+Warning: Access level of 'BluegreenOnline.searchResults1' changed to 'Partial' in file explore\searchResults.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\searchResults.aspx.vb.    explore\searchResults.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\sitemap.aspx.
+Warning: Access level of 'BluegreenOnline.sitemap2' changed to 'Partial' in file explore\sitemap.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\sitemap.aspx.vb.    explore\sitemap.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\sitesearchresults.aspx.
+Warning: Access level of 'BluegreenOnline.siteSearchResults' changed to 'Partial' in file explore\siteSearchResults.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\siteSearchResults.aspx.vb.    explore\siteSearchResults.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\specialdetail.aspx.
+Warning: Access level of 'BluegreenOnline.specialDetail' changed to 'Partial' in file explore\specialDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\specialDetail.aspx.vb.    explore\specialDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\sweepstakes.aspx.
+Warning: Access level of 'BluegreenOnline.sweepstakes' changed to 'Partial' in file explore\sweepstakes.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\sweepstakes.aspx.vb.    explore\sweepstakes.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\vacationclub.aspx.
+Warning: Access level of 'BluegreenOnline.vacationClub' changed to 'Partial' in file explore\vacationClub.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\vacationClub.aspx.vb.    explore\vacationClub.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\vchowitworks.aspx.
+Warning: Access level of 'BluegreenOnline.vcHowItWorks' changed to 'Partial' in file explore\vcHowItWorks.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\vcHowItWorks.aspx.vb.    explore\vcHowItWorks.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\vcownerpreview.aspx.
+Warning: Access level of 'BluegreenOnline.vcOwnerPreview' changed to 'Partial' in file explore\vcOwnerPreview.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\vcOwnerPreview.aspx.vb.    explore\vcOwnerPreview.aspx.vb (Line 13)
+Removed attribute Codebehind from file explore\vctestimonials.aspx.
+Warning: Access level of 'BluegreenOnline.vcTestimonials' changed to 'Partial' in file explore\vcTestimonials.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\vcTestimonials.aspx.vb.    explore\vcTestimonials.aspx.vb (Line 14)
+Removed attribute Codebehind from file explore\vctestimonialsdetail.aspx.
+Warning: Access level of 'BluegreenOnline.vcTestimonialsDetail' changed to 'Partial' in file explore\vcTestimonialsDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file explore\vcTestimonialsDetail.aspx.vb.    explore\vcTestimonialsDetail.aspx.vb (Line 16)
+Removed attribute TargetSchema from file includes\changesearchnav.ascx.
+Removed attribute Codebehind from file includes\changesearchnav.ascx.
+Warning: Access level of 'BluegreenOnline.changeSearchNav' changed to 'Partial' in file includes\changeSearchNav.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\changeSearchNav.ascx.vb.    includes\changeSearchNav.ascx.vb (Line 14)
+Removed attribute TargetSchema from file includes\contactlocator.ascx.
+Removed attribute Codebehind from file includes\contactlocator.ascx.
+Warning: Access level of 'BluegreenOnline.contactLocator' changed to 'Partial' in file includes\contactLocator.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\contactLocator.ascx.vb.    includes\contactLocator.ascx.vb (Line 24)
+Removed attribute TargetSchema from file includes\contactus.ascx.
+Removed attribute Codebehind from file includes\contactus.ascx.
+Warning: Access level of 'BluegreenOnline.contactUs' changed to 'Partial' in file includes\contactUs.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\contactUs.ascx.vb.    includes\contactUs.ascx.vb (Line 15)
+Removed attribute TargetSchema from file includes\corpvacationnewsletter.ascx.
+Removed attribute Codebehind from file includes\corpvacationnewsletter.ascx.
+Warning: Access level of 'BluegreenOnline.corpVacationNewsletter' changed to 'Partial' in file includes\corpVacationNewsletter.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\corpVacationNewsletter.ascx.vb.    includes\corpVacationNewsletter.ascx.vb (Line 15)
+Removed attribute TargetSchema from file includes\dynamicspecials.ascx.
+Removed attribute Codebehind from file includes\dynamicspecials.ascx.
+Warning: Access level of 'BluegreenOnline.dynamicSpecials' changed to 'Partial' in file includes\dynamicSpecials.ascx.vb (Line 6).
+Warning: Removed comment lines before designplaceholder declaration from file includes\dynamicSpecials.ascx.vb.    includes\dynamicSpecials.ascx.vb (Line 17)
+Removed attribute TargetSchema from file includes\erro404.ascx.
+Removed attribute Codebehind from file includes\erro404.ascx.
+Warning: Access level of 'BluegreenOnline.erro404' changed to 'Partial' in file includes\erro404.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\erro404.ascx.vb.    includes\erro404.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\errorgeneric.ascx.
+Removed attribute Codebehind from file includes\errorgeneric.ascx.
+Warning: Access level of 'BluegreenOnline.errorGeneric1' changed to 'Partial' in file includes\errorGeneric.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\errorGeneric.ascx.vb.    includes\errorGeneric.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\expbanners.ascx.
+Removed attribute Codebehind from file includes\expbanners.ascx.
+Warning: Access level of 'BluegreenOnline.Expbanners' changed to 'Partial' in file includes\Expbanners.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\Expbanners.ascx.vb.    includes\Expbanners.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\featuredresorts.ascx.
+Removed attribute Codebehind from file includes\featuredresorts.ascx.
+Warning: Access level of 'BluegreenOnline.FeaturedResorts' changed to 'Partial' in file includes\FeaturedResorts.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\FeaturedResorts.ascx.vb.    includes\FeaturedResorts.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\features.ascx.
+Removed attribute Codebehind from file includes\features.ascx.
+Warning: Access level of 'BluegreenOnline.Features' changed to 'Partial' in file includes\Features.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\Features.ascx.vb.    includes\Features.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\footer.ascx.
+Removed attribute Codebehind from file includes\footer.ascx.
+Warning: Access level of 'BluegreenOnline.footer' changed to 'Partial' in file includes\footer.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\footer.ascx.vb.    includes\footer.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\legal.ascx.
+Removed attribute Codebehind from file includes\legal.ascx.
+Warning: Access level of 'BluegreenOnline.legal2' changed to 'Partial' in file includes\legal.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\legal.ascx.vb.    includes\legal.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\navigationdropdowns.ascx.
+Removed attribute Codebehind from file includes\navigationdropdowns.ascx.
+Warning: Access level of 'BluegreenOnline.navigationDropDowns' changed to 'Partial' in file includes\navigationDropDowns.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\navigationDropDowns.ascx.vb.    includes\navigationDropDowns.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\ownerlogin.ascx.
+Removed attribute Codebehind from file includes\ownerlogin.ascx.
+Warning: Access level of 'BluegreenOnline.OwnerLogin' changed to 'Partial' in file includes\OwnerLogin.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\OwnerLogin.ascx.vb.    includes\OwnerLogin.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\ownerpalette.ascx.
+Removed attribute Codebehind from file includes\ownerpalette.ascx.
+Warning: Access level of 'BluegreenOnline.OwnerPalette' changed to 'Partial' in file includes\OwnerPalette.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\OwnerPalette.ascx.vb.    includes\OwnerPalette.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\popstrip.ascx.
+Removed attribute Codebehind from file includes\popstrip.ascx.
+Warning: Access level of 'BluegreenOnline.popstrip' changed to 'Partial' in file includes\popstrip.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\popstrip.ascx.vb.    includes\popstrip.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\privacy.ascx.
+Removed attribute Codebehind from file includes\privacy.ascx.
+Warning: Access level of 'BluegreenOnline.privacy1' changed to 'Partial' in file includes\privacy.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\privacy.ascx.vb.    includes\privacy.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\sitemap.ascx.
+Removed attribute Codebehind from file includes\sitemap.ascx.
+Warning: Access level of 'BluegreenOnline.sSiteMap3' changed to 'Partial' in file includes\sitemap.ascx.vb (Line 7).
+Warning: Removed comment lines before designplaceholder declaration from file includes\sitemap.ascx.vb.    includes\sitemap.ascx.vb (Line 21)
+Removed attribute TargetSchema from file includes\sitemapheader.ascx.
+Removed attribute Codebehind from file includes\sitemapheader.ascx.
+Warning: Access level of 'BluegreenOnline.siteMapHeader' changed to 'Partial' in file includes\sitemapHeader.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\sitemapHeader.ascx.vb.    includes\sitemapHeader.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\specials.ascx.
+Removed attribute Codebehind from file includes\specials.ascx.
+Warning: Access level of 'BluegreenOnline.Specials' changed to 'Partial' in file includes\Specials.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\Specials.ascx.vb.    includes\Specials.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\stylesheets.ascx.
+Removed attribute Codebehind from file includes\stylesheets.ascx.
+Warning: Access level of 'BluegreenOnline.stylesheets' changed to 'Partial' in file includes\stylesheets.ascx.vb (Line 7).
+Warning: Removed comment lines before designplaceholder declaration from file includes\stylesheets.ascx.vb.    includes\stylesheets.ascx.vb (Line 17)
+Removed attribute TargetSchema from file includes\terms.ascx.
+Removed attribute Codebehind from file includes\terms.ascx.
+Warning: Access level of 'BluegreenOnline.terms1' changed to 'Partial' in file includes\terms.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\terms.ascx.vb.    includes\terms.ascx.vb (Line 13)
+Removed attribute TargetSchema from file includes\ucmenu.ascx.
+Removed attribute Codebehind from file includes\ucmenu.ascx.
+Warning: Access level of 'BluegreenOnline.ucMenu' changed to 'Partial' in file includes\ucMenu.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file includes\ucMenu.ascx.vb.    includes\ucMenu.ascx.vb (Line 25)
+Removed attribute Codebehind from file owner\boatslipres.aspx.
+Warning: Access level of 'BluegreenOnline.boatSlipRes' changed to 'Partial' in file owner\boatSlipRes.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\boatslipres.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\boatSlipRes.aspx.vb.    owner\boatSlipRes.aspx.vb (Line 14)
+Removed attribute Codebehind from file owner\calcpoints.aspx.
+Warning: Access level of 'BluegreenOnline.calcPoints' changed to 'Partial' in file owner\calcPoints.aspx.vb (Line 7).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\calcpoints.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\calcPoints.aspx.vb.    owner\calcPoints.aspx.vb (Line 36)
+Removed attribute Codebehind from file owner\calcpointswait.aspx.
+Warning: Access level of 'BluegreenOnline.calcPointsWait' changed to 'Partial' in file owner\calcPointsWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\calcPointsWait.aspx.vb.    owner\calcPointsWait.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\changepassword.aspx.
+Warning: Access level of 'BluegreenOnline.ChangePassword' changed to 'Partial' in file owner\ChangePassword.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\changepassword.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\ChangePassword.aspx.vb.    owner\ChangePassword.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\contact.aspx.
+Warning: Access level of 'BluegreenOnline.contact1' changed to 'Partial' in file owner\contact.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\contact.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\contact.aspx.vb.    owner\contact.aspx.vb (Line 15)
+Removed attribute Codebehind from file owner\contactconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.contactConfirm1' changed to 'Partial' in file owner\contactConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\contactconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\contactConfirm.aspx.vb.    owner\contactConfirm.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\cruisevouch2.aspx.
+Warning: Access level of 'BluegreenOnline.cruiseVouch2' changed to 'Partial' in file owner\cruiseVouch2.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\cruiseVouch2.aspx.vb.    owner\cruiseVouch2.aspx.vb (Line 13)
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\cruisevouch2.aspx.
+Removed attribute CodeBehind from file owner\encorerewards.aspx.
+Warning: Access level of 'BluegreenOnline.encoreRewards' changed to 'Partial' in file owner\encoreRewards.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\encorerewards.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\encoreRewards.aspx.vb.    owner\encoreRewards.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\faq.aspx.
+Warning: Access level of 'BluegreenOnline.faq' changed to 'Partial' in file owner\faq.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\faq.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\faq.aspx.vb.    owner\faq.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\featuredetail.aspx.
+Warning: Access level of 'BluegreenOnline.FeatureDetail1' changed to 'Partial' in file owner\FeatureDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\featuredetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\FeatureDetail.aspx.vb.    owner\FeatureDetail.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\gyc.aspx.
+Warning: Access level of 'BluegreenOnline.gyc' changed to 'Partial' in file owner\gyc.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\gyc.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\gyc.aspx.vb.    owner\gyc.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpbankaccinfo.aspx.
+Warning: Access level of 'BluegreenOnline.helpBankAccInfo' changed to 'Partial' in file owner\helpBankAccInfo.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpBankAccInfo.aspx.vb.    owner\helpBankAccInfo.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpclub.aspx.
+Warning: Access level of 'BluegreenOnline.helpClub' changed to 'Partial' in file owner\helpClub.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpClub.aspx.vb.    owner\helpClub.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_a.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_A' changed to 'Partial' in file owner\helpWin_A.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_A.aspx.vb.    owner\helpWin_A.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_b.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_B' changed to 'Partial' in file owner\helpWin_B.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_B.aspx.vb.    owner\helpWin_B.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_c.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_C' changed to 'Partial' in file owner\helpWin_C.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_C.aspx.vb.    owner\helpWin_C.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_d.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_D' changed to 'Partial' in file owner\helpWin_D.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_D.aspx.vb.    owner\helpWin_D.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_e.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_E' changed to 'Partial' in file owner\helpWin_E.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_E.aspx.vb.    owner\helpWin_E.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_termcredit.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_TermCredit' changed to 'Partial' in file owner\helpWin_TermCredit.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_TermCredit.aspx.vb.    owner\helpWin_TermCredit.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_termsavings.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_TermSavings' changed to 'Partial' in file owner\helpWin_TermSavings.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_TermSavings.aspx.vb.    owner\helpWin_TermSavings.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwin_termsofuse.aspx.
+Warning: Access level of 'BluegreenOnline.helpWin_TermsOfuse' changed to 'Partial' in file owner\helpWin_TermsOfuse.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWin_TermsOfuse.aspx.vb.    owner\helpWin_TermsOfuse.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpwinarda.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinARDA' changed to 'Partial' in file owner\helpWinARDA.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinARDA.aspx.vb.    owner\helpWinARDA.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwinclub.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinClub' changed to 'Partial' in file owner\helpWinClub.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinClub.aspx.vb.    owner\helpWinClub.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwinencore.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinEncore' changed to 'Partial' in file owner\helpWinEncore.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinEncore.aspx.vb.    owner\helpWinEncore.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpwinfullweek.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinFullWeek' changed to 'Partial' in file owner\helpWinFullWeek.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinFullWeek.aspx.vb.    owner\helpWinFullWeek.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpwinhours.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinHours' changed to 'Partial' in file owner\helpWinHours.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinHours.aspx.vb.    owner\helpWinHours.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwinpayment.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinPayment' changed to 'Partial' in file owner\helpWinPayment.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinPayment.aspx.vb.    owner\helpWinPayment.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwinpoints.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinPoints' changed to 'Partial' in file owner\helpWinPoints.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinPoints.aspx.vb.    owner\helpWinPoints.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\helpwinqualref.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinQualRef' changed to 'Partial' in file owner\helpWinQualRef.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinQualRef.aspx.vb.    owner\helpWinQualRef.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpwinresortownership.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinResortOwnership' changed to 'Partial' in file owner\helpWinResortOwnership.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinResortOwnership.aspx.vb.    owner\helpWinResortOwnership.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpwinsales.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinSales' changed to 'Partial' in file owner\helpWinSales.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinSales.aspx.vb.    owner\helpWinSales.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpwinsaved.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinSaved' changed to 'Partial' in file owner\helpWinSaved.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinSaved.aspx.vb.    owner\helpWinSaved.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\helpwinweekunit.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinWeekUnit' changed to 'Partial' in file owner\helpWinWeekUnit.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\helpWinWeekUnit.aspx.vb.    owner\helpWinWeekUnit.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\home.aspx.
+Warning: Access level of 'BluegreenOnline.Home' changed to 'Partial' in file owner\home.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\home.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\home.aspx.vb.    owner\home.aspx.vb (Line 14)
+Removed attribute Codebehind from file owner\homefixed.aspx.
+Warning: Access level of 'BluegreenOnline.homeFixed' changed to 'Partial' in file owner\homeFixed.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\homefixed.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\homeFixed.aspx.vb.    owner\homeFixed.aspx.vb (Line 27)
+Removed attribute Codebehind from file owner\learnmore.aspx.
+Warning: Access level of 'BluegreenOnline.learnMore1' changed to 'Partial' in file owner\learnMore.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\learnmore.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\learnMore.aspx.vb.    owner\learnMore.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\learnmoreconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.learnMoreConfirm1' changed to 'Partial' in file owner\learnMoreConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\learnmoreconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\learnMoreConfirm.aspx.vb.    owner\learnMoreConfirm.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\learnpreviewcenters.aspx.
+Warning: Access level of 'BluegreenOnline.learnPreviewCentersOwn' changed to 'Partial' in file owner\learnPreviewCenters.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\learnpreviewcenters.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\learnPreviewCenters.aspx.vb.    owner\learnPreviewCenters.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\makereserv.aspx.
+Warning: Access level of 'BluegreenOnline.makeReserv' changed to 'Partial' in file owner\makeReserv.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\makereserv.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\makeReserv.aspx.vb.    owner\makeReserv.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\mortgagetitle.aspx.
+Warning: Access level of 'BluegreenOnline.mortgageTitle' changed to 'Partial' in file owner\mortgageTitle.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\mortgagetitle.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\mortgageTitle.aspx.vb.    owner\mortgageTitle.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\owneraccount.aspx.
+Warning: Access level of 'BluegreenOnline.ownerAccount' changed to 'Partial' in file owner\ownerAccount.aspx.vb (Line 7).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\owneraccount.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\ownerAccount.aspx.vb.    owner\ownerAccount.aspx.vb (Line 18)
+Removed attribute CodeBehind from file owner\owneracctconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.ownerAcctConfirm' changed to 'Partial' in file owner\ownerAcctConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\owneracctconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\ownerAcctConfirm.aspx.vb.    owner\ownerAcctConfirm.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\ownerpoints.aspx.
+Warning: Access level of 'BluegreenOnline.ownerPoints' changed to 'Partial' in file owner\ownerPoints.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\ownerpoints.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\ownerPoints.aspx.vb.    owner\ownerPoints.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\ownerproxy.aspx.
+Warning: Access level of 'BluegreenOnline.ownerProxy' changed to 'Partial' in file owner\ownerProxy.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\ownerproxy.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\ownerProxy.aspx.vb.    owner\ownerProxy.aspx.vb (Line 16)
+Removed attribute Codebehind from file owner\ownerproxya.aspx.
+Warning: Access level of 'BluegreenOnline.ownerproxya' changed to 'Partial' in file owner\ownerProxya.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\ownerProxya.aspx.vb.    owner\ownerProxya.aspx.vb (Line 13)
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\ownerproxya.aspx.
+Removed attribute CodeBehind from file owner\payacctbal.aspx.
+Warning: Access level of 'BluegreenOnline.payAcctBal' changed to 'Partial' in file owner\payAcctBal.aspx.vb (Line 6).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\payacctbal.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\payAcctBal.aspx.vb.    owner\payAcctBal.aspx.vb (Line 15)
+Removed attribute CodeBehind from file owner\payach.aspx.
+Warning: Access level of 'BluegreenOnline.payACH' changed to 'Partial' in file owner\payACH.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\payach.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\payACH.aspx.vb.    owner\payACH.aspx.vb (Line 14)
+Removed attribute CodeBehind from file owner\payconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.payConfirm' changed to 'Partial' in file owner\payConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\payconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\payConfirm.aspx.vb.    owner\payConfirm.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\payinfo.aspx.
+Warning: Access level of 'BluegreenOnline.payInfo' changed to 'Partial' in file owner\payInfo.aspx.vb (Line 6).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\payinfo.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\payInfo.aspx.vb.    owner\payInfo.aspx.vb (Line 15)
+Removed attribute CodeBehind from file owner\paynotconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.payNotConfirm' changed to 'Partial' in file owner\payNotConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\paynotconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\payNotConfirm.aspx.vb.    owner\payNotConfirm.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\payoptions.aspx.
+Warning: Access level of 'BluegreenOnline.payOptions' changed to 'Partial' in file owner\payOptions.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\payoptions.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\payOptions.aspx.vb.    owner\payOptions.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\points4k.aspx.
+Warning: Access level of 'BluegreenOnline.points4k' changed to 'Partial' in file owner\points4k.aspx.vb (Line 6).
+Warning: Removed comment lines before designplaceholder declaration from file owner\points4k.aspx.vb.    owner\points4k.aspx.vb (Line 17)
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\points4k.aspx.
+Removed attribute Codebehind from file owner\points4kconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.points4kConfirm' changed to 'Partial' in file owner\points4kConfirm.aspx.vb (Line 6).
+Warning: Removed comment lines before designplaceholder declaration from file owner\points4kConfirm.aspx.vb.    owner\points4kConfirm.aspx.vb (Line 17)
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\points4kconfirm.aspx.
+Removed attribute CodeBehind from file owner\pointsforrent.aspx.
+Warning: Access level of 'BluegreenOnline.pointsForRent' changed to 'Partial' in file owner\pointsForRent.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\pointsforrent.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\pointsForRent.aspx.vb.    owner\pointsForRent.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\poploginhelp.aspx.
+Warning: Access level of 'BluegreenOnline.popLoginHelp' changed to 'Partial' in file owner\popLoginHelp.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\popLoginHelp.aspx.vb.    owner\popLoginHelp.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\poponlinepoll.aspx.
+Warning: Access level of 'BluegreenOnline.popOnlinePoll' changed to 'Partial' in file owner\popOnlinePoll.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\popOnlinePoll.aspx.vb.    owner\popOnlinePoll.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\poptestimonialvideo.aspx.
+Warning: Access level of 'BluegreenOnline.popTestimonialVideoOwn' changed to 'Partial' in file owner\popTestimonialVideo.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\popTestimonialVideo.aspx.vb.    owner\popTestimonialVideo.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\pospopup.aspx.
+Warning: Access level of 'BluegreenOnline.POSpopUp' changed to 'Partial' in file owner\POSpopUp.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\POSpopUp.aspx.vb.    owner\POSpopUp.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\prntfndlyrd.aspx.
+Warning: Access level of 'BluegreenOnline.prntFndlyRD' changed to 'Partial' in file owner\prntFndlyRD.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\prntFndlyRD.aspx.vb.    owner\prntFndlyRD.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\qsg.aspx.
+Warning: Access level of 'BluegreenOnline.qsg' changed to 'Partial' in file owner\qsg.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\qsg.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\qsg.aspx.vb.    owner\qsg.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\reservcomplete.aspx.
+Warning: Access level of 'BluegreenOnline.reservComplete' changed to 'Partial' in file owner\reservComplete.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\reservcomplete.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\reservComplete.aspx.vb.    owner\reservComplete.aspx.vb (Line 25)
+Removed attribute Codebehind from file owner\reservconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.reservConfirm' changed to 'Partial' in file owner\reservConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\reservconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\reservConfirm.aspx.vb.    owner\reservConfirm.aspx.vb (Line 25)
+Removed attribute CodeBehind from file owner\reservhistory.aspx.
+Warning: Access level of 'BluegreenOnline.reservHistory' changed to 'Partial' in file owner\reservHistory.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\reservhistory.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\reservHistory.aspx.vb.    owner\reservHistory.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\reservrequestsent.aspx.
+Warning: Access level of 'BluegreenOnline.reservRequestSent' changed to 'Partial' in file owner\reservRequestSent.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\reservrequestsent.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\reservRequestSent.aspx.vb.    owner\reservRequestSent.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\resortdetail.aspx.
+Warning: Access level of 'BluegreenOnline.resortDetail1' changed to 'Partial' in file owner\resortDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\resortdetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\resortDetail.aspx.vb.    owner\resortDetail.aspx.vb (Line 14)
+Removed attribute Codebehind from file owner\resortdetailoasislakes.aspx.
+Warning: Access level of 'BluegreenOnline.resortDetailOasisLakes' changed to 'Partial' in file owner\resortDetailOasisLakes.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\resortdetailoasislakes.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\resortDetailOasisLakes.aspx.vb.    owner\resortDetailOasisLakes.aspx.vb (Line 12)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file owner\resortdetailoasislakes.aspx.
+Removed attribute CodeBehind from file owner\searchresults.aspx.
+Warning: Access level of 'BluegreenOnline.searchResults' changed to 'Partial' in file owner\searchResults.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\searchresults.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\searchResults.aspx.vb.    owner\searchResults.aspx.vb (Line 12)
+Removed attribute Codebehind from file owner\searchwait.aspx.
+Warning: Access level of 'BluegreenOnline.searchWait' changed to 'Partial' in file owner\searchWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file owner\searchWait.aspx.vb.    owner\searchWait.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\specialdetail.aspx.
+Warning: Access level of 'BluegreenOnline.specialDetail1' changed to 'Partial' in file owner\specialDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\specialdetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\specialDetail.aspx.vb.    owner\specialDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\survey.aspx.
+Warning: Access level of 'BluegreenOnline.survey1' changed to 'Partial' in file owner\survey.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\survey.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\survey.aspx.vb.    owner\survey.aspx.vb (Line 12)
+Removed attribute CodeBehind from file owner\travelerplus.aspx.
+Warning: Access level of 'BluegreenOnline.travelerPlus' changed to 'Partial' in file owner\travelerPlus.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\travelerplus.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\travelerPlus.aspx.vb.    owner\travelerPlus.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\upcomingvacations.aspx.
+Warning: Access level of 'BluegreenOnline.upcomingVacations' changed to 'Partial' in file owner\upcomingVacations.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\upcomingvacations.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\upcomingVacations.aspx.vb.    owner\upcomingVacations.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\vacationclub.aspx.
+Warning: Access level of 'BluegreenOnline.vacationclub1' changed to 'Partial' in file owner\vacationclub.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vacationclub.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vacationclub.aspx.vb.    owner\vacationclub.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\vacationguard.aspx.
+Warning: Access level of 'BluegreenOnline.VacationGuard' changed to 'Partial' in file owner\VacationGuard.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vacationguard.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\VacationGuard.aspx.vb.    owner\VacationGuard.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\vacationweekcal.aspx.
+Warning: Access level of 'BluegreenOnline.vacationWeekCal' changed to 'Partial' in file owner\vacationWeekCal.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vacationweekcal.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vacationWeekCal.aspx.vb.    owner\vacationWeekCal.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\vcbefore.aspx.
+Warning: Access level of 'BluegreenOnline.vcBefore' changed to 'Partial' in file owner\vcBefore.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vcbefore.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcBefore.aspx.vb.    owner\vcBefore.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\vcbonus.aspx.
+Warning: Access level of 'BluegreenOnline.vcBonus' changed to 'Partial' in file owner\vcBonus.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vcbonus.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcBonus.aspx.vb.    owner\vcBonus.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\vcexchanges.aspx.
+Warning: Access level of 'BluegreenOnline.vcExchanges' changed to 'Partial' in file owner\vcExchanges.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vcexchanges.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcExchanges.aspx.vb.    owner\vcExchanges.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\vchowitworks.aspx.
+Warning: Access level of 'BluegreenOnline.vcHowItWorksOwn' changed to 'Partial' in file owner\vcHowItWorks.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vchowitworks.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcHowItWorks.aspx.vb.    owner\vcHowItWorks.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\vchowto.aspx.
+Warning: Access level of 'BluegreenOnline.vcHowTo' changed to 'Partial' in file owner\vcHowTo.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vchowto.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcHowTo.aspx.vb.    owner\vcHowTo.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\vcpoints.aspx.
+Warning: Access level of 'BluegreenOnline.vcPoints' changed to 'Partial' in file owner\vcPoints.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vcpoints.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcPoints.aspx.vb.    owner\vcPoints.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\vcpreferred.aspx.
+Removed attribute Codebehind from file owner\vctestimonials.aspx.
+Warning: Access level of 'BluegreenOnline.vcTestimonialsOwn' changed to 'Partial' in file owner\vcTestimonials.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vctestimonials.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcTestimonials.aspx.vb.    owner\vcTestimonials.aspx.vb (Line 13)
+Removed attribute Codebehind from file owner\vctestimonialsdetail.aspx.
+Warning: Access level of 'BluegreenOnline.vcTestimonialsDetailOwn' changed to 'Partial' in file owner\vcTestimonialsDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vctestimonialsdetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcTestimonialsDetail.aspx.vb.    owner\vcTestimonialsDetail.aspx.vb (Line 15)
+Removed attribute Codebehind from file owner\vctravelerplus.aspx.
+Warning: Access level of 'BluegreenOnline.vcTravelerPlus' changed to 'Partial' in file owner\vcTravelerPlus.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\vctravelerplus.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\vcTravelerPlus.aspx.vb.    owner\vcTravelerPlus.aspx.vb (Line 13)
+Removed attribute CodeBehind from file owner\weekforrent.aspx.
+Warning: Access level of 'BluegreenOnline.weekForRent' changed to 'Partial' in file owner\weekForRent.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file owner\weekforrent.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file owner\weekForRent.aspx.vb.    owner\weekForRent.aspx.vb (Line 13)
+Removed attribute Codebehind from file rentals\resortdetail.aspx.
+Warning: Access level of 'BluegreenOnline.resortDetail2' changed to 'Partial' in file rentals\resortDetail.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file rentals\resortDetail.aspx.vb.    rentals\resortDetail.aspx.vb (Line 13)
+Removed attribute CodeBehind from file resorts\popwindowarea.aspx.
+Warning: Access level of 'BluegreenOnline.popwindowArea' changed to 'Partial' in file resorts\popwindowArea.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file resorts\popwindowArea.aspx.vb.    resorts\popwindowArea.aspx.vb (Line 13)
+Removed attribute CodeBehind from file resorts\popwindowfloor.aspx.
+Warning: Access level of 'BluegreenOnline.popwindowFloor' changed to 'Partial' in file resorts\popwindowFloor.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file resorts\popwindowFloor.aspx.vb.    resorts\popwindowFloor.aspx.vb (Line 13)
+Removed attribute CodeBehind from file resorts\popwindowmap.aspx.
+Warning: Access level of 'BluegreenOnline.popwindowMap' changed to 'Partial' in file resorts\popwindowMap.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file resorts\popwindowMap.aspx.vb.    resorts\popwindowMap.aspx.vb (Line 13)
+Removed attribute CodeBehind from file resorts\popwindowmapdriving.aspx.
+Warning: Access level of 'BluegreenOnline.popwindowMapDriving' changed to 'Partial' in file resorts\popwindowMapDriving.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file resorts\popwindowMapDriving.aspx.vb.    resorts\popwindowMapDriving.aspx.vb (Line 14)
+Removed attribute CodeBehind from file resorts\popwindowphoto.aspx.
+Warning: Access level of 'BluegreenOnline.popwindowPhoto' changed to 'Partial' in file resorts\popwindowPhoto.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file resorts\popwindowPhoto.aspx.vb.    resorts\popwindowPhoto.aspx.vb (Line 12)
+Removed attribute CodeBehind from file resorts\popwindowweather.aspx.
+Warning: Access level of 'BluegreenOnline.popwindowWeather' changed to 'Partial' in file resorts\popwindowWeather.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file resorts\popwindowWeather.aspx.vb.    resorts\popwindowWeather.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\default.aspx.
+Warning: Access level of 'BluegreenOnline._defaultTP' changed to 'Partial' in file travelerplus\default.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\default.aspx.vb.    travelerplus\default.aspx.vb (Line 19)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file travelerplus\default.aspx.
+Removed attribute Codebehind from file travelerplus\forgotpassword.aspx.
+Warning: Access level of 'BluegreenOnline.forgotPasswordTP' changed to 'Partial' in file travelerplus\forgotPassword.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\forgotPassword.aspx.vb.    travelerplus\forgotPassword.aspx.vb (Line 13)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file travelerplus\forgotpassword.aspx.
+Removed attribute Codebehind from file travelerplus\forgotpasswordsent.aspx.
+Warning: Access level of 'BluegreenOnline.forgotPasswordSentTP' changed to 'Partial' in file travelerplus\forgotPasswordSent.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\forgotPasswordSent.aspx.vb.    travelerplus\forgotPasswordSent.aspx.vb (Line 13)
+Removed attribute CodeBehind from file travelerplus\loginunsuccessful.aspx.
+Warning: Access level of 'BluegreenOnline.loginUnsuccessfulTP' changed to 'Partial' in file travelerplus\loginUnsuccessful.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\loginUnsuccessful.aspx.vb.    travelerplus\loginUnsuccessful.aspx.vb (Line 15)
+Removed attribute Codebehind from file travelerplus\pleasewait.aspx.
+Warning: Access level of 'BluegreenOnline.pleaseWait' changed to 'Partial' in file travelerplus\pleaseWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\pleaseWait.aspx.vb.    travelerplus\pleaseWait.aspx.vb (Line 14)
+Removed attribute Codebehind from file travelerplus\crawler\icecrawler.aspx.
+Warning: Access level of 'BluegreenOnline.icecrawler' changed to 'Partial' in file travelerplus\crawler\icecrawler.aspx.vb (Line 9).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\crawler\icecrawler.aspx.vb.    travelerplus\crawler\icecrawler.aspx.vb (Line 19)
+Removed attribute Codebehind from file travelerplus\employee\default.aspx.
+Warning: Access level of 'BluegreenOnline._default1' changed to 'Partial' in file travelerplus\employee\default.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\employee\default.aspx.vb.    travelerplus\employee\default.aspx.vb (Line 13)
+'Reference' tag with reference to '~/explore/contact.aspx' added to file travelerplus\employee\default.aspx.
+Removed attribute TargetSchema from file travelerplus\includes\bannerrotation.ascx.
+Removed attribute Codebehind from file travelerplus\includes\bannerrotation.ascx.
+Warning: Access level of 'BluegreenOnline.bannerRotation' changed to 'Partial' in file travelerplus\includes\bannerRotation.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\bannerRotation.ascx.vb.    travelerplus\includes\bannerRotation.ascx.vb (Line 13)
+Removed attribute TargetSchema from file travelerplus\includes\features.ascx.
+Removed attribute Codebehind from file travelerplus\includes\features.ascx.
+Warning: Access level of 'BluegreenOnline.FeaturesTP' changed to 'Partial' in file travelerplus\includes\Features.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\Features.ascx.vb.    travelerplus\includes\Features.ascx.vb (Line 13)
+Removed attribute TargetSchema from file travelerplus\includes\footer.ascx.
+Removed attribute Codebehind from file travelerplus\includes\footer.ascx.
+Warning: Access level of 'BluegreenOnline.footerTP' changed to 'Partial' in file travelerplus\includes\footer.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\footer.ascx.vb.    travelerplus\includes\footer.ascx.vb (Line 13)
+Removed attribute TargetSchema from file travelerplus\includes\hotweeksresults.ascx.
+Removed attribute Codebehind from file travelerplus\includes\hotweeksresults.ascx.
+Warning: Access level of 'BluegreenOnline.hotweeksResults1' changed to 'Partial' in file travelerplus\includes\hotweeksResults.ascx.vb (Line 13).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\hotweeksResults.ascx.vb.    travelerplus\includes\hotweeksResults.ascx.vb (Line 25)
+Removed attribute TargetSchema from file travelerplus\includes\navigationdropdowns.ascx.
+Removed attribute Codebehind from file travelerplus\includes\navigationdropdowns.ascx.
+Warning: Access level of 'BluegreenOnline.navigationDropDownsTP' changed to 'Partial' in file travelerplus\includes\navigationDropDowns.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\navigationDropDowns.ascx.vb.    travelerplus\includes\navigationDropDowns.ascx.vb (Line 13)
+Removed attribute TargetSchema from file travelerplus\includes\ownerpalette.ascx.
+Removed attribute Codebehind from file travelerplus\includes\ownerpalette.ascx.
+Warning: Access level of 'BluegreenOnline.OwnerPaletteTP' changed to 'Partial' in file travelerplus\includes\OwnerPalette.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\OwnerPalette.ascx.vb.    travelerplus\includes\OwnerPalette.ascx.vb (Line 13)
+Removed attribute TargetSchema from file travelerplus\includes\specials.ascx.
+Removed attribute Codebehind from file travelerplus\includes\specials.ascx.
+Warning: Access level of 'BluegreenOnline.SpecialsTP' changed to 'Partial' in file travelerplus\includes\Specials.ascx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\Specials.ascx.vb.    travelerplus\includes\Specials.ascx.vb (Line 13)
+Removed attribute CodeBehind from file travelerplus\includes\tpdropdownmenu.ascx.
+Warning: Access level of 'BluegreenOnline.tpDropDownMenu' changed to 'Partial' in file travelerplus\includes\tpDropDownMenu.ascx.vb (Line 5).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\includes\tpDropDownMenu.ascx.vb.    travelerplus\includes\tpDropDownMenu.ascx.vb (Line 27)
+Removed attribute Codebehind from file travelerplus\owner\additionalmember.aspx.
+Warning: Access level of 'BluegreenOnline.additionalMember' changed to 'Partial' in file travelerplus\owner\additionalMember.aspx.vb (Line 7).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\additionalmember.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\additionalMember.aspx.vb.    travelerplus\owner\additionalMember.aspx.vb (Line 20)
+Removed attribute Codebehind from file travelerplus\owner\additionalmemberconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.additionalMemberConfirm' changed to 'Partial' in file travelerplus\owner\additionalMemberConfirm.aspx.vb (Line 5).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\additionalmemberconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\additionalMemberConfirm.aspx.vb.    travelerplus\owner\additionalMemberConfirm.aspx.vb (Line 15)
+Removed attribute Codebehind from file travelerplus\owner\airlinesearch.aspx.
+Warning: Access level of 'BluegreenOnline.airlineSearch1' changed to 'Partial' in file travelerplus\owner\airlineSearch.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\airlinesearch.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\airlineSearch.aspx.vb.    travelerplus\owner\airlineSearch.aspx.vb (Line 19)
+Removed attribute Codebehind from file travelerplus\owner\airlinesearchtest.aspx.
+Warning: Access level of 'BluegreenOnline.airlineSearch' changed to 'Partial' in file travelerplus\owner\airlineSearchTEST.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\airlinesearchtest.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\airlineSearchTEST.aspx.vb.    travelerplus\owner\airlineSearchTEST.aspx.vb (Line 20)
+Removed attribute Codebehind from file travelerplus\owner\carrentalsearch.aspx.
+Warning: Access level of 'BluegreenOnline.carrentalSearch' changed to 'Partial' in file travelerplus\owner\carrentalSearch.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\carrentalsearch.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\carrentalSearch.aspx.vb.    travelerplus\owner\carrentalSearch.aspx.vb (Line 19)
+Removed attribute Codebehind from file travelerplus\owner\coasttocoastmain.aspx.
+Warning: Access level of 'BluegreenOnline.coasttocoastMain' changed to 'Partial' in file travelerplus\owner\coasttocoastMain.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\coasttocoastMain.aspx.vb.    travelerplus\owner\coasttocoastMain.aspx.vb (Line 13)
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\coasttocoastmain.aspx.
+Removed attribute Codebehind from file travelerplus\owner\cruisecondodetail.aspx.
+Warning: Access level of 'BluegreenOnline.cruisecondoDetail' changed to 'Partial' in file travelerplus\owner\cruisecondoDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\cruisecondodetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\cruisecondoDetail.aspx.vb.    travelerplus\owner\cruisecondoDetail.aspx.vb (Line 16)
+Removed attribute Codebehind from file travelerplus\owner\employeerestricted.aspx.
+Warning: Access level of 'BluegreenOnline.employeeRestricted' changed to 'Partial' in file travelerplus\owner\employeeRestricted.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\employeeRestricted.aspx.vb.    travelerplus\owner\employeeRestricted.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\entertainmentredirect.aspx.
+Warning: Access level of 'BluegreenOnline.entertainmentRedirect' changed to 'Partial' in file travelerplus\owner\entertainmentRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\entertainmentRedirect.aspx.vb.    travelerplus\owner\entertainmentRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\error.aspx.
+Warning: Access level of 'BluegreenOnline.errorpage' changed to 'Partial' in file travelerplus\owner\error.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\error.aspx.vb.    travelerplus\owner\error.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\featuredetail.aspx.
+Warning: Access level of 'BluegreenOnline.featureDetail3' changed to 'Partial' in file travelerplus\owner\featureDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\featuredetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\featureDetail.aspx.vb.    travelerplus\owner\featureDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\helpcomingsoon.aspx.
+Warning: Access level of 'BluegreenOnline.helpComingSoon' changed to 'Partial' in file travelerplus\owner\helpComingSoon.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\helpComingSoon.aspx.vb.    travelerplus\owner\helpComingSoon.aspx.vb (Line 13)
+Removed attribute CodeBehind from file travelerplus\owner\helpwinpoints.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinPointsTP' changed to 'Partial' in file travelerplus\owner\helpWinPoints.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\helpWinPoints.aspx.vb.    travelerplus\owner\helpWinPoints.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\helpwinsaved.aspx.
+Warning: Access level of 'BluegreenOnline.helpWinSavedTP' changed to 'Partial' in file travelerplus\owner\helpWinSaved.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\helpWinSaved.aspx.vb.    travelerplus\owner\helpWinSaved.aspx.vb (Line 13)
+Removed attribute CodeBehind from file travelerplus\owner\home.aspx.
+Warning: Access level of 'BluegreenOnline.HomeTP' changed to 'Partial' in file travelerplus\owner\Home.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\home.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\Home.aspx.vb.    travelerplus\owner\Home.aspx.vb (Line 35)
+Removed attribute Codebehind from file travelerplus\owner\hotweeksallinclusive.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksAllInclusive' changed to 'Partial' in file travelerplus\owner\hotweeksAllInclusive.aspx.vb (Line 5).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksAllInclusive.aspx.vb.    travelerplus\owner\hotweeksAllInclusive.aspx.vb (Line 14)
+Removed attribute Codebehind from file travelerplus\owner\hotweeksbook.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksBook' changed to 'Partial' in file travelerplus\owner\hotweeksBook.aspx.vb (Line 12).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\hotweeksbook.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksBook.aspx.vb.    travelerplus\owner\hotweeksBook.aspx.vb (Line 23)
+Removed attribute Codebehind from file travelerplus\owner\hotweeksconfirmation.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksConfirmation' changed to 'Partial' in file travelerplus\owner\hotweeksConfirmation.aspx.vb (Line 6).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\hotweeksconfirmation.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksConfirmation.aspx.vb.    travelerplus\owner\hotweeksConfirmation.aspx.vb (Line 16)
+'Reference' tag with reference to '~/corporate/bluegreenresorts.aspx' added to file travelerplus\owner\hotweeksconfirmation.aspx.
+Removed attribute Codebehind from file travelerplus\owner\hotweeksdetails.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksDetails' changed to 'Partial' in file travelerplus\owner\hotweeksDetails.aspx.vb (Line 8).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksDetails.aspx.vb.    travelerplus\owner\hotweeksDetails.aspx.vb (Line 18)
+Removed attribute Codebehind from file travelerplus\owner\hotweeksredirect.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksRedirect' changed to 'Partial' in file travelerplus\owner\hotweeksRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksRedirect.aspx.vb.    travelerplus\owner\hotweeksRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\hotweeksreport.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksReport' changed to 'Partial' in file travelerplus\owner\hotweeksReport.aspx.vb (Line 12).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksReport.aspx.vb.    travelerplus\owner\hotweeksReport.aspx.vb (Line 22)
+Removed attribute Codebehind from file travelerplus\owner\hotweeksresults.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksResults' changed to 'Partial' in file travelerplus\owner\hotweeksResults.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\hotweeksresults.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksResults.aspx.vb.    travelerplus\owner\hotweeksResults.aspx.vb (Line 14)
+Removed attribute Codebehind from file travelerplus\owner\hotweekssearch.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksSearch' changed to 'Partial' in file travelerplus\owner\hotweeksSearch.aspx.vb (Line 13).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\hotweekssearch.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksSearch.aspx.vb.    travelerplus\owner\hotweeksSearch.aspx.vb (Line 47)
+Removed attribute Codebehind from file travelerplus\owner\hotweekstoc.aspx.
+Warning: Access level of 'BluegreenOnline.hotweeksTOC' changed to 'Partial' in file travelerplus\owner\hotweeksTOC.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hotweeksTOC.aspx.vb.    travelerplus\owner\hotweeksTOC.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\hwwait.aspx.
+Warning: Access level of 'BluegreenOnline.hwWait' changed to 'Partial' in file travelerplus\owner\hwWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hwWait.aspx.vb.    travelerplus\owner\hwWait.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\hwwaitconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.hwWaitConfirm' changed to 'Partial' in file travelerplus\owner\hwWaitConfirm.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\hwWaitConfirm.aspx.vb.    travelerplus\owner\hwWaitConfirm.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\iceredirect.aspx.
+Warning: Access level of 'BluegreenOnline.iceRedirect' changed to 'Partial' in file travelerplus\owner\iceRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\iceRedirect.aspx.vb.    travelerplus\owner\iceRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\igougoredirect.aspx.
+Warning: Access level of 'BluegreenOnline.igougoRedirect' changed to 'Partial' in file travelerplus\owner\igougoRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\igougoRedirect.aspx.vb.    travelerplus\owner\igougoRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\intervalredirect.aspx.
+Warning: Access level of 'BluegreenOnline.intervalRedirect' changed to 'Partial' in file travelerplus\owner\intervalRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\intervalRedirect.aspx.vb.    travelerplus\owner\intervalRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\ownerrenewal.aspx.
+Warning: Access level of 'BluegreenOnline.ownerRenewal' changed to 'Partial' in file travelerplus\owner\ownerRenewal.aspx.vb (Line 7).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\ownerrenewal.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\ownerRenewal.aspx.vb.    travelerplus\owner\ownerRenewal.aspx.vb (Line 19)
+Removed attribute Codebehind from file travelerplus\owner\ownerrenewalconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.ownerRenewalConfirm' changed to 'Partial' in file travelerplus\owner\ownerRenewalConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\ownerrenewalconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\ownerRenewalConfirm.aspx.vb.    travelerplus\owner\ownerRenewalConfirm.aspx.vb (Line 14)
+Removed attribute Codebehind from file travelerplus\owner\ownerrenewalexpired.aspx.
+Warning: Access level of 'BluegreenOnline.ownerRenewalExpired' changed to 'Partial' in file travelerplus\owner\ownerRenewalExpired.aspx.vb (Line 7).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\ownerRenewalExpired.aspx.vb.    travelerplus\owner\ownerRenewalExpired.aspx.vb (Line 17)
+Removed attribute Codebehind from file travelerplus\owner\ownerrenewalnotify.aspx.
+Warning: Access level of 'BluegreenOnline.ownerRenewalNotify' changed to 'Partial' in file travelerplus\owner\ownerRenewalNotify.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\ownerrenewalnotify.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\ownerRenewalNotify.aspx.vb.    travelerplus\owner\ownerRenewalNotify.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\ownerrenewalnotifyexpired.aspx.
+Warning: Access level of 'BluegreenOnline.ownerRenewalNotifyExpired' changed to 'Partial' in file travelerplus\owner\ownerRenewalNotifyExpired.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\ownerRenewalNotifyExpired.aspx.vb.    travelerplus\owner\ownerRenewalNotifyExpired.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\partnerredirect.aspx.
+Warning: Access level of 'BluegreenOnline.partnerRedirect' changed to 'Partial' in file travelerplus\owner\partnerRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\partnerRedirect.aspx.vb.    travelerplus\owner\partnerRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\rebatewait.aspx.
+Warning: Access level of 'BluegreenOnline.rebateWait' changed to 'Partial' in file travelerplus\owner\rebateWait.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\rebateWait.aspx.vb.    travelerplus\owner\rebateWait.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\resortdealsrebate.aspx.
+Warning: Access level of 'BluegreenOnline.resortDealsRebateOffer' changed to 'Partial' in file travelerplus\owner\resortDealsRebate.aspx.vb (Line 7).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\resortdealsrebate.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\resortDealsRebate.aspx.vb.    travelerplus\owner\resortDealsRebate.aspx.vb (Line 22)
+Removed attribute Codebehind from file travelerplus\owner\resortdealsrebateconfirm.aspx.
+Warning: Access level of 'BluegreenOnline.resortDealsRebateConfirm' changed to 'Partial' in file travelerplus\owner\resortDealsRebateConfirm.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\resortdealsrebateconfirm.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\resortDealsRebateConfirm.aspx.vb.    travelerplus\owner\resortDealsRebateConfirm.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\resortdealsrebateofferredirect.aspx.
+Warning: Access level of 'BluegreenOnline.resortDealsRebateOfferRedirect' changed to 'Partial' in file travelerplus\owner\resortDealsRebateOfferRedirect.aspx.vb (Line 3).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\resortDealsRebateOfferRedirect.aspx.vb.    travelerplus\owner\resortDealsRebateOfferRedirect.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\specialsdetail.aspx.
+Warning: Access level of 'BluegreenOnline.specialsDetail' changed to 'Partial' in file travelerplus\owner\specialsDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\specialsdetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\specialsDetail.aspx.vb.    travelerplus\owner\specialsDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\survey.aspx.
+Warning: Access level of 'BluegreenOnline.survey' changed to 'Partial' in file travelerplus\owner\survey.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\survey.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\survey.aspx.vb.    travelerplus\owner\survey.aspx.vb (Line 14)
+Removed attribute Codebehind from file travelerplus\owner\tpleftspecialsdetail.aspx.
+Warning: Access level of 'BluegreenOnline.TPspecialsDetail' changed to 'Partial' in file travelerplus\owner\TPLEFTspecialsDetail.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\tpleftspecialsdetail.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\TPLEFTspecialsDetail.aspx.vb.    travelerplus\owner\TPLEFTspecialsDetail.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\worldhotels_landing.aspx.
+Warning: Access level of 'BluegreenOnline.WorldHotels_Landing' changed to 'Partial' in file travelerplus\owner\WorldHotels_Landing.aspx.vb (Line 3).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\worldhotels_landing.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\WorldHotels_Landing.aspx.vb.    travelerplus\owner\WorldHotels_Landing.aspx.vb (Line 13)
+Removed attribute Codebehind from file travelerplus\owner\worldhotelsdetails.aspx.
+Warning: Access level of 'BluegreenOnline.worldhotelsDetails' changed to 'Partial' in file travelerplus\owner\worldhotelsDetails.aspx.vb (Line 11).
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\worldhotelsDetails.aspx.vb.    travelerplus\owner\worldhotelsDetails.aspx.vb (Line 21)
+Removed attribute Codebehind from file travelerplus\owner\worldhotelssearch.aspx.
+Warning: Access level of 'BluegreenOnline.worldhotelsSearch' changed to 'Partial' in file travelerplus\owner\worldhotelsSearch.aspx.vb (Line 12).
+'Reference' tag with reference to '~/includes/ucmenu.ascx' added to file travelerplus\owner\worldhotelssearch.aspx.
+Warning: Removed comment lines before designplaceholder declaration from file travelerplus\owner\worldhotelsSearch.aspx.vb.    travelerplus\owner\worldhotelsSearch.aspx.vb (Line 32)
+Added folder App_Code\Migrated\explore.
+Added folder App_Code\Migrated\corporate.
+Warning: Access level of 'BluegreenOnline.points4kDB' changed to 'Public' in file owner\points4kdb.vb (Line 22).
+Added folder App_Code\Owner.
+Moved file owner\points4kdb.vb to the App_Code\Owner\ directory.
+Warning: Access level of 'ReservFunctions' changed to 'public' in file bonustime\reservfunctions.vb (Line 4).    bonustime\reservfunctions.vb (Line 4)
+Added folder App_Code\BonusTime.
+Moved file bonustime\reservfunctions.vb to the App_Code\BonusTime\ directory.
+Warning: Access level of 'mdlUserFunctions' changed to 'public' in file mdlUserFunctions.vb (Line 4).    mdlUserFunctions.vb (Line 4)
+Moved file mdlUserFunctions.vb to the App_Code\ directory.
+Warning: Access level of 'mdlCheckAS400' changed to 'public' in file mdlCheckAS400.vb (Line 4).    mdlCheckAS400.vb (Line 4)
+Moved file mdlCheckAS400.vb to the App_Code\ directory.
+Moved file clsEmailer.vb to the App_Code\ directory.
+Added folder App_Code\Migrated\resorts.
+Added folder App_Code\Migrated\owner.
+Added folder App_Code\Migrated\includes.
+Added folder App_Code\Web References\TSWIntermediary.
+Moved file web references\tswintermediary\reference.vb to the App_Code\Web References\TSWIntermediary\ directory.
+Added folder App_Code\Web References\TSWInterface.
+Moved file web references\tswinterface\reference.vb to the App_Code\Web References\TSWInterface\ directory.
+Moved file bonustime\clsresortsearchresult.vb to the App_Code\BonusTime\ directory.
+Moved file Global.asax.vb to the App_Code\ directory.
+Warning: Access level of 'dbConn' changed to 'Public' in file clsDBConnectivity.vb (Line 12).
+Warning: Access level of 'dbCmnd' changed to 'Public' in file clsDBConnectivity.vb (Line 13).
+Warning: Access level of 'dbConn' changed to 'Public' in file clsDBConnectivity.vb (Line 52).
+Warning: Access level of 'dbCmnd' changed to 'Public' in file clsDBConnectivity.vb (Line 53).
+Warning: Access level of 'dbConn' changed to 'Public' in file clsDBConnectivity.vb (Line 92).
+Warning: Access level of 'dbCmnd' changed to 'Public' in file clsDBConnectivity.vb (Line 93).
+Warning: Access level of 'dbConn' changed to 'Public' in file clsDBConnectivity.vb (Line 132).
+Warning: Access level of 'dbCmnd' changed to 'Public' in file clsDBConnectivity.vb (Line 134).
+Warning: Access level of 'ASconn' changed to 'Public' in file clsDBConnectivity.vb (Line 172).
+Warning: Access level of 'AScmnd' changed to 'Public' in file clsDBConnectivity.vb (Line 173).
+Warning: Access level of 'ASreader' changed to 'Public' in file clsDBConnectivity.vb (Line 174).
+Moved file clsDBConnectivity.vb to the App_Code\ directory.
+Warning: Access level of 'BluegreenOnline.RebateOfferDB' changed to 'Public' in file travelerplus\owner\rebateofferdb.vb (Line 22).
+Added folder App_Code\TravelerPlus\owner.
+Moved file travelerplus\owner\rebateofferdb.vb to the App_Code\TravelerPlus\owner\ directory.
+Reference to code-behind class 'BluegreenOnline.ucMenu' has been found in the file 'encorerewards\specialdetail.aspx.vb' at line '13'. A stub class for 'BluegreenOnline.ucMenu' will be generated in 'App_Code\Migrated' folder.
+Added folder App_Code\EncoreRewards.
+Moved file encorerewards\specialdetail.aspx.vb to the App_Code\EncoreRewards\ directory.
+Moved file clsResortSearchResult.vb to the App_Code\ directory.
+Moved file AssemblyInfo.vb to the App_Code\ directory.
+Moved file travelerplus\owner\rebateoffer.vb to the App_Code\TravelerPlus\owner\ directory.
+Updated the attribute 'Inherits' with value 'BluegreenOnline.Migrated_ucMenu' in the file 'includes\ucmenu.ascx'.
+Code file 'App_Code\Migrated\includes\Stub_ucmenu_ascx_vb.vb' was created and contains an abstract class 'Migrated_ucMenu' used as a base class for the class 'BluegreenOnline.ucMenu'.    includes\ucmenu.ascx.vb
+Warning: Renamed folder Web References\ to App_WebReferences.
+Changed HTML validation schema for all projects to 'Internet Explorer 6.0'.
+Removed file Bin\BluegreenOnline.dll.
+Removed file Bin\BluegreenOnline.pdb.
+Removed file BluegreenOnline.vbproj.
+Removed file BluegreenOnline.vbproj.webinfo.
+Project BluegreenOnline.vbproj has been converted successfully at January 29 2007, 13:55:36.

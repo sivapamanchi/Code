@@ -1,0 +1,15 @@
+﻿@using System.Configuration
+@model BGModern.Models.SiteTopNavModel
+
+
+<div id="bgGlobalMenu">
+
+    <header class="site-header navbar navbar-inverse navbar-fixed-top" id="Sitecoretop" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+        <div id="top">
+            <div id="bgmenu" data-owner-type="@Model.NavigatorType" data-installment-plan="@Model.InstallStatus" data-owner-renew="@Model.TPRenewLink" data-owner-expiry="@Model.OwnerExpiration" data-owner-points="@Model.PointsTotal" data-owner-balance="@Model.PaymentBalance"
+                 data-menu-url="@Model.SiteTopMenuURL" data-premier-owner="@Model.IsPremierOwner">
+            </div>
+        </div>
+    </header>
+</div>
+

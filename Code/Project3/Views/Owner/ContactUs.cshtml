@@ -1,0 +1,116 @@
+﻿@using BGSitecore.Models
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ContactUsViewModel>
+
+@{
+    BlueGreenContext ownerContext = new BlueGreenContext();
+    if (ownerContext == null || ownerContext.bxgOwner == null)
+    {
+        Response.Redirect(UrlMapper.Map(Model.SiteSettings.SignInPage.Url));
+    }
+
+    var ownerDetails =  ownerContext.bxgOwner;
+    var editAccountAddressUrl = UrlMapper.Map("https://sc.bluegreenowner.com/mybluegreen/my-account");
+}
+
+<div class="hidden-print collapse in" id="contact-form" aria-expanded="true">
+    <form id="form-ContactUs" method="POST" action="@Model.FormPostUrl.Url">
+        <input value="00Dj0000001rtVP" name="orgid" type="hidden">
+        <input value="@Model.ReturnUrl.Url" name="retURL" type="hidden">       
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-6">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group is-required">
+                            <label class="control-label" for="00Nj0000009l7o3"><strong>@Model.FirstNameLabel</strong></label>
+                            <input name="00Nj0000009l7o3" class="form-control" maxlength="128" id="00Nj0000009l7o3" type="text" value="@ownerDetails.firstName">
+                        </div>
+                        <!-- .form-group -->
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group is-required">
+                            <label class="control-label" for="00Nj0000009l7o7"><strong>@Model.LastNameLabel</strong></label>
+                            <input name="00Nj0000009l7o7" id="00Nj0000009l7o7" class="form-control" maxlength="128" type="text" value="@ownerDetails.lastName">
+                        </div>
+                        <!-- .form-group -->
+                    </div>
+                </div>
+                <!-- .row -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="form-group is-required">
+                    <label class="control-label" for="email"><strong>@Model.EmailLabel</strong></label>
+                    <input name="email" id="email" maxlength="80" class="form-control" type="text" value="@ownerDetails.Email">
+                </div>
+                <!-- .form-group -->
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="form-group is-required">
+                    <label class="control-label" for="phone"><strong>@Model.PhNumLabel</strong></label>
+                    @{
+                    var phoneNumFromOwner = (!string.IsNullOrEmpty(ownerDetails.HomePhone) ? ownerDetails.HomePhone : ownerDetails.AlternatePhone);
+                    }
+                    <input name="phone" id="phone" maxlength="12" class="form-control" placeholder="XXX-XXX-XXXX" type="text" value="@phoneNumFromOwner">
+                </div>
+                <!-- .form-group -->
+            </div>
+        </div>
+        <!-- .row -->
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <div class="form-group" id="contact-types">
+                    <label class="control-label"><strong>@Model.ContactLabel</strong></label>
+                    @{
+                    var options = Model.GetOptionsList().OrderBy(x => x).ToArray();
+                    }
+                    @foreach (var option in options)
+                    {
+                    <div class="radio">
+                        <label class="control-label">
+                            @if (Array.IndexOf(options, option) == 0)
+                            {
+                            <input type="radio" name="contact_method" id="radio-contact-@option.ToLower()" value="@option.ToLower()" checked="">@option
+                            }
+                            else
+                            {
+                            <input type="radio" name="contact_method" id="radio-contact-@option.ToLower()" value="@option.ToLower()">@option
+                            }
+                        </label>
+                    </div>
+                    }
+
+                </div>
+                <!-- .form-group -->
+            </div>
+        </div>
+        <!-- .row -->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group is-required">
+                    <label class="control-label" for="description"><strong>@Model.QuestionLabel</strong></label>
+                    <textarea name="description" id="description" class="form-control" rows="5"></textarea>
+                </div>
+                <!-- .form-group -->
+            </div>
+        </div>
+        <!-- .row -->
+        <div class="row">
+            <div class="col-md-12">               
+                <div class="form-group">
+                    <input id="external" name="external" value="1" type="hidden"><br>
+                    <input id="recordType" name="recordType" value="012j0000000zM7s" type="hidden">
+                    <input name="origin" value="BGO" type="hidden">
+                    <input name="Area_Responsible__c" value="Email Team" type="hidden">
+                    <input name="Origin_Details__c" value="Website" type="hidden">
+                    <input class="btn btn-primary" role="button" name="submit" type="submit" value="Submit My Question">&nbsp;
+                    <a href="@editAccountAddressUrl" class="btn btn-secondary">Edit My Account Information</a>
+                </div>
+                <p><span class="required"></span>@Model.FooterNotes</p>
+            </div>
+        </div>
+        <!-- .row -->
+    </form>
+</div>

@@ -1,0 +1,28 @@
+﻿@model BGModern.Models.ResortQuickSelectModel
+@{
+    Layout = null;
+}
+
+<div>
+    <select ID="DestinationSelectionList" name="ReservationSearch$ddlDestination" class="text">
+        <option selected="selected" value="choose, choose">Select another resort</option>
+        @foreach (BGModern.Classes.Destination dest in Model.Destinations)
+        {
+            <option value="@dest.URL">@dest.Description</option>
+        }
+    </select>
+    <a href="#" onclick="viewSelectedResortDetail();"><img src="~/Content/Images/palette_gobtn.gif" /></a>
+</div>
+
+<script type="text/javascript">
+    function viewSelectedResortDetail() {
+        var resortList = document.getElementById("DestinationSelectionList");
+        if (resortList != "undefined") {
+            var selected = resortList.selectedIndex;
+            if (selected > 0) {
+                var resortURL = resortList.options[selected].value;
+                document.location = resortURL;
+            }
+        }
+    }
+</script>

@@ -1,0 +1,24 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<RichText>
+
+@{
+
+}
+@if (!string.IsNullOrEmpty(Model.htmlContent))
+{
+    if (Model.ShowCollapsed)
+    {
+        @*<div class="expandable">
+            <div class="expandable-content expandable-content-lg">*@
+                @Editable(Model, x => x.htmlContent)
+        
+    }
+    else
+    {
+        @Editable(Model, x => x.htmlContent)
+    }
+}

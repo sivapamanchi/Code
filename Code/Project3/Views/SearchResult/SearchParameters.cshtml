@@ -1,0 +1,171 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Components
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+    List<ResortDetails> SortedList = ResortUtils.SortResortByState(Model.AllResorts);
+    var disabled = Model.ShowRevervationTypeSection ? "enabled" : "disabled";
+    var classhide = Model.ShowRevervationTypeSection ? "" : "hidden";
+
+    var classShowDate = Model.ShowDateSearchOptions ? "" : "hide";
+    var classShowMonth = Model.ShowDateSearchOptions ? "hide" : "";
+
+}
+
+@using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Sitecore().FormHandler("Home", "DoSearch")
+
+    @Html.Hidden("MaxSearchWindowForBonusTime", SearchUtils.GetMaxSearchWindowForBonusTime())
+    @Html.Hidden("MaxSearchWindowForPoints", SearchUtils.GetMaxSearchWindowForPoints())
+
+    <div>
+        <div class="js-fixed-search-fields fixed-search-fields">
+            <div class="hidden-sm hidden-md hidden-lg text-center">
+                <a href="#form-fields-collapse" class="update-search-toggle btn btn-link collapsed" data-toggle="collapse" aria-expanded="false"><span class="view-text"><strong>update search</strong> <i class="fa fa-chevron-down"></i></span><span class="close-text"><i class="fa fa-chevron-up"></i></span></a>
+            </div>
+            <div id="form-fields-collapse" class="form-fields search-fields collapse">
+                <div id="js-daterange-error" class="row hidden">
+                    <div class="col-xs-12">
+                        <div id="js-daterange-message" class="alert alert-danger js-alert date-range-error" role="alert">
+                            Please provide valid dates
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group points-settings">
+                    <div class="radio radio-inline">
+                        <label class="control-label">
+                            @Html.RadioButtonFor(m => m.searchParameters.ReservationType, SearchParameters.RESERVATION_TYPE_POINTS, new { Name = "ReservationType", Class = "js-search-rt", Value = SearchParameters.RESERVATION_TYPE_POINTS })
+                            @Sitecore.Globalization.Translate.Text("Resort_Search_PointsReservation")
+                        </label>
+                    </div>
+                    <div class="radio radio-inline @classhide">
+                        <label class="control-label">
+                            @Html.RadioButtonFor(m => m.searchParameters.ReservationType, SearchParameters.RESERVATION_TYPE_BONUSTIME, new { Name = "ReservationType", Class = "js-search-rt", Value = SearchParameters.RESERVATION_TYPE_BONUSTIME })
+                            @Sitecore.Globalization.Translate.Text("Resort_Search_BonusTimeReservation")
+                        </label>
+                    </div><!--.radio -->
+                </div>
+                <div class="row row-collapse">
+                    <div class="col-xs-12 col-sm-4 col-md-3">
+                        <div class="form-group is-required">
+                            <label for="Destination" class="sr-only control-label"><strong>@Sitecore.Globalization.Translate.Text("Resort_Search_Destination")</strong></label>
+                            <select name="Destination" id="Destination" class="form-control js-search-ds js-selectdestination" data-live-search="true">
+                                <option value="" class="indent-1" @UiUtils.SetDefaultValue("", Model.searchParameters.Destination)>@Sitecore.Globalization.Translate.Text("Resort_Search_Destination_Default")</option>
+                                @Html.Raw(UiUtils.BuildDestination(SortedList, Model.searchParameters.Destination, Model.SavedSearches))
+                            </select>
+                            @if (Model.AllResortsSecondaryMarket != null)
+                            {
+                                <select name="DestinationBonusTime" id="DestinationBonusTime" class="form-control js-search-ds-bonustime hidden" data-live-search="true">
+                                    <option value="" class="indent-1" @UiUtils.SetDefaultValue("", Model.searchParameters.Destination)>@Sitecore.Globalization.Translate.Text("Resort_Search_Destination_Default")</option>
+                                    @Html.Raw(UiUtils.BuildDestination(Model.AllResortsSecondaryMarket, Model.searchParameters.Destination, Model.SavedSearches))
+                                </select>
+                            }
+                        </div><!-- .form-group -->
+                    </div>
+                    @if (!Model.ShowDateSearchOptions)
+                    {
+                        <div class="col-xs-12 col-sm-4 col-md-3 js-inventory-date hide">
+                            <div class="inventory-date">
+                                <div class="inventory-date-control">
+
+                                    <div class="input-daterange">
+                                        <label for="inventorydatepicker"><span class="fa fa-calendar"></span>&nbsp;&nbsp;<span class="js-inventory-checkin"><strong>check-in</strong></span>&nbsp;-&nbsp;<span class="js-inventory-checkout"><strong>check-out</strong></span></label>
+                                        @if (!Model.ShowDateSearchOptions)
+                                        {
+
+                                            @*<div id="InventorySelectDate" name="InventorySelectDate" class="inventory-date-picker js-inventoryselectpicker"></div>*@
+                                            <input type="text" id="InventorySelectDate" name="InventorySelectDate" class="input-datepicker js-inventoryselectpicker js-availability-datepicker" data-defaultdate="@Model.searchParameters.MonthSearch" placeholder="mm/dd/yyyy" autocomplete="off" />
+                                        }
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="col-xs-12 col-sm-2 col-md-2 js-month-search @classShowMonth">
+                        <div class="form-group is-required">
+                            <select name="monthsearch" id="monthsearch" class="form-control js-monthsearchselect js-monthsearchselect-result">
+                                <option class="js-monthsearch" value="" label="month">@Sitecore.Globalization.Translate.Text("Resort_Search_Month_Default")</option>
+                                @foreach (SearchMonth item in Model.AllSearchMonths)
+                                {
+                                    <option class="js-monthsearch" value="@item.Value" label="@item.DisplayName" @UiUtils.SetDefaultValue(item.Value, @Model.searchParameters.MonthSearch.ToShortDateString())>@item.DisplayName</option>
+                                }
+                            </select>
+
+                        </div><!-- .form-group -->
+                    </div>
+                    <div class="col-xs-12 col-sm-2 col-md-2 js-month-search @classShowMonth">
+                        <div class="form-group is-required">
+                            <select name="monthsearchduration" id="monthsearchduration" class="form-control js-monthsearchduration">
+                                <option class="js-nightstay" value="" label="nights">@Sitecore.Globalization.Translate.Text("Resort_Search_Night_Default")</option>
+
+                                @foreach (SearchNumberOfNight item in Model.AllSearchNumberOfNights)
+                                {
+                                    <option class="js-nightstay" value="@item.Value" label="@item.DisplayName" @UiUtils.SetDefaultValue(item.Value, @Model.searchParameters.monthsearchduration)>@item.DisplayName</option>
+                                }
+                            </select>
+
+                        </div><!-- .form-group -->
+                    </div>
+
+                    <div class="col-xs-12 col-sm-8 col-md-7 @classShowDate js-date-search">
+                        <label for="search-dates" class="sr-only-sm hidden-xs control-label"><strong>@Sitecore.Globalization.Translate.Text("Resort_Search_SearchButton")</strong></label>
+                        <div class="row row-collapse">
+                            <div class="col-xs-6 col-sm-5">
+                                <div class="form-group">
+                                    <div class="input-group input-daterange input-datefrom">
+                                        <label for="CheckInDate"><span class="fa fa-calendar"></span>&nbsp;<span class="js-checkin-label date-value"></span></label>
+                                        <input type="date" name="CheckInDate" id="CheckInDate" class="form-control input-datepicker input-datepicker-check-in dropdown-datepicker js-search-ci js-home-datepicker" value="@Model.searchParameters.CheckInDate.ToString("MM/dd/yyyy")" placeholder="mm/dd/yyyy" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-5">
+                                <div class="form-group">
+                                    <div class="input-group input-daterange input-dateto">
+                                        <label for="CheckOutDate"><span class="fa fa-calendar"></span>&nbsp;<span class="js-checkout-label date-value">check out date</span></label>
+                                        <input type="date" name="CheckOutDate" id="CheckOutDate" class="form-control input-datepicker datepicker-align-right input-datepicker-check-out dropdown-datepicker js-search-co js-home-datepicker" value="@Model.searchParameters.CheckOutDate.ToString("MM/dd/yyyy")" placeholder="mm/dd/yyyy" autocomplete="off">
+                                        @*<button class="date-from-overlay js-select-date-from"></button><button class="date-to-overlay js-select-date-to"></button>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <div class="form-control search-duration">
+                                    <span id="number-of-nights">0</span> nights
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-md-2">
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block js-homesearch" name="btnSubmit">@Sitecore.Globalization.Translate.Text("Resort_Search_SearchButton")</button>
+                        </div>
+                    </div>
+                </div><!-- .row -->
+
+                <div class="hidden-md hidden-lg">
+                    @Html.Partial("/Views/SearchResult/SaveSearch.cshtml", Model)
+                </div>
+            </div>
+        </div>
+
+        <div class="daterange-info hidden-sm hidden-md hidden-lg text-center js-daterange-info">
+            <a href="#form-fields-collapse" data-toggle="collapse" aria-expanded="false" class="btn-block" data-scrollto=".js-fixed-search-fields">
+                <div class="input-daterange">
+                    <label class="destination-name js-destination-name-mobile"></label><label class="destination-daterange"><span class="fa fa-calendar"></span>&nbsp;&nbsp;<span class="js-inventory-checkin-mobile"><strong>check-in</strong></span>&nbsp;-&nbsp;<span class="js-inventory-checkout-mobile"><strong>check-out</strong></span></label>
+                </div>
+            </a>
+        </div>
+    </div>
+
+}

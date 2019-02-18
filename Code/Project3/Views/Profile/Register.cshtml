@@ -1,0 +1,199 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Registration>
+
+
+@{
+
+    if ( ViewData["ownerId"] != null)
+    {
+        Model.txtOwnerId = ViewData["ownerId"].ToString();
+    }
+    if (Model.SuccessPage != null && !string.IsNullOrEmpty(Model.SuccessPage.Url))
+    {
+        Model.PostbackSuccessPageUrl = Model.SuccessPage.Url;
+    }
+
+}
+
+@using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post))
+{
+
+    if (Sitecore.Context.PageMode.IsExperienceEditor)
+    {
+        <p>Unsuccess Message = @Editable(Model, x => x.UnsuccessMessage)</p>
+        <p>Success Page = @Editable(Model, x => x.SuccessPage)</p>
+    }
+    else
+    {
+        @Html.HiddenFor(m => m.PostbackSuccessPageUrl)
+    }
+
+    @Html.AntiForgeryToken()
+    
+
+    @Html.Sitecore().FormHandler("Profile", "Register")
+    <div class="site-content cover-image" id="site-content"  @Html.Raw(ImageUtils.BuildBackgroundImage(Model.BackGroundImage, Model.SiteSettings.RemoteImageUrl))>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-7 col-lg-6 col-primary">
+
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h1 class="h1 color-primary text-lowercase">@Editable(Model, x => x.PageTitle)</h1>
+                            @if (ViewData["ShowUnsuccessMessage"] != null && ViewData["ShowUnsuccessMessage"] .ToString() == "true")
+                            {
+                                <div class="alert alert-danger alert-dismissable" role="alert">
+                                    @Html.Raw(Model.UnsuccessMessage)
+                                </div>
+                            }
+                            @Html.ValidationSummary(false)
+                          
+                            <p>@Editable(Model, x => x.IntroText)</p>
+
+                            <hr class="hr-thin">
+
+                            <p>@Editable(Model, x => x.Instructions)</p>
+
+                            <div class="row row-collapse">
+                                <div class="col-xs-12 col-md-4">
+                                    <div class="form-group">
+                                        <label class="sr-only control-label" for="user-social-numbers">@Sitecore.Globalization.Translate.Text("Register_SSNLabel")</label>
+                                        @Html.TextBoxFor(m => m.txtSSN, new
+                                                {
+                                                    @class = "form-control",
+                                                    id= "user-social-numbers",
+                                                    maxlength = "4"
+
+                                                })
+                                       
+                                        <span class="help-block">@Editable(Model, x => x.SSNCaption)</span>
+                                    </div><!-- .form-group -->
+                                </div>
+                                <div class="col-xs-12 col-md-2 text-center-md text-center-lg">
+                                    <strong class="form-input-height font-size-18 color-primary">@Sitecore.Globalization.Translate.Text("Profile_ORLabel")</strong>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <div class="form-group">
+                                        <label class="sr-only control-label" for="user-phone">@Sitecore.Globalization.Translate.Text("Register_PhoneLabel")</label>
+                                        @Html.TextBoxFor(m => m.txtPhone, new
+                                            {
+                                                @class = "form-control",
+                                                id = "user-phone", 
+                                                maxlength = "10"
+
+
+                                            })
+                                        <span class="help-block">@Editable(Model, x => x.PhoneCaption)</span>
+                                    </div><!-- .form-group -->
+                                </div>
+                            </div><!-- .row -->
+
+                            <div class="form-group">
+                                <label class="sr-only control-label" for="user-account-number">@Sitecore.Globalization.Translate.Text("Register_OwnerLabel")</label>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.txtOwnerId, new { @class = "form-control", id = "user-account-number", placeholder = "owner number" , maxlength = "10" })
+                                    <span class="input-group-btn">
+                                        <a id="js-owner-lookup" href="#owner-number-look-up" class="btn btn-secondary" data-toggle="collapse" aria-expanded="false" aria-controls="owner-number-look-up">Look It Up</a>
+                                    </span>
+                                </div>
+                            </div><!-- .form-group -->
+
+                            <div class="collapse" id="owner-number-look-up">
+                                <div class="well">
+                                    <h3 class="h2">@Editable(Model, x => x.LookupTitle)</h3>
+                                    <div class="row row-collapse">
+                                        <div class="col-xs-12 col-md-4">
+                                            <div class="form-group">
+                                                <label class="sr-only control-label" for="user-social-numbers">@Sitecore.Globalization.Translate.Text("Register_SSNLabel")</label>
+                                                @Html.TextBoxFor(m => m.txtLookupSSN, new { @class = "form-control", id = "user-social-numbers", maxlength = "4" })
+                                                <span class="help-block">@Editable(Model, x => x.LookupSSNCaption)</span>
+                                            </div><!-- .form-group -->
+                                        </div>
+                                        <div class="col-xs-12 col-md-2 text-center-md text-center-lg">
+                                            <strong class="form-input-height font-size-18 color-primary">@Sitecore.Globalization.Translate.Text("Profile_ANDLabel")</strong>
+                                        </div>
+                                        <div class="col-xs-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="sr-only control-label" for="user-phone">@Sitecore.Globalization.Translate.Text("Register_PhoneLabel")</label>
+                                                @Html.TextBoxFor(m => m.txtLookupPhone, new { @class = "form-control", id = "user-phone", maxlength = "10" })
+
+                                                <span class="help-block">@Editable(Model, x => x.LookupPhoneCaption)</span>
+                                            </div><!-- .form-group -->
+                                        </div>
+                                    </div><!-- .row -->
+                                    <button class="btn btn-sm btn-default" name="btnSubmit" value="action:lookup">@Sitecore.Globalization.Translate.Text("Register_LookupOwnerNumberAction")</button>
+                                </div><!-- .well -->
+                            </div><!-- .collapse -->
+
+                            <div class="form-group">
+                                <label class="sr-only control-label" for="user-email-address">@Sitecore.Globalization.Translate.Text("Register_EmailLabel")</label>
+                                @Html.TextBoxFor(m => m.txtAcctEmail, new { @class = "form-control js-trimspace", id = "user-email-address", placeholder = "email" })
+
+                                <span class="help-block">@Editable(Model, x => x.EmailCaption)</span>
+                            </div><!-- .form-group -->
+
+                            <div class="form-group">
+                                <label class="sr-only control-label" for="user-email-address2">@Sitecore.Globalization.Translate.Text("Register_EmailConfirmationLabel")</label>
+                                @Html.TextBoxFor(m => m.txtAcctEmail2, new { @class = "form-control js-trimspace", id = "user-email-address2", placeholder = "confirm email" })
+
+                            </div><!-- .form-group -->
+
+                            <div class="form-group toggle-password first-password">
+                                <label class="sr-only control-label" for="user-password">@Sitecore.Globalization.Translate.Text("Register_PasswordLabel")</label>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.txtPassword, new { @class = "form-control js-show-password-rules", id = "user-password", placeholder = "password", type = "password", maxlength = "20" })
+
+                                    <span class="input-group-btn">
+                                        <a href="#toggle-password" class="btn btn-secondary btn-password" tabindex="-1">
+                                            <span class="show-password">show</span>
+                                            <span class="hidden hide-password">hide</span>
+                                        </a>
+                                    </span>
+                                </div>
+
+                              @Html.Raw(UiUtils.BuildPasswordErrors())
+                            </div><!-- .form-group -->
+
+                            <div class="form-group toggle-password">
+                                <label class="sr-only control-label" for="user-password2">@Sitecore.Globalization.Translate.Text("Register_PasswordConfirmationLabel")</label>
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.txtAcctPassword2, new { @class = "form-control js-show-confirm-password-rules", id = "user-password2", placeholder = "confirm password", type = "password", maxlength = "20" })
+
+                                    <span class="input-group-btn">
+                                        <a href="#toggle-password" class="btn btn-secondary btn-password" tabindex="-1">
+                                            <span class="show-password">show</span>
+                                            <span class="hidden hide-password">hide</span>
+                                        </a>
+                                    </span>
+                                </div>
+                                @Html.Raw(UiUtils.BuildConfirmPasswordErrors())
+
+
+                            </div><!-- .form-group -->
+
+                            <div class="form-group">
+                                <button id="js-register" class="btn btn-primary" name="btnSubmit" value="action:register">@Sitecore.Globalization.Translate.Text("Register_PageAction")</button>
+                            </div><!-- .form-group -->
+
+                          
+                            <p>@Editable(Model, x => x.Footnotes)</p>
+
+                            <p>
+                                <a href="@Model.SiteSettings.SignInPage.Url" title='@Sitecore.Globalization.Translate.Text("Profile_BackToSignIn")'><i class="fa fa-caret-left"></i>&nbsp;&nbsp;<b>@Sitecore.Globalization.Translate.Text("Profile_BackToSignIn")</b></a>
+                            </p>
+
+                        </div><!-- .panel-body -->
+                    </div><!-- .panel -->
+
+                </div>
+            </div><!-- .row -->
+
+        </div><!-- .container -->
+    </div><!-- .site-content -->
+}

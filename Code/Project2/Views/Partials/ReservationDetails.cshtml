@@ -1,0 +1,589 @@
+﻿@model BGModern.Models.ReservationDetailModel
+
+@using (Html.BeginUmbracoForm("EditOrSubmit", "ReservationDetails", new { }, new { id="DetailsForm"}, FormMethod.Post))
+{
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    @Html.HiddenFor(model => model.PostType, new { id = "hdnPostType" })
+    @Html.HiddenFor(model => model.SelectedGuest, new { id = "hdnSelectedGuest" })
+    @Html.HiddenFor(model => model.SelectedGuestId, new { id = "hdnSelectedGuestId" })
+    @Html.HiddenFor(model => model.SelectedGuestGroup, new { id = "hdnSelectedGuestGroup" })
+    @Html.HiddenFor(model => model.GuestFormFirstName, new { id = "hdnGuestFormFirstName" })
+    @Html.HiddenFor(model => model.GuestFormLastName, new { id = "hdnGuestFormLastName" })
+    @Html.HiddenFor(model => model.GuestFormEmail, new { id = "hdnGuestFormEmail" })
+    @Html.HiddenFor(model => model.GuestFormCity, new { id = "hdnGuestFormCity" })
+    @Html.HiddenFor(model => model.GuestFormState, new { id = "hdnGuestFormState" })
+    @Html.HiddenFor(model => model.GuestFormPhone, new { id = "hdnGuestFormPhone" })
+    @Html.HiddenFor(model => model.GuestFormRelationship, new { id = "hdnGuestFormRelationship" })
+    @Html.HiddenFor(model => model.NumberOfAdults, new { id = "hdnNumberOfAdults" })
+
+    var hideClass = "display:none;";
+    var showClassBold = "font-weight:bold; ";
+    var hideClassBold = "font-weight:bold; display:none;";
+    if (@Model.Updating)
+    {
+        hideClass = "";
+        hideClassBold = "font-weight:bold;";
+        showClassBold = "font-weight:bold; display:none;";
+    }
+
+    if (@Model.MessageText != null && @Model.MessageText != "")
+    {
+        <span id="lblMessage">@Html.Raw(@Model.MessageText)</span>
+    }
+    if (@Model.ErrorText != null && @Model.ErrorText != "")
+    {
+        <img id="imgAlert" src="@Html.GetFullSitePath()/Content/Images/alert.gif" alt="" />
+        <span id="lblErrors">@Html.Raw(@Model.ErrorText)</span>
+        <div class="six columns left" style="float: left">
+            <a href="@Html.GetFullSitePath()/reservation-list" id="errBackButton">
+                <img src="@Html.GetFullSitePath()/Content/Images/backMyReservBtn.gif" border="0" alt="" />
+            </a>
+        </div>
+    }
+    else
+    { 
+    <div id="pnlresDetail">
+        <br />
+        <br />
+        <div id="showButtonsOnTop">
+            <div>
+                <div class="twelve columns">
+                    <div class="six columns left" style="float: left">
+                        <a href="@Html.GetFullSitePath()/reservation-list" id="imgBackLinkButtonTop">
+                            <img src="@Html.GetFullSitePath()/Content/Images/backMyReservBtn.gif" border="0" alt="" />
+                        </a>
+                    </div>
+                    @if(@Model.CanCancel)
+                    { 
+                    <div class="six columns right" style="float: right">
+                        <a href="@Html.GetParentSitePath()/owner/reservCancelPts.aspx" id="imgbtnImageCancelTop">
+                            <img src="@Html.GetFullSitePath()/Content/Images/cancelReserv_Btn.gif" border="0" alt="" />
+                        </a>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <table border="0" class="textGrid" width="100%">
+            <tr>
+                <td align="left" valign="top" width="35%">
+                    <table cellspacing="1" cellpadding="2" width="106" bgcolor="#000000" border="0">
+                        <tr>
+                            <td bgcolor="#ffffff">
+                                <a id="imgResort" href="@Model.ResortLink"><img src="@Model.ResortImageLink" alt="" 
+                                    style="border-width:1px; border-color: black; border-style: solid; padding: 3px; width: 100px; height: 94px;" /></a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td align="left" valign="top" width="65%">
+                    <a id="hlResortName" href="@Model.ResortLink">@Model.ResortName</a><br />
+                    <span id="lblRAddress">@Model.ResortAddress</span><br />
+                    <span id="lblRCityState">@Model.ResortCityState</span><br />
+                    <span id="lblRPhone">@Model.ResortPhone</span>
+                </td>
+            </tr>
+        </table>
+        <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 100%" />
+        <table border="0" width="100%" class="textGrid">
+            <tr>
+                <td nowrap width="35%">
+                    <strong>Confirmation #:</strong>
+                </td>
+                <td align="left" width="65%">
+                    @*@Html.LabelFor(x => x.ReservationNo, @Model.ReservationNo, new { id = "lblConfNum" })*@
+                    <span id="lblConfNum">@Model.ReservationNo</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Date Confirmed:</strong>
+                </td>
+                <td align="left">
+                    @*@Html.LabelFor(x => x.ConfirmationDate, @Model.ConfirmationDate, new { id = "lblDtConfirmed" })*@
+                    <span id="lblDtConfirmed">@Model.ConfirmationDate</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Check-In Date:</strong>
+                </td>
+                <td>
+                    <span id="lblCheckIn">@Model.CheckIn</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Check-Out Date:</strong>
+                </td>
+                <td>
+                    <span id="lblCheckOut">@Model.CheckOut</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Person Checking In<sup id="sup1">(1)</sup>:</strong>
+                </td>
+                <td style="width: 100%">
+                    <span id="lblGuestName">@Model.GuestName</span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@if (@Model.CanUpdate)
+                    {<input type="submit" name="btnUpdateGoo" value="@Model.ButtonUpdateText" id="btnUpdateGoo" style="font-weight:bold;" />}&nbsp;&nbsp;<input type="submit" name="btnCancelGoo" value="Cancel" id="btnCancelGoo" style="@hideClassBold" />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="lblUpdateGooStatus" style="font-weight:bold;">@if (@Model.UpdateText != null && @Model.UpdateText != "")
+                    { @Model.UpdateText}</span>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap="nowrap">
+                    <strong></strong>
+                </td>
+                <td valign="top">
+                    <select id="ddlGuestCheckingIn" name="ddlGuestCheckingIn" style="@hideClass">
+                        @{
+                            foreach (String guestType in Model.GuestTypes)
+                            {
+                                if (@guestType != "")
+                                {
+                                    <optgroup label="@guestType">
+                                        @foreach (OptionDropDownList.OptionGroupItem guest in Model.GuestList)
+                                        {
+                                            if (guestType == guest.OptionGroup)
+                                            {
+                                                if (@guest.Text == @Model.SelectedGuest)
+                                                {
+                                                    <option value="@guest.Value" selected="selected">@guest.Text</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@guest.Value">@guest.Text</option>
+                                                }
+                                            }
+                                        }
+                                    </optgroup>
+                                }
+                                else
+                                {
+                                    foreach (OptionDropDownList.OptionGroupItem guest in Model.GuestList)
+                                    {
+                                        if (guestType == guest.OptionGroup)
+                                        {
+                                            <option value="@guest.Value">@guest.Text</option>
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap width="35%" align="left">
+                    <font color="red">*</font><b>Number of Guests<sup>(2)</sup>:</b>
+                </td>
+                <td align="left">
+                    <span id="lblOccupancy" style="@showClassBold">@Model.NumberOfAdults</span>
+                    <select name="ddlOccupancy" id="ddlOccupancy" style="@hideClass">
+                        @{
+                            if (@Model.Occupancy != null)
+                            {
+                                foreach (int occ in @Model.Occupancy)
+                                {
+                                    if (@occ == @Convert.ToInt32(@Model.NumberOfAdults))
+                                    {
+                                        <option value="@occ" selected="selected">@occ</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@occ">@occ</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                </td>
+            </tr>
+        </table>
+
+        <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 100%" />
+
+        @if (@Model.GuestFormVisible)
+        {
+            <div id="pnlNewGuest">
+                <table style="background-color: #efefef" width="100%" cellspacing="3">
+                    <tr>
+                        <td width="35%">
+                            <font color="red">*</font><strong>Guest First Name:</strong>
+                        </td>
+                        <td>
+                            <input name="" type="text" maxlength="20" id="txtGuestFirstName" value="@Model.GuestFormFirstName" tabindex="1" size="18" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <font color="red">*</font><b>Guest Last Name:</b>
+                        </td>
+                        <td>
+                            <input name="txtGuestLastName" type="text" maxlength="20" id="txtGuestLastName" value="@Model.GuestFormLastName" tabindex="1" size="18" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Guest Email:</b>
+                        </td>
+                        <td>
+                            <input name="txtGuestEmail" type="text" maxlength="50" id="txtGuestEmail" value="@Model.GuestFormEmail" tabindex="1" style="width:200px;" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <font color="red"></font><b>Guest City:</b>
+                        </td>
+                        <td>
+                            <input name="txtGuestCity" type="text" maxlength="20" id="txtGuestCity" value="@Model.GuestFormCity" tabindex="1" size="18" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <font color="red"></font><b>Guest State:</b>
+                        </td>
+                        <td>
+                            <select name="ddlState" id="ddlState" tabindex="1" style="width:200px;">
+                                @foreach (SelectListItem state in Model.States)
+                                {
+                                    if (@Model.GuestFormState == @state.Value)
+                                    {
+                                    <option value="@state.Value" selected="selected">@state.Text</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="@state.Value">@state.Text</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Guest Phone:</b>
+                        </td>
+                        <td>
+                            <input name="txtGuestPhone" type="text" maxlength="20" id="txtGuestPhone" value="@Model.GuestFormPhone" tabindex="1" size="18" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <font color="red">*</font><b>Relationship:</b>
+                        </td>
+                        <td>
+                            <select name="ddlGuessRelationshipType" id="ddlGuessRelationshipType" tabindex="1" style="width:200px;">
+                                @foreach (String relationshipType in Model.RelationshipTypes)
+                                {
+                                    if (@Model.GuestFormRelationship == @relationshipType)
+                                    {
+                                    <option value="@relationshipType" selected="selected">@relationshipType</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="@relationshipType">@relationshipType</option>
+                                    }
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        }
+        <table border="0" width="100%" class="textGrid">
+            <tr>
+                <td width="35%">
+                    <strong>Villa Size</strong>:
+                </td>
+                <td align="left" width="65%">
+                    <span id="lblVillaSize">@Html.Raw(@Model.VillaSize)</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td align="left">
+                    <strong>Villa Description</strong>:
+                </td>
+                <td align="left">
+                    <span id="lblVillaDescription">@Model.VillaDescription</span>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <strong>Max. Occupancy</strong>:
+                </td>
+                <td align="left">
+                    <span id="lblMacOcc">@Model.MaxOccupancy</span>
+                </td>
+            </tr>
+        </table>
+        <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 100%" />
+        <table border="0" width="100%" class="textGrid">
+            <tr>
+                <td nowrap width="35%" align="left">
+                    <strong>Reservation Type:</strong>
+                </td>
+                <td width="65%" align="left">
+                    <span id="lblResType">@Model.ReservationType</span>
+                </td>
+            </tr>
+            @if (@Model.ReservationType == "Bonus Time")
+            {
+                <tr>
+                    <td align="left">
+                        <strong>
+                            <span id="lblPayType">Amount:</span>
+                        </strong>
+                    </td>
+                    <td align="left">
+                        <span id="lblPoints">@Model.Amount</span>
+                    </td>
+                </tr>
+            }
+            else if (@Model.ReservationType == "Flex") { 
+                <tr>
+                    <td align="left">
+                        <strong>
+                            <span id="lblPayType">Nights:</span>
+                        </strong>
+                    </td>
+                    <td align="left">
+                        <span id="lblPoints">@String.Format("{0:#,###}", @Double.Parse(@Model.Points.Trim()))</span>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td align="left">
+                        <strong>
+                            <span id="lblPayType">Points:</span>
+                        </strong>
+                    </td>
+                    <td align="left">
+                        <span id="lblPoints">@String.Format("{0:#,###}", @Double.Parse(@Model.Points.Trim()))</span>
+                    </td>
+                </tr>
+                if (@Model.ReservationCondition == "Future")
+                {
+                    <tr>
+                        <td nowrap width="35%" align="left">
+                            <strong>PPP Status:</strong>
+                        </td>
+                        <td width="65%" align="left">
+                            <span id="lblPolicyStatus">@Html.Raw(@Model.PolicyStatus)</span>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 100%" />
+                @if (@Model.ReservationCondition == "Future")
+                {
+                    <span id="lblDesc">@Html.Raw(@Model.Description)</span><br />
+                    <span id="lblCancellationPolicy" class="text">@Html.Raw(@Model.CancellationPolicy)</span><br />
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <a href="@Html.GetFullSitePath()/reservation-list" id="imgBackLinkButtonTop">
+                    <img src="@Html.GetFullSitePath()/Content/Images/backMyReservBtn.gif" border="0" alt="" style="float: left;" />
+                </a>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                @if (@Model.CanCancel)
+                {
+                    <a href="@Html.GetParentSitePath()/owner/reservCancelPts.aspx" id="imgbtnImageCancelTop">
+                        <img src="@Html.GetFullSitePath()/Content/Images/cancelReserv_Btn.gif" border="0" alt="" style="float: right;" />
+                    </a>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 100%" />
+            </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <font size="1">
+            (1) A valid driver's license and credit card will be required at time
+            of check-in.
+            <br />
+            (2) The occupancy limit includes children of all ages and is strictly enforced.
+        </font>
+        <br />
+        <br />
+        <br />
+        @if(@Model.ExchangeVisible)
+        { 
+        <div id="footnote">
+            <table class="text" cellspacing="1" cellpadding="3" width="497" border="0" id="msgExchange">
+                <tr>
+                    <td>
+                        <br />
+                        <br />
+                        <br />
+                        *This reservation was deposited with an <a href="#" class="textlink"
+                                                                   onclick="newWin=window.open('@Html.GetParentSitePath()/Owner/HelpwinExchange.aspx','newWin3','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=220px,height=414px');newWin.focus();return false;">exchange</a> company.
+                    </td>
+                </tr>
+            </table>
+        </div>
+        }
+    </div>
+    <div id="dialog-confirm" style="display:none;" title="">
+        <p>
+            Please provide a telephone number for your Guest; Select <b>GO&nbsp;BACK.</b><br /><br />
+            Select <b>OK</b> if you are unable to provide one at this time but will provide the Guest telephone number prior to reservation arrival.
+        </p>
+    </div>
+    }
+    <script type="text/javascript">
+        jQuery(function () {
+
+            validateGuestPhone = function (){
+                if(jQuery("option:selected", jQuery("#ddlGuessRelationshipType")).val()!="Select Guest Relationship Type" && jQuery.trim(jQuery("#txtGuestFirstName").val())!="" && jQuery.trim(jQuery("#txtGuestLastName").val())!=""  )
+                {
+                    if(jQuery.trim(jQuery('#txtGuestPhone').val()) == '' && ( jQuery("option:selected", jQuery("#ddlGuestCheckingIn")).closest('optgroup').attr('label')=="New" || jQuery("option:selected", jQuery("#ddlGuestCheckingIn")).closest('optgroup').attr('label')=="Guests") ){
+                        var proceed = true;
+
+                        jQuery( "#dialog-confirm" ).dialog({
+                            autoOpen: true,
+                            resizable: false,
+                            height:180,
+                            width : 500,
+                            modal: true,
+                            buttons: {
+                                goback:{
+                                    class: 'leftButton',
+                                    text: 'GO BACK',
+                                    click : function (){
+                                        jQuery( this ).dialog( "close" );
+                                        jQuery('#txtGuestPhone').focus();
+                                    }
+                                },
+                                canc:{
+                                    class: 'rightButton',
+                                    text: 'OK',
+                                    click : function (){
+                                        jQuery('#DetailsForm').submit();
+                                    }
+                                }
+                            }
+                        });
+
+                        jQuery("#dialog-confirm").dialog("open");
+                        jQuery('.ui-dialog :button').blur();
+                        if(proceed){      
+                            event.preventDefault();              
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            jQuery('#btnUpdateGoo').click(function (e) {
+                var btnText = jQuery(this).val();
+                if (btnText == 'Edit') {
+                    //if the default item is the owner, then we don't want to post back
+                    if(jQuery('#hdnSelectedGuestGroup').val() == "Owner"){
+                        jQuery('#btnCancelGoo').attr('style', 'display:inline');
+
+                        jQuery('#lblOccupancy').attr('style', 'display:none');
+                        jQuery('#ddlOccupancy').attr('style', 'display:inline');
+                        var occupancy = jQuery('#lblOccupancy').text();
+                        jQuery('#ddlOccupancy option:contains(' + occupancy + ')').attr('selected', true);
+
+                        var guest = jQuery('#lblGuestName').text();
+                        jQuery('#ddlGuestCheckingIn').attr('style', 'display:block');
+                        jQuery('#ddlGuestCheckingIn option:contains(' + guest + ')').attr('selected', true);
+
+                        e.preventDefault();
+                    }
+                    else{
+                        jQuery('#hdnPostType').val("Edit");
+                    }
+
+                    if (jQuery('#hdnSelectedGuest').val() == "Please, select a Guest,")
+                    {
+                        var guestName = jQuery('#lblGuestName').text();
+                        jQuery('#hdnSelectedGuest').val(guestName);
+                    }
+                }
+                else {
+                    //jQuery('#btnCancelGoo').toggle();
+                    //jQuery('#hdnPostType').val("Save");
+                    //e.preventDefault();
+                    jQuery('#hdnPostType').val("Submit");
+
+                    var firstName = jQuery('#txtGuestFirstName').val();
+                    var lastName = jQuery('#txtGuestLastName').val();
+                    var email = jQuery('#txtGuestEmail').val();
+                    var city = jQuery('#txtGuestCity').val();
+                    var phone = jQuery('#txtGuestPhone').val();
+                    var state = jQuery('#ddlState option:selected').val();
+                    var relationship = jQuery('#ddlGuessRelationshipType option:selected').text();
+                    var noOfAdults = jQuery('#ddlOccupancy option:selected').text();
+
+                    jQuery('#hdnGuestFormFirstName').val(firstName);
+                    jQuery('#hdnGuestFormLastName').val(lastName);
+                    jQuery('#hdnGuestFormEmail').val(email);
+                    jQuery('#hdnGuestFormCity').val(city);
+                    jQuery('#hdnGuestFormState').val(state);
+                    jQuery('#hdnGuestFormPhone').val(phone);
+                    jQuery('#hdnGuestFormRelationship').val(relationship);
+                    jQuery('#hdnNumberOfAdults').val(noOfAdults);
+
+                    validateGuestPhone();
+                }
+            })
+
+            jQuery('#ddlGuestCheckingIn').change(function () {
+                var guest = jQuery('#ddlGuestCheckingIn option:selected').text();
+                jQuery('#hdnSelectedGuest').val(guest);
+
+                if (guest != "Please, select a Guest,") {
+                    jQuery('#hdnPostType').val("Edit");
+                    //jQuery('#btnUpdateGoo').attr('value', 'Save');
+
+                    var guestId = jQuery('#ddlGuestCheckingIn option:selected').val();
+                    var guestGroup = jQuery("option:selected", jQuery("#ddlGuestCheckingIn")).closest('optgroup').attr('label')
+
+                    jQuery('#hdnSelectedGuestId').val(guestId);
+                    jQuery('#hdnSelectedGuestGroup').val(guestGroup);
+
+                    this.form.submit();
+                }
+                else if (jQuery('#btnUpdateGoo').attr('value') == 'Edit') {
+                    jQuery('#btnUpdateGoo').attr('value', 'Edit');
+                }
+            });
+
+            jQuery('#ddlOccupancy').change(function () {
+                jQuery('#btnUpdateGoo').attr('value', 'Save');
+            });
+
+            jQuery('#btnCancelGoo').click(function (e) {
+                jQuery('#ddlGuestCheckingIn').toggle();
+                jQuery('#lblOccupancy').toggle();
+                jQuery('#ddlOccupancy').toggle();
+                jQuery('#btnCancelGoo').toggle();
+                jQuery('#pnlNewGuest').toggle();
+                jQuery('#btnUpdateGoo').attr('value', 'Edit');
+
+                e.preventDefault();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,166 @@
+﻿@using Sitecore.Mvc
+@using BGSitecore.Models
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<MyProfile>
+
+@using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post, new { id = "form-submit-Profile" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.Sitecore().FormHandler("Profile", "MyContactUpdate")
+    @Html.ValidationSummary(false)
+
+    BlueGreenContext bgContext = new BlueGreenContext();
+    var yesOptions = "";
+    var noOptions = "";
+    var isGoGreenVisible = true;
+
+    if (bgContext != null && bgContext.bxgOwner != null && bgContext.bxgOwner.Paperless != null && bgContext.IsAuthenticated)
+    {
+        yesOptions = bgContext.bxgOwner.Paperless.PaperlessRequested ? "id = 'go_green-yes', Name = 'isPaperLessSelected', @checked = 'checked'" : "id = 'go_green-yes', Name = 'isPaperLessSelected'";
+        noOptions = bgContext.bxgOwner.Paperless.PaperlessRequested ? "id = 'go_green-no', Name = 'isPaperLessSelected'" : "id = 'go_green-no', Name = 'isPaperLessSelected', @checked = 'checked'";
+        isGoGreenVisible = bgContext.GetOwnerType() == "Sampler24" || bgContext.GetOwnerType() == "Sampler" ? false : true;
+        Model.isPaperLessSelected = bgContext.bxgOwner.Paperless.PaperlessRequested;
+        Model.isEligibleForAdditionalMemberCard = DBManager.isEligibleForAdditionalCards(bgContext.bxgOwner.Arvact);
+    }
+    else
+    {
+        //Fallback for default setting
+        yesOptions = "id = 'go_green-yes', Name = 'isPaperLessSelected', @checked = 'checked'";
+        noOptions = "id = 'go_green-no', Name = 'isPaperLessSelected'";
+    }
+    <div>
+        @if (ViewData["ShowUnsuccessMessage"] != null && ViewData["ShowUnsuccessMessage"].ToString() == "true")
+        {
+            <div class="alert alert-danger" role="alert">
+                @Html.Raw(Model.UnsuccessMessage)
+            </div>
+        }
+        @if (ViewData["ShowsuccessMessage"] != null && ViewData["ShowsuccessMessage"].ToString() == "true")
+        {
+            <div class="alert alert-success" role="alert">
+                @Html.Raw(Model.SuccessMessage)
+            </div>
+        }
+        @if (isGoGreenVisible && !string.IsNullOrEmpty(Model.AlertInfoDescription))
+        {
+            <div class="alert alert-info" role="alert">
+              @Html.Raw(Editable(Model, x => x.AlertInfoDescription))
+            </div>
+        }
+        @if (Model.isEligibleForAdditionalMemberCard && !string.IsNullOrEmpty(Model.AdditionalCardDescription))
+        {
+            <div class="alert alert-info" role="alert">
+               <p>@Html.Raw(Editable(Model, x => x.AdditionalCardDescription))</p> 
+            </div>
+        }
+        <div class="" id="jumpto-contact-information">
+            <h2 class="h2 text-lowercase first-word" id="contact-information">@Model.ContactInformationTitleLabel</h2>
+            @Html.Sitecore().Placeholder("myprofilecontactinfo")
+            <hr />
+        </div>
+       
+        <div class="" id="jumpto-go-green">
+            @if (isGoGreenVisible)
+            {
+            <h2 class="h2" id="go-green">@Html.Raw(Model.GoGreenTitle)</h2>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>@Html.Raw(Model.GoGreenDesc)</p>
+                    <div class="form-group is-required">
+                        <label class="control-label"><strong>@Model.GoGreenOptInFormTitle</strong></label>
+                        <div class="radio">
+                            <label class="control-label">
+                                @Html.RadioButtonFor(m => m.isPaperLessSelected, MyProfile.GogreenOptedIn, new { yesOptions })
+                              <span class="first-word">@Model.GoGreenOptIn</span>
+                            </label>
+                        </div><!--.radio -->
+                        <div class="radio">
+                            <label class="control-label">
+                                @Html.RadioButtonFor(m => m.isPaperLessSelected, MyProfile.GogreenOptedOut, new {noOptions})
+                                <span class="first-word">@Model.GoGreenOptOut</span>
+                            </label>
+                        </div><!--.radio -->
+                    </div><!-- .form-group -->    
+                </div>
+            </div><!-- .row -->            
+            <hr />
+            }
+            @if (ViewData["SuggestedAddress"] != null && ViewData["SuggestedAddress"].ToString() == "true")
+            {
+            <div  id="collapse-update-profile-step-2">
+                    <div class="panel panel-default panel-narrow">
+                        <div class="panel-body">
+                            <h2 class="panel-title">@Model.SuggestionProfileLabel</h2>
+                            <p>@Model.SuggestionProfileDetailLabel</p>
+                            <hr>
+
+                            <div class="form-group margin-top-xs-10 margin-top-sm-10 margin-top-md-10">
+                                <div class="radio">
+                                    <div class="col-xs-12 col-md-5 padding-bottom-md-20 padding-bottom-xs-20">
+                                        <h3 class="margin-bottom-md-15 margin-bottom-xs-15">@Model.ActualAddressTitleLabel</h3>
+                                        <label class="control-label padding-right-xs-5 padding-right-md-10"><input type="radio" name="correct_address" id="correct_address-no" value="yes">@Html.Raw(ViewData["ActualAddressDetail"])</label>
+                                    </div>
+                                    <div class="col-xs-12 col-md-5 padding-bottom-md-20 padding-bottom-xs-20">
+                                        <h3 class="margin-bottom-md-15 margin-bottom-xs-15">@Model.SuggestedAddressTitleLabel</h3>
+                                        <label class="control-label padding-right-xs-5 padding-right-md-10"><input type="radio" name="correct_address" id="correct_address-yes" value="no" checked="">@Html.Raw(ViewData["SuggestedAddressDetail"])</label>
+                                    </div>
+                                </div><!--.radio -->
+                            </div><!-- .form-group -->
+                            <hr>
+                            <div class="form-group">
+                               <button type="submit" value="action:MyContactUpdate" class="btn btn-primary">@Editable(Model, x => x.submitselectedaddressButtonLabel)</button>
+                               <a href="/mybluegreen/my-account" id="profile-Cancel" name="profile-Cancel"  class="btn btn-primary">Cancel</a>
+                            </div><!-- .form-group -->
+                        </div><!-- .panel-body -->
+                    </div><!-- .panel -->
+                </div><!-- .collapse -->
+            }
+            else if(ViewData["SuggestedAddress"] != null && ViewData["SuggestedAddress"].ToString() == "false")
+            {
+                <div id="collapse-update-profile-step-2">
+                    <div class="panel panel-default panel-narrow">
+                        <div class="panel-body">
+                            <h2 class="panel-title">@Model.SuggestionProfileLabel</h2>
+                            <p>@BGSitecore.Utils.SitecoreUtils.getLocalString("Profile_EnteredAddressLabel")</p>
+                            <hr>
+                            <div class="form-group margin-top-xs-10 margin-top-sm-10 margin-top-md-10">
+                                <div class="radio">
+                                    <div class="col-xs-12 col-md-5 padding-bottom-md-20 padding-bottom-xs-20">
+                                        <h3 class="margin-bottom-md-15 margin-bottom-xs-15">@Model.ActualAddressTitleLabel</h3>
+                                        <label class="control-label padding-right-xs-5 padding-right-md-10"><input type="radio" name="correct_address" id="correct_address-no" value="yes" checked="">@Html.Raw(ViewData["ActualAddressDetail"])</label>
+                                    </div>                                    
+                                </div><!--.radio -->
+                            </div><!-- .form-group -->
+                            <hr>
+                            <div class="form-group">
+                                <button type="submit" value="action:MyContactUpdate" class="btn btn-primary">@Editable(Model, x => x.submitselectedaddressButtonLabel)</button>
+                                <a href="/mybluegreen/my-account" id="profile-Cancel" name="profile-Cancel" class="btn btn-primary">Cancel</a>
+                            </div><!-- .form-group -->
+                        </div><!-- .panel-body -->
+                    </div><!-- .panel -->
+                </div><!-- .collapse -->
+            }
+            else
+            {
+                <div class="" id="collapse-update-profile-step-1">
+                    <div class="form-group">
+                        <button type="submit" value="action:MyContactUpdate" class="btn btn-primary">@Editable(Model, x => x.updatemyprofileButtonLabel)</button>
+                    </div><!-- .form-group -->
+                </div><!-- .collapse -->
+            }
+           
+        </div>
+               
+        @if (!string.IsNullOrEmpty(Model.FootnotesLabel) & isGoGreenVisible)
+        {
+            <div>
+                <p> @Editable(Model, x => x.FootnotesLabel)</p>
+            </div>
+        }
+        <p><span class="required"></span>@Editable(Model, x => x.RequiredLabeltextLabel) </p>
+
+    </div>
+}

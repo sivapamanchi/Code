@@ -1,0 +1,250 @@
+﻿@model BGModern.Models.PlanItPanelModel
+
+@if (Model.IsEnabled)
+{
+    <link href="@Html.GetFullSitePath()/css/owner.css" rel="stylesheet" rev="stylesheet">
+    @*<img src="../Content/Images/plan-it-bluegreen.gif" alt="Plan-it Bluegreen">
+        <p>
+            With Plan-It Bluegreen, you can see resort availability for an entire month with an easy to use, interactive calendar. Or search by date to see availability at every Bluegreen resort! <a href="#learn-more" id="learn-more-toggle">Learn More.</a>
+        </p>
+
+        <p style="display: none;">
+            Simply select a destination, choose how many nights you wish to stay and the month you wish to travel. The interactive calendar will show all the days you can arrive for your desired vacation. Click the day that works best for you and you’re on your way! Or, use Search by Date to view available vacations at EVERY Bluegreen resort in one fast and simple search!
+        </p>*@
+    <script type="text/javascript" src="@Html.GetFullSitePath()/Scripts/jquery.ui.core.min.js"></script>
+    <script type="text/javascript" src="@Html.GetFullSitePath()/Scripts/jquery.ui.datepicker.min.js"></script>
+    <script type="text/javascript" src="@Html.GetFullSitePath()/Scripts/HelpBalloon.js"></script>
+
+    <link rel="stylesheet" href="@Html.GetFullSitePath()/css/dailyRate.css" />
+    <link rel="stylesheet" href="@Html.GetFullSitePath()/css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="@Html.GetFullSitePath()/css/planItBluegreen.css" />
+    <style>
+        select {font-weight:normal !important;}
+    </style>
+    <div class="overlay" id="MessageDiv" style="display: none;">
+        <div class="overlayContent">
+            <img id="ReservationSearch_Image1" src="@Html.GetFullSitePath()/Content/Images/icon-search-loading.gif" style="border-width:0px;">
+        </div>
+    </div>
+    <div id="AlertDiv" class="AlertStyle">
+    </div>
+    <div id="ReservationSearch_UpdatePanel1">
+        <a id="ReservationSearch_calanchor"></a>
+        <div class="container" style="width:100%;">
+            <div class="row">
+                <div id="planItPanel" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" id="searchTypeButtons">
+                            <button id="btnDestination" class="active">search by destination</button>
+                            <button id="btnDate">search by date</button>
+                        </div>
+
+                        <label class="col-xs-6 col-sm-6 col-md-4 col-lg-4" id="lblPoints">
+                            <input type="radio" name="reservationType" value="PT" id="resType_Points" checked />
+                            Points Reservation
+                        </label>
+
+                        <label class="col-xs-7 col-sm-7 col-md-4 col-lg-4" id="lblBonus">
+                            <input type="radio" name="reservationType" value="BT" id="resType_Bonus" />
+                            Bonus Time Reservation
+                        </label>
+                    </div>
+
+                    <div id="search-by-destination" class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <span class="required">*</span> Destination<br />
+                            <select id="ddlDestination">
+                                <option selected="selected" value="choose, choose">Please choose...</option>
+                                @foreach (BGModern.Classes.Destination dest in Model.Destinations)
+                        {
+                                    <option value="@string.Join(",", dest.ResortIDs)">@dest.Description</option>
+                        }
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <span class="required">*</span> Number of Nights<br />
+                            <select id="ddlDays">
+                                <option selected="selected" value="choose, choose">Please choose...</option>
+                                @foreach (int day in Model.NumberOfNights)
+                        {
+                                    <option value="@day.ToString()">@day.ToString()</option>
+                        }
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <span class="required">*</span> Month<br />
+                            <select id="ddlMonthDest">
+                                <option selected="selected" value="choose, choose">Please choose...</option>
+                                @foreach (DateTime date in Model.Months)
+                        {
+                                    <option value="@date.ToShortDateString()">@date.ToString("MMMM") - @date.Year.ToString()</option>
+                        }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="search-by-date" style="display: none;" class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <span class="required">*</span> Check-in<br />
+                            <input id="txtCheckIn" type="text">
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <span class="required">*</span> Check-out<br />
+                            <input id="txtCheckOut" type="text">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
+                            <input id="chkWheelchair" type="checkbox">
+                            <label for="chkWheelchair">Wheelchair accessible</label>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+                            <button id="ReservationSearch_btnSearch">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ReservationSearch_pnlError" class="row" style="display: none;">
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                <img src="@Html.GetFullSitePath()/Content/Images/alert.gif" />
+            </div>
+            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+                <span id="ReservationSearch_errorText" class="error"></span>
+                <span id="ReservationSearch_temporaryErrorText" class="error"></span>
+            </div>
+        </div>
+
+        <div id="ReservationSearch_pnlnotEnoughPoints" style="display: none;">
+            <div class="container" style="width: 100%">
+                <div class="row" style="margin-left: -5px; margin-right: -10px;">
+                    <div id="ReservationSearch_corner" class="planItRoundedPanel col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div id="dynamic">
+                            <strong style="color:Red;">You do not have enough eligible Points for this reservation. Please revise your search.</strong>
+                        </div>
+                        <br>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td width="60%">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td width="10px">&nbsp;</td>
+                                                    <td width="110px" align="left">Check-In Date: </td>
+                                                    <td width="60px" align="left">
+                                                        <span id="ReservationSearch_lblCheckinDate" style="font-weight:bold;"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="10px">&nbsp;</td>
+                                                    <td width="110px" align="left">Check-Out Date:</td>
+                                                    <td width="60px" align="left">
+                                                        <span id="ReservationSearch_lblCheckOutDate" style="font-weight:bold;"></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td width="40%">
+                                        <table>
+                                            <tbody>
+                                                <tr id="1000">
+                                                    <td width="120px" align="left">Total Eligible Points:</td>
+                                                    <td width="60px" align="left">
+                                                        <span id="ReservationSearch_lblEligiblePoints" style="font-weight:bold;"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr id="1001">
+                                                    <td width="120px" align="left">Total Points Required:</td>
+                                                    <td width="60px" style="color:Red;" align="left">
+                                                        <span id="ReservationSearch_lblTotalPoints" style="font-weight:bold;"></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="480px"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div id="divPointsDetail" style="overflow:auto;">
+                        </div>
+                        <div>
+                            <table id="ReservationSearch_tblPointsDetail" border="0" style="width:98%;"></table>
+                        </div>
+                        <div id="contracts" style="overflow:auto;  margin-top:5px;">
+                            <div id="divContracts">
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="ReservationSearch$hdnSPCost" id="ReservationSearch_hdnSPCost">
+        <input type="hidden" name="ReservationSearch$hdnParams" id="ReservationSearch_hdnParams">
+        <div id="ReservationSearch_pnlShowCCPanel" style="padding-bottom:10px; display: none;">
+            <table id="Table1" cellspacing="1" cellpadding="1" border="0">
+                <tbody>
+                    <tr>
+                        <td colspan="2" style="flex-align: center">
+                            <font color="red">
+                                <b>Save your Points to Continue.</b> Your Points expire before the check-out date of this reservation. To complete this reservation you must elect to save your Points.  In addition to the Points used for this reservation, all annual and borrowed Points currently on your account will be automatically saved on their expiration date for an additional year of use in Red, White and Blue seasons.
+                            </font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="flex-align: center">
+                            <input type="button" id="btn_save" class="tpRenew-SaveMyPoints" value="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="PaymentInformation" style="display: none">
+            @Html.Action("GetPartialView", "CreditCardInfo")
+        </div>
+    </div>
+
+    <div class="container" style="width: 100%;">
+        <div id="planItResults" style="display: none; margin-left: 0px; margin-right: 15px;">
+            <div class="row">
+                @Html.Partial("PlanIt/Calendar")
+                @Html.Partial("PlanIt/Filter")
+            </div>
+
+            @Html.Partial("PlanIt/DailyRate")
+            @Html.Partial("PlanIt/Results")
+        </div>
+    </div>
+
+    <script type="text/javascript" src="@Html.GetFullSitePath()/Scripts/base64.js"></script>
+    <script type="text/javascript" src="@Html.GetFullSitePath()/Scripts/planItBluegreen.js"></script>
+    <script type="text/javascript" src="@Html.GetFullSitePath()/Scripts/dailyRate.js"></script>
+    <script type="text/javascript">
+        $pib.siteRoot = "@(Model.SiteRoot)";
+        $pib.onHomePage = @(Model.OnHomePage.ToString().ToLower());
+        $pib.showAvailabilityCount = @(Model.ShowAvailabilityCount.ToString().ToLower());
+        $pib.isSamplerOwner = @(Model.IsSamplerOwner.ToString().ToLower());
+        $pib.homeProject = "@Model.HomeProject";
+        $pib.initialDestination = "@Model.InitialDestination";
+        $pib.initialLOS = @Model.InitialLOS;
+        $pib.pointsDestinations = @Html.Raw(Model.PointsDestinations);
+        $pib.bonusTimeDestinations = @Html.Raw(Model.BonusTimeDestinations);
+        $pib.fullWeekResorts = @Html.Raw(Model.FullWeekResorts);
+        $dr.helpBalloons = [];
+
+        jQuery(document).ready(function () {
+            jQuery("#Panel1").hide();
+            $pib.init();
+        });
+    </script>
+}

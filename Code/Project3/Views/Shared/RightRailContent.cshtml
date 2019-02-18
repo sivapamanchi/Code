@@ -1,0 +1,22 @@
+﻿@using Sitecore.Mvc
+
+<div class="site-content" id="site-content" style="transform: none;">
+    <div class="container" style="transform: none;">
+        <div class="row" style="transform: none;">
+            @*<div class="col-xs-12 col-md-9 col-primary">
+                <div class="page-header">
+                    <h1 class="h1"><strong>My</strong> Dashboard</h1>
+                </div> .page-header 
+            </div>*@
+
+            <div class="col-xs-12 col-md-9 col-primary">
+                @Html.Sitecore().Placeholder("sitecontent")
+            </div>
+
+            <div class="hidden-print col-xs-12 col-md-3 col-sidebar" id="site-sidebar" style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+                @Html.Sitecore().Placeholder("railcontent")
+            </div>
+        </div>
+    </div>
+</div>
+

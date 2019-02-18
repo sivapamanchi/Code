@@ -1,0 +1,82 @@
+﻿@using System.Text
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+
+@model BGSitecore.Models.Footer
+
+@{
+    var menu = new StringBuilder();
+    var area = "OWN"; // TODO figure out whan exactly shoulkd we set for Area
+    foreach (var item in Model.Children)
+    {
+        var url = MenuUtils.GetItemUrl(item);
+
+        if (item.ItemType == "")
+        {
+            menu.AppendFormat("<li><a href='{0}?Area={1}'>{2}</a></li>", url, area, item.MainMenuDisplayName);
+        }
+        else if (item.ItemType == "target")
+        {
+            menu.AppendFormat("<li><a href='{0}?Area={1}' target='_blank'>{2}</a></li>", url, area, item.MainMenuDisplayName);
+        } else
+        {
+            menu.AppendFormat("<li><a href='{0}?Area={1}' class='{2}'>{3}</a></li>", url, area, item.ItemType, item.MainMenuDisplayName);
+        }
+    }
+}
+
+
+
+<footer id="colophon" class="hidden-print site-footer" itemscope itemtype="http://schema.org/WPFooter">
+    <div class="container">
+        <hr>
+        <div class="row" itemscope itemtype="http://schema.org/WPSideBar">
+            <div class="col-xs-12">
+                <p>@Html.Raw(ImageUtils.BuildImageTag(Model.FooterImage, Model.SiteSettings.RemoteImageUrl))</p>
+                @Html.Raw(Model.SocialMediaLinks)
+
+
+                <div class="site-footer-nav">
+                    <p>
+                        <a href="#view-menu" data-toggle="collapse" data-target="#site-footer-nav" class="hidden-md hidden-lg btn btn-sm btn-default btn-toggle-footer-nav collapsed">
+                            <span class="view-text">View Menu</span>
+                            <span class="close-text">Close Menu</span>
+                        </a>
+                    </p>
+                    <div class="collapse" id="site-footer-nav">
+                        <ul class="list-inline list-inline-thin list-inline-piped">
+                            @Html.Raw(menu.ToString())
+                        </ul>
+                    </div><!-- .collapse -->
+                </div>
+
+                <div class="copyright">
+                    <p>&copy;@DateTime.Now.Year @Html.Raw(Model.CopyrightMessage)</p>
+                    <p>@Html.Raw(Model.TrademarkMessage)</p>
+
+                    <img src="@Html.Raw(Model.HousingOppertunityImage.ImageUrl.Url)?@Html.Raw(Model.HousingOppertunityImage.Modifier)" class="pull-right img-responsive logo-eho" alt="Equal Housing Opportunity">
+                    <p class="text-uppercase">
+                        @Html.Raw(Model.AdvertizingMaterial)
+                    </p>
+
+                </div><!-- .copyright -->
+            </div>
+        </div><!-- .row -->
+
+    </div><!-- .container -->
+</footer><!-- .footer -->
+
+
+<div class="collapse search-form-overlay" id="search">
+    <div class="form-group">
+        <div class="input-group">
+            <label for="searchKeyword" class="sr-only">Ask Bluegreen</label>
+            <input type="search" name="searchKeyword" id="searchKeyword" class="form-control" placeholder="Search Bluegreen for" value="" autocomplete="on">
+            <div class="input-group-btn">
+                <button id="ask-bluegreen" name="ask-bluegreen" type="submit" class="btn btn-primary"><span class="fa fa-fw fa-search"></span></button>
+            </div><!-- .input-group-btn -->
+        </div><!-- .input-group -->
+    </div><!-- .form-group -->
+</div><!-- .collapse -->

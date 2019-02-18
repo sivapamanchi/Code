@@ -1,0 +1,206 @@
+﻿@using System.Data;
+@using BGSitecore.Utils;
+
+@model BGSitecore.Models.Section
+@{
+
+    int colCount = 99;
+    string[] columns = null;
+
+    if (Model.ColumnList != null)
+    {
+        columns = Model.GetColumnList();
+        colCount = columns.Length;
+    }
+
+    string tableLinks = MenuUtils.BuildTableLinks(Model.List);
+
+    string paginatorCss = OwnerUtils.GetTablePaginatorCss(Model);
+
+    string sorterData = OwnerUtils.GetTableSorterData(Model);
+    string sorterCss = (!string.IsNullOrEmpty(sorterData)) ? "js-table-sorter" : "";
+
+    string itemsPerPage = (Model.MaxItemsPerPage > 0) ? "data-items-per-page=" + Model.MaxItemsPerPage : "data-items-per-page=999";
+
+    string sectionId = UiUtils.ToCssClass(false, "section", Model.InnerItem.Name);
+
+}
+
+@if (Model.LazyLoadContent)
+{
+    if (Model.showSectionTitle)
+    {
+    <h2 class="h2 first-word">@Model.Title</h2>
+    }
+    <div class="js-sectionLazyLoad" type="@Model.InnerItem.ID.ToString()">
+        <div class="loading-wrapper loading-wrapper-inline">
+            <i class="fa fa-refresh fa-spin fa-lg fa-fw loading-icon"></i>
+        </div>
+    </div>
+}
+else
+{
+    if (!string.IsNullOrEmpty(Model.SuccessMessage))
+    {
+        <div class="hidden-print hidden alert alert-success js-ReferralSuccess" role="alert">
+          @Html.Raw(Model.SuccessMessage)
+        </div>
+        
+    }
+    <div class="hidden-print hidden alert alert-danger js-ReferralErrors" role="alert"></div>
+    <div id="@sectionId">
+
+        @if (Model.showSectionTitle)
+        {
+        <h2 class="h2 first-word">@Model.Title</h2>
+        }
+        <!-- NOTE: This shows when an Owner does not have upcoming reservations -->
+        @if ((Model.TableData == null) || (Model.TableData.Rows == null) || (Model.TableData.Rows.Count <= 0))
+        {
+        <div class="getting-started no-reservations">
+            @if (!Model.NoDataHideFaceIcon)
+            {
+            <i class="fa fa-frown-o fa-4x" aria-hidden="true"></i>
+            }
+            <p><strong>@Model.NoDataMessage</strong></p>
+            <p>
+                @if (!string.IsNullOrEmpty(@Model.NoDataPrimary))
+                    {
+                    <a href="@Model.NoDataPrimaryUrl.Url" class="btn btn-primary">@Model.NoDataPrimary</a>
+                }
+                @if (!string.IsNullOrEmpty(@Model.NoDataSecondary))
+                    {
+                    <a href="@Model.NoDataSecondaryUrl.Url" class="btn btn-default">@Model.NoDataSecondary</a>
+                }
+            </p>
+        </div>
+        }
+        else
+        {
+
+            if (Model.TableDataSummary != null)
+            {
+                <div class="pull-right-sm btn-group btn-group-toggle js-table-controls" role="group" aria-label="Toggle Details Table">
+                    <a href="#@sectionId-summary" role="button" class="btn btn-primary active" id="show-current-points-summary" data-toggle="tab" aria-expanded="false" aria-controls="@sectionId-summary">Summary</a>
+                    <a href="#@sectionId-details" role="button" class="btn btn-primary" id="show-current-points-details" data-toggle="tab" aria-expanded="false" aria-controls="@sectionId-details">Details</a>
+                </div>
+            }
+            <div class="tab-content">
+            <div class="tab-pane @(Model.TableDataSummary == null ? "active" : "" )" id="@sectionId-details">
+                <table class="section table-collapse table-striped table-hover table-hidden-rows @paginatorCss @sorterCss" @sorterData @itemsPerPage>
+                    <thead>
+                        <tr class="tablesorter-headerRow">
+                            @if (columns != null)
+                            {
+                                string cssClass = "";
+                                for (int i = 0; i < columns.Length; i++)
+                                {
+                                    string colClass = string.Format("c{0}", i);
+                                    var restrictCol = "";// Model.RestrictColumnFromSort.Split(',').Contains(i.ToString()) ? "data-sorter=false" : "";
+                                    var hiddenPrintClass = columns[i].Contains("checkbox") ? "hidden-print text-left" : "";
+                                    <th class="@cssClass @colClass @hiddenPrintClass" @restrictCol>@Html.Raw(UiUtils.GetColumnTitle(columns[i]))</th>
+                                    cssClass = (i == columns.Length - 2) ? "text-right" : (i != 0) ? "text-left" : "";
+                                }
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (columns != null)
+                        {
+                            foreach (DataRow row in Model.TableData.Rows)
+                            {
+                            <tr>
+                                @{
+                                    string cssClass = "";
+                                    for (int i = 0; i < columns.Length; i++)
+                                    {
+                                        //string key = string.Format("col{0:00}", i);
+                                        string colClass = string.Format("c{0}", i);
+                                        string colTitle = (i > 0) ? "data-label='" + UiUtils.GetDataLabel(@columns[i]) + "'" : "";
+                                        var hiddenPrintClass = columns[i].Contains("checkbox") ? "hidden-print text-left" : "";
+                                        <td class="@cssClass  @colClass @hiddenPrintClass" @Html.Raw(colTitle)>@Html.Raw(row[i])</td>
+                                        cssClass = (i == columns.Length - 2) ? "text-right" : (i != 0) ? "text-left" : "";
+                                    }
+                                }
+                            </tr>
+                            }
+                        }
+                    </tbody>
+                    @if (!string.IsNullOrEmpty(tableLinks))
+                    {
+                        <tfoot>
+                            <tr>
+                                <th colspan="@colCount">
+                                    <ul class="list-inline list-inline-narrow">
+                                        @Html.Raw(tableLinks)
+                                    </ul>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    }
+                </table>
+                <div class="pager paging-nav hidden-print" style="display: none">
+                    <a href="#" class="prev">‹</a>
+                    <span class="pagecount"></span>
+                    <a href="#" class="view-all">all</a>
+                    <a href="#" class="next">›</a>
+                </div>
+            </div>
+
+        <!-- pager -->
+           
+            @if (Model.TableDataSummary != null)
+            {
+                <div class="tab-pane active" id="@sectionId-summary">
+                    <table class="section table-collapse table-striped table-hover @paginatorCss @sorterCss" @sorterData @itemsPerPage>
+                        <thead>
+                            <tr class="tablesorter-headerRow">
+                                @if (columns != null)
+                                {
+                                    string cssClass = "";
+                                    for (int i = 0; i < columns.Length; i++)
+                                    {
+                                        if (Model.HiddenColumn != i)
+                                        {
+                                            string colClass = string.Format("c{0}", i);
+                                            var restrictCol = "";// Model.RestrictColumnFromSort.Split(',').Contains(i.ToString()) ? "data-sorter=false" : "";
+                                            var hiddenPrintClass = columns[i].Contains("checkbox") ? "hidden-print text-left" : "";
+                                            <th class="@cssClass @colClass @hiddenPrintClass" @restrictCol>@Html.Raw(UiUtils.GetColumnTitle(columns[i]))</th>
+                                            cssClass = (i == columns.Length - 2) ? "text-right" : (i != 0) ? "text-left" : "";
+                                        }
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (columns != null)
+                            {
+                                foreach (DataRow row in Model.TableDataSummary.Rows)
+                                {
+                                    <tr>
+                                        @{
+                                            string cssClass = "";
+                                            for (int i = 0; i < columns.Length; i++)
+                                            {
+                                                if (Model.HiddenColumn != i)
+                                                {
+                                                    //string key = string.Format("col{0:00}", i);
+                                                    string colClass = string.Format("c{0}", i);
+                                                    string colTitle = (i > 0) ? "data-label='" + UiUtils.GetDataLabel(@columns[i]) + "'" : "";
+                                                    var hiddenPrintClass = columns[i].Contains("checkbox") ? "hidden-print text-left" : "";
+                                                    <td class="@cssClass  @colClass @hiddenPrintClass" @Html.Raw(colTitle)>@Html.Raw(row[i])</td>
+                                                    cssClass = (i == columns.Length - 2) ? "text-right" : (i != 0) ? "text-left" : "";
+                                                 }
+                                            }
+                                        }
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            </div>
+        }
+    </div>
+}

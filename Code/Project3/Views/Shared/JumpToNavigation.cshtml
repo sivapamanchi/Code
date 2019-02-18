@@ -1,0 +1,12 @@
+﻿@using Sitecore.Mvc
+@using BGSitecore.Models
+
+
+@{
+    var JumpToMenuItem = SitecoreItemReferences.JumpToFieldId;
+}
+<div class="hidden-print site-subnav">
+    <div class="container">
+        @Html.Sitecore().Field("Jump To Menu")
+    </div><!-- .container -->
+</div><!-- .site-subnav -->

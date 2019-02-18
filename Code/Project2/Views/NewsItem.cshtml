@@ -1,0 +1,42 @@
+﻿@model BGModern.Models.NewsItemModel
+
+@{
+    ViewBag.Title = "NewsItem";
+}
+
+<div style="margin-top:25px;">
+    @{
+        Html.RenderPartial("BreadcrumbNavigation", Model);
+    }
+</div>
+
+<div class="page-title">
+    @Model.PageTitle
+</div>
+
+@section LeftElements {
+    @{Html.RenderAction("GetFeaturedResorts", "FeaturedResorts");}
+}
+<br />
+@{
+    if (Model.DisplayImage != null)
+    {
+        <br />
+        <h2><span id="lblTitle">@Model.ItemTitle</span></h2>
+        if (!string.IsNullOrEmpty(@Model.InsideImage))
+        {
+            <img alt="" src="@Model.InsideImage" border="0" align="left" style="width:200px; float:right; padding-top:.5em; padding-left:.5em;">
+        }
+    }
+
+    <span class="text">@Html.Raw(@Model.DetailCopy)</span>
+
+}
+<p>
+    <br />
+    <br />
+    <br />
+    @{
+        <a href="@Model.GoBackUrl"><img src="~/Content/Images/goBackBtn.gif" /></a>
+    }
+</p>

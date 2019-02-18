@@ -1,0 +1,26 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Video>
+
+@{
+
+}
+@if (!string.IsNullOrEmpty(Model.VideoUrl))
+{
+    <div class="embed-responsive embed-responsive-16by9">
+        <!-- DEVELOPER NOTE: Make sure URL protocol (http|https) is set correctly for ALL parameters, or you are going to have a bad time! -->
+        @if (Model.VideoUrl.ToLower().Contains("http"))
+        {
+            <iframe src="@Model.VideoUrl" class="scene7-video scene7-video-iframe"></iframe>
+        }
+        else
+        {
+            <iframe src="@Model.RemoteVideoUrl@Model.VideoUrl" class="scene7-video scene7-video-iframe"></iframe>
+
+        }
+    </div><!-- .embed-responsive -->
+
+}

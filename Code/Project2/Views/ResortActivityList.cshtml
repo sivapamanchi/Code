@@ -1,0 +1,28 @@
+﻿@model BGModern.Models.ResortModel
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<br/>
+<div class="row activity-list">
+    <div class="col-lg-9">
+        <div class="heading">@Model.ResortActivities.Title</div>
+        @{
+            @*original code for processing individual Activity Items*@
+            @*foreach (var activity in Model.ResortActivities.Activities)
+            {
+                <h5>@activity.Title</h5>
+                <ul>
+                    <li>@activity.Description</li>
+                    <li>@activity.Date</li>
+                    <li>@activity.Frequency</li>
+                </ul>
+                <br />
+            }*@
+
+            // the contents of CompleteActivityListMarkup should be a snippet of HTML that presents each of the activities in a <ul> with some sort of header. see the original code above for an idea of how
+            // BG should be marking up that content. Note that any environment-specific (dev, stage, prod) URLs in the member below will have to be modified in Umbraco if the Html helper objects are not used.
+            @Html.Raw(Model.ResortActivities.CompleteActivityListMarkup);
+        }
+    </div>
+</div>

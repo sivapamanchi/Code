@@ -1,0 +1,14 @@
+﻿@using Sitecore.Mvc
+@using BGSitecore.Extensions
+
+<div class="site-content" id="site-content" style="transform: none;">
+    <div class="container" style="transform: none;">
+        <div class="row" style="transform: none;">
+            @if (Sitecore.Context.PageMode.IsExperienceEditor)
+            {
+                <p>[Section]</p>
+            }
+            @Html.Sitecore().Placeholder("flex-section")
+        </div>
+    </div>
+</div>

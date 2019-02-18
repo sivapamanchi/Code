@@ -1,0 +1,54 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models.OwnerProxy
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<OwnerProxySections>
+
+
+<div class="hidden-print hidden alert alert-warning js-WarningMessage" role="alert"></div>
+<div class="hidden-print hidden alert alert-danger js-alertmessage" role="alert"></div>
+<div class="hidden-print hidden alert alert-success  js-ConfirmationMessage" role="alert"></div>
+@if (Model.AllSections != null && Model.AllSections.Count() > 0)
+{
+
+    foreach (OwnerProxySection item in Model.AllSections)
+    {
+
+        if (ResortUtils.SectionHasChildItem(item) && !item.HideSection)
+        {
+            var sectionItemId = string.IsNullOrEmpty(item.JumpUniqueId) ? "section_" + item.classname : item.JumpUniqueId;
+            var jumpto = item.BuildJumpToLink();
+            var customClass = (item.HideSectionWhenPrinting) ? "hidden-print" : "";
+            var print = "";
+            var hiddenPrint = "";
+            var isCastYourSectionItem = item.Id.ToString().Equals("95B63B8D-9CA4-4668-8C47-EBDCED269B65", StringComparison.CurrentCultureIgnoreCase);
+            <div class="@customClass" id="@jumpto">
+               
+                <h3 class='h2 @hiddenPrint @(item.HideName ? "hidden " : "")'><strong>@Editable(item, x => x.Displayname) @Html.Raw(print)</strong></h3>
+
+                @if (item.AllRichText != null && item.AllRichText.Count() > 0)
+                {
+                    foreach (BGSitecore.Models.Resort.RichText richTextItem in item.AllRichText)
+                    {
+                        @Html.Partial("/Views/Rewards/RichText.cshtml", richTextItem)
+                    }
+                }
+
+                @if (isCastYourSectionItem && item.Candidates != null)
+                {
+                    @Html.Partial("/Views/Ownerproxy/CastYourVote.cshtml", item.Candidates)
+                }
+
+                @if (item.ShowLineAfterSection)
+                {
+                    <hr />
+                }
+            </div>
+        }
+    }
+}
+<script src="~/assets/js/OwnerProxy/proxyvoting.js"></script>
+

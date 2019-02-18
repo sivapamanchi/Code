@@ -1,0 +1,50 @@
+﻿@model BGModern.Models.NewsItemModel
+
+@{
+    ViewBag.Title = "NewsItem";
+}
+
+<div>
+    @{
+        if (Model.DisplayImage != null)
+        {
+            <br />
+
+            if (Model.URL != null)
+            {
+                <a class="prevNext" style="float:left; padding-right:.5em;" href="@Model.URL">
+                    <img alt="m.UrlName" src="@Model.DisplayImage" border="0" align="left">
+                </a>
+            }
+            else
+            {
+                <img alt="" src="@Model.DisplayImage" border="0" align="left">
+            }
+        }
+
+        if (@Model.URL != "")
+        {
+            <a class="prevNext" href="@Model.URL">
+                <b>@Model.ItemTitle</b>
+            </a>
+        }
+        else
+        {
+            <b>@Model.ItemTitle</b>
+        }
+
+        @Html.Raw(@Model.Blurb);
+
+        if (@Model.AdditionalInfoText != "")
+        {
+            if (@Model.URL != null && @Model.AdditionalInfoText != "")
+            {
+                <p width="100%" style="text-align:right;">
+                    <a class="prevNext" href="@Model.URL" style="text-decoration:underline">
+                        @Model.AdditionalInfoText
+                    </a>
+                </p>
+            }
+        }
+    }
+</div>

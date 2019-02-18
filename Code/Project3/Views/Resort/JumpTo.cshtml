@@ -1,0 +1,52 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Utils
+
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortSections>
+
+@if (!Sitecore.Context.PageMode.IsExperienceEditorEditing)
+{
+    if (Model.AllSections != null && Model.AllSections.Count() > 0)
+    {
+        <div class="hidden-print site-subnav">
+            <div class="container">
+                <a data-target="#collapse-site-subnav" data-toggle="collapse" class="hidden-md hidden-lg btn btn-sm btn-default btn-block collapsed">Jump To</a>
+
+                <div class="collapse" id="collapse-site-subnav">
+                    <div class="nav-label">Jump To:</div>
+                    <div id="site-subnav">
+                        <ul class="nav navbar-submenu" role="tablist">
+                            @{
+                                int i = 0;
+                                var activestring = "active";
+                            }
+                            @foreach (Section item in Model.AllSections)
+                            {
+                                if (item.ShowJumpToSection)
+                                {
+                                    if (ResortUtils.SectionHasChildItem(item))
+                                    {
+                                        if (SitecoreUtils.EvaluateRules(item.RestrictionRule, item.InnerItem))
+                                        {
+                                            string href = (i == 0) ? "site-content" : item.BuildJumpToLink();
+                                            <li class="@activestring"><a href="#@href" id="jump-to-@item.JumpUniqueId" class="navbar-submenu-link" title="@item.JumpCaption">@item.JumpDisplayName</a></li>
+                                            activestring = "";
+                                            i++;
+                                        }
+                                    }
+                                }
+                            }
+                            <li class="@activestring"><a href="#BVRRContainer" id="jump-to-BVRRContainer" class="navbar-submenu-link" title="Reviews">Reviews</a></li>
+                            <li class="@activestring js-reservationlink hidden"><a href="#reserverContainer" id="jump-to-reserverContainer" class="navbar-submenu-link" title="Reviews">Reserve</a></li>
+
+                        </ul>
+                    </div>
+                   <a href="#book" class="hidden-md hidden-lg btn btn-sm btn-primary btn-block js-book-link" title="Book this resort">Book</a>
+                </div>
+            </div><!-- .container -->
+        </div><!-- .site-subnav -->
+    }
+}

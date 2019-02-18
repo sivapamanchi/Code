@@ -1,0 +1,277 @@
+﻿@model BGModern.Models.MyPointsListModel
+
+<script type="text/javascript" src="~/Scripts/jquery.tablesorter.min.js"></script>
+<span class="clsPointsHeading">Current Points</span>
+<div id="tabs-container1" class="plainTab">
+    <ul class="tabs-menu">
+        <li class="current"><a href="#CurrentpointsSummary">Summary</a></li>
+        <li><a href="#CurrentpointsDetail">Detail</a></li>
+    </ul>
+    <div id="tabsCurrent" class="tab">
+        <div id="CurrentpointsSummary" class="tab-content">
+
+            <!-- new Summary points grid -->
+            <div id="UpdatePanel1">
+                <div id="Panel2">
+                    <table class="reservData" cellspacing="0" cellpadding="0" width="100%" border="0">
+                        <tr>
+                            <td>
+                                <div>
+                                    <table class="resortDataw" border="1" id="grdCurrentpointsSummary" style="width:100%;border-collapse:collapse;">
+                                        <thead>
+                                            <tr class ="resortDataw" style="text-align:center;background-color:#333333;">
+                                                <th style="text-align:center;text-decoration:underline;width:25%;padding-bottom:.10em;cursor:pointer;">Point Type</th>
+                                                <th style="text-align:center;text-decoration:underline;width:25%;padding-bottom:.10em;cursor:pointer;">Available Points</th>
+                                                <th style="text-align:center;text-decoration:underline;width:25%;padding-bottom:.10em;cursor:pointer;">Expire Date</th>
+                                                <th style="text-align:center;text-decoration:underline;width:25%;padding-bottom:.10em;cursor:pointer;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach (var datavalue in Model.CurrentSummaryPoints)
+                                        {
+                                            <tr>
+                                                <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.PointTypeDesc</td>
+                                                <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:#,###}", datavalue.PointBal)</td>
+                                                <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:MM/dd/yyyy}", datavalue.ExpireDate)</td>
+                                                <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.Action</td>
+                                            </tr>
+                                        }
+                                       </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- end new Summary points grid -->
+        </div>
+        <div id="CurrentpointsDetail" class="tab-content">
+            <!-- new Details points grid -->
+            <div id="UpdatePanel2">
+                <div id="Panel3">
+                    <table class="reservData" cellspacing="0" cellpadding="0" width="100%" border="0">
+                        <tr>
+                            <td>
+                                <div>
+                                    <table class="resortDataw" border="1" id="grdCurrentpointsDetail" style="width:100%;border-collapse:collapse;">
+                                        <thead>
+                                            <tr class="resortDataw" style="text-align:center;background-color:#333333;">
+                                                <th style="text-align:center;text-decoration:underline;width:25%;padding-bottom:.10em;cursor:pointer;">Account #</th>
+                                                <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Available Points</th>
+                                                <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Expire Date</th>
+                                                <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Point Type</th>
+                                                <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var datavalue in Model.CurrentDetailPoints)
+                                            {
+                                                <tr>
+                                                    <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.AcctNum</td>
+                                                    <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:#,###}", datavalue.PointBal)</td>
+                                                    <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:MM/dd/yyyy}", datavalue.ExpireDate)</td>
+                                                    <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.PointTypeDesc</td>
+                                                    <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.Action</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- end new Detail points grid -->
+        </div>
+    </div>
+</div>
+<br />
+
+@if(!@Model.HideFuturePoints){
+<div id="divFuturePoints">
+    <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" style="width: 100%;" border="0" /><br />
+    <span class="clsPointsHeading">Future Points</span>
+    <div id="tabs-container" class="plainTab">
+        <ul class="tabs-menu">
+            <li class="current"><a href="#FuturepointsSummary">Summary</a></li>
+            <li><a href="#FuturepointsDetail">Detail</a></li>
+        </ul>
+        <div id="tabsFuture" class="tab">
+            <div id="FuturepointsSummary" class="tab-content">
+                <!-- new Summary points grid -->
+                <div id="UpdatePanel3">
+                    <div id="Panel4">
+                        <table class="reservData" cellspacing="0" cellpadding="0" width="100%" border="0">
+                            <tr>
+                                <td>
+                                    <div>
+                                        <table class="resortDataw" border="1" id="grdFuturepointsSummary" style="width:100%;border-collapse:collapse;">
+                                            <thead>
+                                                <tr class="resortDataw" style="text-align:center;background-color:#333333;">
+                                                    <th style="text-align:center;text-decoration:underline;width:25%;padding-bottom:.10em;cursor:pointer;">Point Type</th>
+                                                    <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Points</th>
+                                                    <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Earn Date</th>
+                                                    <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Expire Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var datavalue in Model.FutureSummaryPoints)
+                                                {
+                                                    <tr>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.PointTypeDesc</td>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:#,###}", datavalue.PointBal)</td>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:MM/dd/yyyy}", datavalue.EarnedDate)</td>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:MM/dd/yyyy}", datavalue.ExpireDate)</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- end new Summary points grid -->
+                <br />
+                <br />
+            </div>
+            <div id="FuturepointsDetail" class="tab-content">
+                <!-- new Details points grid -->
+                <div id="UpdatePanel4">
+                    <div id="Panel5">
+                        <table class="reservData" cellspacing="0" cellpadding="0" width="100%" border="0">
+                            <tr>
+                                <td>
+                                    <div>
+                                        <table id="grdFuturepointsDetail" class="tablesorter" border="1" style="width:100%;border-collapse:collapse;">
+                                            <thead>
+                                                <tr class="resortDataw" style="text-align:center;background-color:#333333;">
+                                                    <th style="text-align:center;text-decoration:underline;width:25%;padding-bottom:.10em;cursor:pointer;">Account #</th>
+                                                    <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Points</th>
+                                                    <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Earn Date</th>
+                                                    <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Expire Date</th>
+                                                    <th style="text-align:center;text-decoration:underline;width:15%;padding-bottom:.10em;cursor:pointer;">Point Type</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var datavalue in Model.FutureDetailPoints)
+                                                {
+                                                    <tr>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.AcctNum</td>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:#,###}", datavalue.PointBal)</td>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:MM/dd/yyyy}", datavalue.EarnedDate)</td>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@string.Format("{0:MM/dd/yyyy}", datavalue.ExpireDate)</td>
+                                                        <td class="resortData" align="center" style="text-align:center;color:#666666;background-color:#CCCCCC;font-weight:bold;">@datavalue.PointTypeDesc</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!-- end new Detail points grid -->
+            </div>
+        </div>
+    </div>
+    <br />
+
+</div>
+}
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+            ///Hide Show Detail/Summary
+            jQuery('.tabs-menu a').click(function (event) {
+            event.preventDefault();
+            jQuery(this).parent().addClass('current');
+            jQuery(this).parent().siblings().removeClass('current');
+            var tab = jQuery(this).attr('href');
+            // jQuery(".tab-content").not(tab).css("display", "none");
+            jQuery(tab).closest('.tab').find('.tab-content').not(tab).css('display', 'none');
+            // jQuery(this).find(".tab-content").not(tab).css("display", "none");
+            jQuery(tab).show();
+            return false;
+            });
+
+        //Table Sort
+            jQuery('#grdCurrentpointsSummary').tablesorter();
+            jQuery('#grdCurrentpointsDetail').tablesorter();
+            jQuery('#grdFuturepointsSummary').tablesorter();
+            jQuery('#grdFuturepointsDetail').tablesorter();
+            return false;
+            });
+</script>
+
+<style type="text/css">
+        #nav_links_background {
+            background-color: #c0c0c0;
+            width: 20em;
+        }
+
+    .auto-style1 {
+        height: 23px;
+    }
+
+    .plainTab ul {
+        list-style: none !important;
+    }
+
+    .plainTab {
+        height: auto;
+        overflow: auto;
+    }
+
+    .tabs-menu {
+        float: left;
+        clear: both;
+        padding-left: 0px;
+    }
+
+    .tabs-menu li {
+        float: left;
+    }
+
+    .tabs-menu li.current {
+        position: relative;
+    }
+
+    .tabs-menu li a {
+        padding: 10px;
+        color: Black;
+    }
+
+    .tabs-menu .current a {
+        text-decoration: none;
+        font-size: 15px;
+    }
+
+    .tab {
+        margin-bottom: 20px;
+        width: auto;
+    }
+
+    .tab-content {
+        padding-top: 0px;
+        padding-left: 0px;
+        display: none;
+    }
+
+    .reservData {
+        float: left !important;
+    }
+
+    #CurrentpointsSummary, #FuturepointsSummary {
+        display: block;
+        color: black;
+    }
+
+    .clsPointsHeading {
+        font-size: 18px;
+    }
+</style>

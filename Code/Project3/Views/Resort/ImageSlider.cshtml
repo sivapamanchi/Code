@@ -1,0 +1,35 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortImageList>
+
+@if (Model.ResortImages != null && Model.ResortImages.Count() > 0)
+{
+    <div class="flexslider flexslider-carousel" id="@Model.classname">
+        <div class="flex-viewport">
+            <ul class="slides">
+                @foreach (ResortImage item in Model.ResortImages)
+                {
+                    if (item.ShowInSlider)
+                    {
+                        <li class="slide-image" data-thumb="@ImageUtils.BuildImageUrl(item, Model.RemoteImageUrl)">
+                            <div class="thumbnail">
+                                @Html.Raw(ImageUtils.BuildImageTag(item, Model.RemoteImageUrl))
+                                @if (!string.IsNullOrEmpty(@item.Caption))
+                                {
+                                    <div class="caption"><p>@item.Caption</p></div>
+                                }
+                            </div><!-- .thumbnail -->
+                        </li>
+                    }
+                }
+
+            </ul>
+            <div id="@Model.classname-nav" class="flex-nav"></div>
+        </div>
+    </div><!-- .flexslider -->
+    
+}

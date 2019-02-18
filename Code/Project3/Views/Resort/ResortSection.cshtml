@@ -1,0 +1,130 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortSections>
+
+@{
+    string printOption = "<button href='#' class='js-printable hidden-print print-btn' data-printable='{0}' ><i class='fa fa-print'></i></button>";
+}
+
+@if (Model.AllSections != null && Model.AllSections.Count() > 0)
+{
+    foreach (Section item in Model.AllSections)
+    {
+        if (ResortUtils.SectionHasChildItem(item) && !item.HideSection)
+        {
+            var sectionItemId = string.IsNullOrEmpty(item.JumpUniqueId) ? "section_" + item.classname : item.JumpUniqueId;
+            var jumpto = item.BuildJumpToLink();
+            var customClass = (item.HideSectionWhenPrinting) ? "hidden-print" : "";
+            var print = "";
+            var visiblePrint = "";
+            var hiddenPrint = "";
+
+            if (item.InnerItem.Name == "Points") {
+                print = string.Format(printOption, jumpto);
+                visiblePrint = string.Format("<h2 class='visible-print-inline-block'>{0} points</h2>", Model.ResortName);
+                hiddenPrint = "hidden-print";
+            }
+            <div class="resort-detail @customClass" id="@jumpto">
+            @Html.Raw(visiblePrint) @*Can not put title h3 as the first-word JS kicks in and breaks the h3*@
+            <h3 class='h2 text-lowercase first-word @hiddenPrint @(item.HideName ? "hidden " : "")'>@Editable(item, x => x.Displayname) @Html.Raw(print)</h3>
+
+                @if (item.AllImages != null && item.AllImages.Count() > 0)
+                {
+                    ResortImageList imageList = new ResortImageList();
+                    imageList.ResortImages = item.AllImages;
+                    imageList.classname = item.classname;
+                    imageList.RemoteImageUrl = item.SiteSettings.RemoteImageUrl;
+                    @Html.Partial("/Views/Resort/ImageSlider.cshtml", (ResortImageList)imageList)
+                }
+
+                @if (item.AllAmenities != null && item.AllAmenities.Count() > 0)
+                {
+                    foreach (ResortAmenities amenitie in item.AllAmenities)
+                    {
+
+                        @Html.Partial("/Views/Resort/Amenities.cshtml", (ResortAmenities)amenitie)
+                    }
+                    
+                }
+
+                @if (item.AllMapAndDirections != null && item.AllMapAndDirections.Count() > 0)
+                {
+                    foreach (MapAndDirections mapAndDirections in item.AllMapAndDirections)
+                    {
+                        @Html.Partial("/Views/Resort/MapDirections.cshtml", (MapAndDirections)mapAndDirections)
+                    }
+                }
+
+                @if (item.AllVideos != null && item.AllVideos.Count() > 0)
+                {
+                    foreach (Video videoitem in item.AllVideos)
+                    {
+                        videoitem.RemoteVideoUrl = item.SiteSettings.RemoteVideoUrl;
+
+                        @Html.Partial("/Views/Resort/Videos.cshtml", (Video)videoitem)
+                    }
+                }
+                @if (item.AllRestaurant != null && item.AllRestaurant.Count() > 0)
+                {
+                    RestaurantList restaurantList = new RestaurantList();
+restaurantList.Restaurants = item.AllRestaurant;
+                  
+
+                    restaurantList.RemoteImageUrl = item.SiteSettings.RemoteImageUrl;
+                        @Html.Partial("/Views/Resort/Restaurant.cshtml", (RestaurantList)restaurantList)
+                    
+                }
+                @if (item.AllTours360 != null && item.AllTours360.Count() > 0)
+                {
+                    foreach (tours360 tour360 in item.AllTours360)
+                    {
+                        @Html.Partial("/Views/Resort/360Tours.cshtml", (tours360)tour360)
+                    }
+                }
+                @if (item.AllNotes != null && item.AllNotes.Count() > 0)
+                {
+                    ImportantNotesList allNotes = new ImportantNotesList();
+                    allNotes.ImportantNotes = item.AllNotes;
+                    @Html.Partial("/Views/Resort/ImportantNotes.cshtml", (ImportantNotesList)allNotes)
+                }
+                @if (item.AllResortMaps != null && item.AllResortMaps.Count() > 0)
+                {
+                    foreach (ResortMap resportMap in item.AllResortMaps)
+                    {
+                        resportMap.RemoteImageUrl = item.SiteSettings.RemoteImageUrl;
+                        @Html.Partial("/Views/Resort/ResortMap.cshtml", (ResortMap)resportMap)
+                    }
+                }
+                @if (item.AllRichText != null && item.AllRichText.Count() > 0)
+                {
+                    foreach (RichText richTextItem in item.AllRichText)
+                    {
+                        @Html.Partial("/Views/Resort/RichText.cshtml", (RichText)richTextItem)
+                    }
+                }
+                @if (item.AllWeather != null && item.AllWeather.Count() > 0)
+                {
+                    AverageWeatherList allWeather = new AverageWeatherList();
+                    allWeather.AverageWeather = item.AllWeather;
+                    @Html.Partial("/Views/Resort/AverageWeather.cshtml", (AverageWeatherList)allWeather)
+                }
+                @if ((item.AllPointsCategory != null && item.AllPointsCategory.Count() > 0) || (item.AllPointsActivity != null && item.AllPointsActivity.Count() > 0))
+                {
+                    ResortPointList allPoints = new ResortPointList();
+                    allPoints.PointCategory = item.AllPointsCategory;
+                    allPoints.ActivityCategory = item.AllPointsActivity;
+
+                    @Html.Partial("/Views/Resort/ResortPoints.cshtml", (ResortPointList)allPoints)
+                }
+                @if (item.ShowLineAfterSection)
+                {
+                    <hr />
+                }
+            </div>
+        }
+    }
+}

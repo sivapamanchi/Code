@@ -1,0 +1,16 @@
+﻿@using BGSitecore.Models
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ArticleItem>
+
+<div class="page-header">
+    <h1 class="h1 text-lowercase first-word">@Model.Title</h1>
+</div><!-- .page-header -->
+<div class="container">
+    <div class="row page-media">
+        @Html.Raw(@Model.Answer)
+    </div><!-- .page-media -->
+    @Html.HiddenFor(m => m.Id, new { @class = "js-clickarticleId" })
+</div><!--.container -->
+
+
+

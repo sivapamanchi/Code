@@ -1,0 +1,12 @@
+﻿@model BGModern.Models.NewsListModel
+
+@{var listTitle = Model.ListTitle;}
+<div class="col-md-6">
+	<div class="barTitle">@listTitle</div>
+	@foreach (BGModern.Models.NewsItemModel item in Model.NewsItems)
+	{
+		<div>
+		@{Html.RenderPartial("NewsItem", item);}
+		</div>
+	}
+</div>

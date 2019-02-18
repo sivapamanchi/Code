@@ -1,0 +1,21 @@
+﻿@model BGModern.Models.ReservationDetailModel
+@{
+    Layout = "ReservationsMasterLayout.cshtml";
+}
+<div class="col-lg-12 col-xs-12" style="padding:0 0 0 0; margin:0 0 0 0;">
+    <br />
+    <div>
+        @{
+            Html.RenderPartial("BreadcrumbNavigation", Model);
+        }
+    </div>
+    <div class="page-title">
+        @Model.Title
+    </div>
+
+    <br />
+    @*TODO SET visibility*@
+    <div id="pnlResDetail" class="col-lg-12" style="padding:0 0 0 0; margin:0 0 0 0;">
+        @Html.Action("GetReservationDetails", "ReservationDetails", new { detailModel = @Model })
+    </div>
+</div>

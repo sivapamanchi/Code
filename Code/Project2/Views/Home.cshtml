@@ -1,0 +1,45 @@
+﻿@model BGModern.Models.HomeModel
+@using System.Configuration
+
+<div class="page-title">
+    Start Planning Your Next Vacation with Plan-It Bluegreen!
+</div>
+
+@Html.Action("GetPartialView", "PlanItPanel")
+@Html.Action("GetPartialView", "NewsSlider")
+  <!--Start AliveChat Button Code-->
+    <div style="z-index: 100000; border-bottom: red 0px solid; position: fixed; border-left: red 0px solid; width: 209px; bottom: 0px; height: 85px; border-top: red 0px solid; cursor: pointer; right: 0px; border-right: red 0px solid" id="Div1" class="wsa_box">
+        <img alt="Live Chat" src="https://images.websitealive.com/images/hosted/upload/52043.gif" border="0" onclick="window.open('https://a1.websitealive.com/5980/rRouter.asp?groupid=5980&amp;websiteid=0&amp;departmentid=5575&amp;dl='+escape(document.location.href),'','width=400,height=400');" style="cursor: pointer;">
+    </div>
+<!--End AliveChat Button Code-->
+@section OwnerPaletteInfo {
+    <ul id="oLinks">
+        @if (Model.VacationClubOwner)
+        {
+            <li><a class="submenu" href="@Html.GetParentSitePath()/owner/ownerTutorials.aspx">Owner Tutorials</a></li>
+            <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        }
+        <li><a class="submenu" href="http://ownerupdate.bluegreenvacations.com/" target="_blank">Owner Update</a></li>
+        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        <li><a class="submenu" href="@ConfigurationManager.AppSettings["SitecoreResortUrl"]/book/bluegreen-resorts/last-minute-availability">Last Minute Availability</a></li> 
+        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        <li><a class="submenu" href="@Html.GetParentSitePath()/colorfulplaces/" target="_blank">Colorful Places</a></li>
+        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        <li><a class="submenu" href="@Html.GetParentSitePath()/owner/specialDetail.aspx?ID=555">Colorful Ways to Play</a></li>
+        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        <li><a class="submenu" href="@ConfigurationManager.AppSettings["SitecoreResortUrl"]/get-inspired/resort-locator">Resort Locator</a></li>
+        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        <li><a class="submenu" href="@Html.GetFullSitePath()/our-resorts">Our Resorts</a></li>
+        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        @if (@Model.VacationClubOwner)
+        {
+            <li><a class="submenu" href="@Html.GetParentSitePath()/owner/purchaseAddpts.aspx">Purchase Additional Points</a></li>
+            <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+        }
+    </ul>
+}
+@section LeftElements {
+    <div style="margin:0px auto;">
+        @Html.Action("GetPartialView", "ResortLocator")
+    </div>   
+}

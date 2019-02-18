@@ -1,0 +1,103 @@
+﻿@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models.Payments
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<AccountPayment>
+
+    <div class="row">
+        <div class="col-xs-4 col-sm-3 col-md-3">
+            <div class="form-group is-required">
+                <label for="total-payment" class="control-label"><strong>@Editable(x => x.TotalPayment)</strong></label>
+                <div class="input-group">
+                    <span class="input-group-addon">@Sitecore.Globalization.Translate.Text("Payment_Currency")</span>
+                    <input type="text" name="total_payment" class="form-control" value="@Model.AmountString" required="" disabled="">
+                </div><!-- .input-group -->
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group is-required">
+                <label class="control-label" for="check_routing"><strong>Routing/Transit Number</strong></label>
+                <div class="row">
+                    <div class="col-xs-8 col-sm-6 col-lg-4">
+                        <input type="number" name="check_routing" id="check_routing" class="form-control" value="" required="" autocomplete="off">
+                    </div><!-- .form-group -->
+                </div><!-- .row -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="#routing-number-description" role="button" class="small" data-toggle="collapse" aria-expanded="false" aria-controls="routing-number-description">What is a routing number <i class="fa fa-caret-down rotate-text" aria-hidden="true"></i></a>
+
+                        <div class="collapse" id="routing-number-description" aria-expanded="true" style="">
+                            <div class="alert alert-info margin-top-xs-10 margin-bottom-xs-0" role="alert">
+                                <p>The <em>bank routing number</em> is the first set of numbers printed on the bottom of your checks, on the left side.</p>
+                            </div><!-- .alert -->
+                        </div>
+                    </div>
+                </div><!-- .row -->
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group is-required">
+                <label class="control-label" for="check_account"><strong>Bank Account Number</strong></label>
+                <div class="row">
+                    <div class="col-xs-8 col-sm-6 col-lg-4">
+                        <input type="number" name="check_account" id="check_account" class="form-control" value="" required="" autocomplete="off">
+                    </div><!-- .form-group -->
+                </div><!-- .row -->
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <a href="#account-number-description" role="button" class="small collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="account-number-description">What is an account number <i class="fa fa-caret-down rotate-text" aria-hidden="true"></i></a>
+
+                        <div class="collapse" id="account-number-description" aria-expanded="false" style="height: 0px;">
+                            <div class="alert alert-info margin-top-xs-10 margin-bottom-xs-0" role="alert">
+                                <p>The <em>account number</em> (usually 10-12 digits) is the second set of numbers printed on the bottom of your checks, just to the right of the <em>bank routing number</em>.</p>
+                            </div><!-- .alert -->
+                        </div>
+                    </div>
+                </div><!-- .row -->
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+
+
+    <div class="row">
+        <div class="col-xs-8 col-sm-6 col-lg-4">
+            <div class="form-group is-required">
+                <label class="control-label" id="check_account2"><strong>Re-Enter Bank Account Number</strong></label>
+                <input type="text" name="check_account2" class="form-control">
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+
+    <div class="collapse" id="collapse-banking-routing">
+        <div class="row">
+            <div class="col-md-6">
+                <p>Your checking and savings accounts include two numbers needed to make an online payment; a routing/transit number and account number. Savings account: To find these numbers, please check your bank statement. Checking account: The bottom of your paper check contains these numbers, <strong>Routing/Transit Number</strong>, <strong>Account Number</strong> and <strong>Check Number</strong>.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="images/check-image.jpg" class="img-responsive img-centered">
+            </div>
+        </div><!-- .row -->
+    </div><!-- .collapse -->
+
+    <div class="form-group">
+        <div class="checkbox">
+            <label class="control-label"><input type="checkbox" name="confirm_toc" value="1"> I agree to the payment <a href="maintenance-fee-toc-paying-online.html" target="_blank">Terms and Conditions</a>.</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <button class="btn btn-primary">Submit Payment</button>
+    </div><!-- .form-group -->
+
+    <p><span class="required"></span> required fields</p>
+
+    <div class="legal small">
+        <p><i class="fa fa-lg fa-lock padding-right-xs-5"></i> We use secure transmission and encrypted storage to protect your personal information. See our <a href="https://www.bluegreenvacations.com/privacy-policy/" target="_blank">Privacy Policy</a> for further details.</p>
+    </div><!-- .legal -->

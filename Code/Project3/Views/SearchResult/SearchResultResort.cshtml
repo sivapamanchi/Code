@@ -1,0 +1,228 @@
+﻿@using System.Collections
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Utils
+@using BGSitecore.Models.Resort
+@using BGSitecore.Models
+
+
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<BGSitecore.Models.Resort.SearchResult>
+
+@{
+    string fromDate = Model.searchParameters.CheckInDate.ToShortDateString();
+    string toDate = Model.searchParameters.CheckOutDate.ToShortDateString();
+    bool isPointReservation = Model.searchParameters.ReservationType == SearchParameters.RESERVATION_TYPE_POINTS;
+
+}
+@if (Model.resortList != null)
+{
+    foreach (SearchResultResortList resort in Model.resortList)
+    {
+        <div class="resort-preview-details">
+            @if (!Model.searchParameters.ShowAvailabilityOnly)
+            {
+                <div class="hidden-xs">
+                    <div class="media" itemscope itemtype="http://schema.org/LocalBusiness">
+                        <div class="media-left" itemscope itemtype="http://schema.org/ImageObject">
+                            <a href="@resort.ResortLink">
+                                <img src="@resort.ResortImage" class="media-object img-responsive" alt="@resort.ResortName" itemprop="contentUrl">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <a href="@resort.ResortLink">
+                                <h2 class="h2 resort-name"><span itemprop="name">@resort.ResortName</span></h2>
+                            </a>
+                            @if (resort.ClubAffiliation != null)
+                            {
+                                <div class="resort-designation"><i class='fa fa-circle' aria-hidden='true' style='color:#@resort.ClubAffiliation.Color'></i>@resort.ClubAffiliation.DisplayName</div>
+                            }
+                            <address class="resort-address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                                <span itemprop="streetAddress">@resort.AddressLine1</span>
+                                <br><span itemprop="addressLocality">@resort.City</span>
+                                @if (resort.State != null)
+                                {
+                                    @: ,
+                                    <span itemprop="addressRegion">@resort.State.Code</span>
+                                }
+                                <span itemprop="postalCode">@resort.ZipCode</span>
+                                <br><span itemprop="telephone">@resort.PhoneNumber</span>
+                            </address>
+
+                        </div><!-- .media-body -->
+                    </div><!-- .media.resort-preview-details -->
+                </div>
+
+            }
+
+            @if (resort.availableRoom != null && resort.availableRoom.Count() > 0)
+            {
+
+                <table class="table-collapse table-striped table-hover table-search-results js-resortdata" data-resortid="@resort.ResortId">
+                    <thead>
+                        <tr class="headerRow">
+                            @if (isPointReservation)
+                            {
+                                <th>@Model.VillaType</th>
+                                <th class="text-left">@Model.Season</th>
+                                <th class="text-left">@Model.MaxOccupancy</th>
+                                <th class="text-left">@Model.Points</th>
+                                if (Model.isShowAvailabilityColumn)
+                                {
+                                    <th class="text-left">@Model.Availability</th>
+                                }
+                                <th class="text-right">&nbsp;</th>
+                            }
+                            else
+                            {
+                                <th>@Model.VillaType</th>
+                                <th class="text-left">@Model.MaxOccupancy</th>
+                                <th class="text-left">@Model.Dailyrate</th>
+                                <th class="text-left">@Model.TotalPrice</th>
+                                if (Model.isShowAvailabilityColumn)
+                                {
+                                    <th class="text-left">@Model.Availability</th>
+                                }
+                                <th class="text-right">&nbsp;</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (SearchResultResortRoom room in resort.availableRoom)
+                        {
+                            string cspId = string.Format("collapse-standard-points-{0}", room.GetHashCode());
+                            string csdesId = string.Format("collapse-standard-description-{0}", room.GetHashCode());
+
+                            <tr class="js-roomsection js-bookbutton room-row" data-resortid="@resort.ResortId" data-room-size="@room.UnitSize" data-projectnumber="@room.ProjectNumber" data-unittype="@room.UnitType" data-villasize="@room.RoomTitle" data-handicap="@room.HandicapAccessible">
+                                <td>
+                                    <div class="hidden-sm hidden-md hidden-lg resort-preview-details">
+                                        <h2 class="h2 resort-name"><span itemprop="name">@resort.ResortName</span></h2>
+                                        @if (resort.ClubAffiliation != null)
+                                        {
+                                            <div class="resort-designation"><i class='fa fa-circle' aria-hidden='true' style='color:#@resort.ClubAffiliation.Color'></i>@resort.ClubAffiliation.DisplayName</div>
+                                        }
+                                        <div class="resort-location">
+                                            @resort.City
+                                            @if (resort.State != null)
+                                            {
+
+                                                @resort.State.Code
+                                            }
+                                        </div>
+
+                                    </div><!-- .resort-preview-details -->
+
+
+                                    <a href="#@csdesId" class="collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="@csdesId">
+                                        <strong class="details">
+                                            @room.RoomTitle
+                                            @if (room.HandicapAccessible == "1")
+                                            {
+                                                <i class="fa fa-wheelchair fa-1x" aria-hidden="true" style="margin-left:5px;"></i>
+                                            }
+                                            <i class="fa fa-caret-down rotate-text pull-right" aria-hidden="true"></i>
+                                        </strong>
+                                    </a>
+                                    <div id="roomDescMobilePlchldr_@csdesId"></div>
+                                </td>
+                                @if (isPointReservation)
+                                {
+                                    <td class="text-left js-msg-seasoncode" data-label="@Model.Season">@room.SeasonCode<span class="sr-only"> season</span></td>
+                                }
+                                <td class="text-left js-msg-maxoccupancy" data-label="@Model.MaxOccupancy">Sleeps @room.Accomodates</td>
+                                @if (isPointReservation)
+                                {
+                                    <td class="text-left js-msg-points" data-value="@room.PointsRate" data-label="@Model.Points"><a href="#@cspId" class="collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="@cspId">@FormatUtils.FormatPoints(room.PointsRate)<span class="sr-only"> Points</span> <i class="fa fa-caret-down rotate-text" aria-hidden="true"></i></a></td>
+                                }
+                                else
+                                {
+                                    <td class="text-left js-msg-dailyrate" data-label="@Model.Dailyrate" data-value="@room.BTRateItem.DailyRate">@Html.Raw(FormatUtils.FormatAmount(room.BTRateItem.DailyRate))</td>
+                                    <td class="text-left js-msg-totalprice" data-label="@Model.TotalPrice" data-value="@room.BTRateItem.TotalPrice">@Html.Raw(@FormatUtils.FormatAmount(room.BTRateItem.TotalPrice.ToString()))</td>
+                                }
+                                @if (Model.isShowAvailabilityColumn)
+                                {
+                                    <td class="text-left js-msg-availability" data-label="@Model.Availability">@room.TotalUnits available</td>
+                                }
+                                <td class="hidden-print text-right">
+                                    <input type="hidden" class="js-max-occupancy" name="max-occupancy" value="@room.Accomodates" />
+                                    <input type="hidden" class="js-Availability" name="amount" value="@room.TotalUnits available" />
+                                    @if (isPointReservation)
+                                    {
+                                        <input type="hidden" class="js-TotalPrice" name="amount" value="@FormatUtils.FormatPoints(room.PointsRate) points" />
+                                    }
+                                    else
+                                    {
+                                        <input type="hidden" class="js-TotalPrice" name="amount" value="@FormatUtils.FormatAmount(room.BTRateItem.TotalPrice.ToString())" />
+                                    }
+                                    @if (!Model.disableBooking)
+                                    {
+                                        <a href="#" data-value="@room.EncodedData" class="btn btn-sm btn-primary btn-block js-booknowclicked">@Model.BookNow</a>
+                                    }
+                                </td>
+                            </tr>
+                            <tr class="js-roomsection"  data-resortid="@resort.ResortId" data-room-size="@room.UnitSize" data-projectnumber="@room.ProjectNumber" data-unittype="@room.UnitType" data-villasize="@room.RoomTitle"  data-handicap="@room.HandicapAccessible">
+                                <td colspan="6" id="roomDescDesktopPlchldr_@csdesId" class="hidden-print flush">
+                                    <div class="collapse reservation-table-forecast " id="@csdesId">
+
+                                        <div class="row row-collapse">
+                                            <div class="sub-details summary">
+                                                <div>@room.RoomDescription</div>
+
+                                                @if (!Model.disableBooking)
+                                                {
+                                                    <a href="@resort.ResortLink" class="hidden-print js-explore-resort-clicked"><strong>@Model.ExploreResort</strong></a>
+                                                }
+                                            </div>
+                                        </div><!-- .row -->
+
+                                    </div><!-- .collapse -->
+                                </td>
+                            </tr>
+                            if (isPointReservation && room.DailyRates != null)
+                            {
+
+                                <tr class="js-roomsection"  data-resortid="@resort.ResortId" data-room-size="@room.UnitSize" data-projectnumber="@room.ProjectNumber" data-unittype="@room.UnitType" data-villasize="@room.RoomTitle"  data-handicap="@room.HandicapAccessible">
+                                    <td colspan="6" class="hidden-print flush">
+                                        <div class="collapse reservation-table-forecast" id="@cspId">
+
+                                            <div class="row row-collapse">
+                                                @{
+                                                    var list = SearchUtils.ConsumeRates(room.DailyRates);
+                                                    var weekCounter = 0;
+                                                    foreach (List<RoomDailyRate> rates in list)
+                                                    {
+                                                        string week = rates[0].WeekNumber;
+                                                        WriteLiteral(SearchUtils.CreateWeekOpen(week, weekCounter));
+                                                        foreach (RoomDailyRate rate in rates)
+                                                        {
+                                                            string activeCss = SearchUtils.GetActiveCss(rate.CalendarDate, Model.searchParameters.CheckInDate, Model.searchParameters.CheckOutDate.AddDays(-1));
+                                                            string dateLong = rate.CalendarDate.ToShortDateString();
+                                                            string dayName = rate.DayName;
+                                                            string seasonCss = SearchUtils.GetSeasonCss(rate.SeasonName);
+                                                            string seasonName = rate.SeasonName;
+                                                            <div class="col-forecast @seasonCss @activeCss">
+                                                                <div class="forecast-date" title="@dateLong (@week)">@dayName @rate.CalendarDate.Day</div>
+                                                                <div class="forecast-value">@rate.UnitRate<span class="sr-only"> Points</span></div>
+                                                                <div class="forecast-season-label">@seasonName<span class="sr-only"> season</span></div>
+                                                            </div><!-- .col-forecast -->
+                                                        }
+                                                        WriteLiteral(SearchUtils.CreateWeekClose());
+                                                        weekCounter += 1;
+                                                    }
+                                                }
+                                            </div><!-- .row -->
+
+                                            <div class="forecast-description">Selected dates from @fromDate to @toDate</div>
+                                        </div><!-- .collapse -->
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    }
+}

@@ -1,0 +1,153 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+    string currentState = "";
+
+}
+    @if (Model.ShowNotAllResortUsed)
+    {
+    <div class="alert alert-info js-updateSearchQuery" role="alert" data-checkin-date='@Model.searchParameters.CheckInDate.ToString("MM/dd/yyyy")' data-checkout-date='@Model.searchParameters.CheckOutDate.ToString("MM/dd/yyyy")' data-duration="@Model.searchParameters.Duration">
+        <p>
+            @Html.Raw(Model.NotAllResortUsedMessage)
+        </p>
+    </div>
+    }
+
+    @if (Model.ShowSummerHolidayError)
+            {
+            <div class="alert alert-info" role="alert">
+                <p>
+                    @Html.Raw(Model.SamplerSummerError)
+                </p>
+            </div>
+    }
+    @if (Model.ShowCheckinMoreThen48BT)
+            {
+            <div class="alert alert-info" role="alert">
+                <p>
+                    @Html.Raw(Model.CheckinBetween48)
+                </p>
+            </div>
+    }
+    @if (Model.ShowBooking1DayBonusTimeMessage && !Model.ShowNotAllResortUsed)
+    {
+    <div class="alert alert-info" role="alert">
+        <p>
+            @Html.Raw(Model.BookingOneDayMessageBonusTime)
+        </p>
+    </div>
+    }
+    @if (Model.ShowBooking1DayPointsMessage && !Model.ShowNotAllResortUsed)
+    {
+    <div class="alert alert-info" role="alert">
+        <p>
+            @Html.Raw(Model.BookingOneDayMessagePoints)
+        </p>
+    </div>
+    }
+    @if (Model.resortList == null || Model.resortList.Count() == 0)
+    {
+        <div class="alert alert-danger js-messagenoresultfound" role="alert">
+            <p>
+                @Html.Raw(Model.NoResultFoundmessage)
+            </p>
+        </div>
+    }
+    @if (Model.ShowSearchParameters)
+    {
+        <div id="tabs-content">
+            @Html.Partial("/Views/SearchResult/SearchParameters.cshtml", Model)
+
+        </div>
+    }
+   
+    <!-- NOTE: Toggle "hidden" class to activate loading overlay -->
+    <div class="hidden loading js-loadingsearchresult" id="loading-overlay" aria-hidden="true"><div class="loading-icon"><i class="fa fa-refresh fa-spin"></i></div></div>
+    <div class="hidden js-showavailabilitytext">@Sitecore.Globalization.Translate.Text("Resort_Search_showresortavailability")</div>
+    <div class="hidden js-hideavailabilitytext">@Sitecore.Globalization.Translate.Text("Resort_Search_hideresortavailability")</div>
+
+    <div class="hidden js-reservationtype">@Model.searchParameters.ReservationType</div>
+
+    <div class="hidden js-checkindate">@Model.searchParameters.CheckInDate.ToShortDateString()</div>
+    <div class="hidden js-checkoutdate">@Model.searchParameters.CheckOutDate.ToShortDateString()</div>
+    @if (Model.resortList != null)
+    {
+        foreach (SearchResultResortList item in Model.resortList)
+        {
+            if (item.StateCode != currentState)
+            {
+                if (currentState != "")
+                {
+                @:  </div><!-- .resort-preview-group -->
+                }
+                int count = Model.resortList.Where(x => x.StateCode.Equals(item.StateCode)).Count();
+                string keyName = @item.StateCode.ToLower().Replace(" ", "");
+                <div class="resort-preview-toggle js-destination-group">
+                    <a href="#collapse-@keyName-available-resorts" class="collapsed resort-preview-toggle-btn" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-@keyName-available-resorts">
+                        <span class="title">@item.StateCode Resorts</span>
+                        <span class="badge js-destinationcount">@count available</span>
+                        <i class="fa fa-caret-down rotate-text" aria-hidden="true"></i>
+                    </a>
+                </div>
+                @: <div class="collapse resort-preview-group" id="collapse-@keyName-available-resorts">
+
+
+                currentState = item.StateCode;
+            }
+
+            <div class="media resort-preview-details js-resortdestination" itemscope itemtype="http://schema.org/LocalBusiness">
+                <div class="media-left" itemscope itemtype="http://schema.org/ImageObject">
+                    <a href="@item.ResortLink"><img src="@item.ResortImage" class="media-object img-responsive" alt="@item.ResortName" itemprop="contentUrl"></a>
+                </div>
+                <div class="media-body">
+                    <h2 class="h2 resort-name"><a href="@item.ResortLink" itemprop="name">@item.ResortName</a></h2>
+                    @if (item.ClubAffiliation != null)
+                    {
+                    <div class="resort-designation"><i class='fa fa-circle' aria-hidden='true' style='color:#@item.ClubAffiliation.Color'></i>@item.ClubAffiliation.DisplayName</div>
+                    }
+                    <address class="resort-address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                        <span itemprop="streetAddress">@item.AddressLine1</span>
+                        <br><span itemprop="addressLocality">@item.City</span>
+                        @if (item.State != null)
+                        {
+                        @: ,
+                            <span itemprop="addressRegion">@item.State.Code</span>
+                        }
+                        <span itemprop="postalCode">@item.ZipCode</span>
+                        <br><span itemprop="telephone">@item.PhoneNumber</span>
+
+                    </address>
+
+                    <a href="#" class="btn btn-primary js-showAvailability" data-resortid="@item.ResortId">@Sitecore.Globalization.Translate.Text("Resort_Search_showresortavailability")</a>
+
+                </div><!-- .media-body -->
+                <div class="hidden js-showAvailability-@item.ResortId"></div>
+                @if (item.WebUnitTypesHandicap != null || item.WebUnitTypesNonHandicap != null)
+                {
+                    <table class="js-resortdata">
+                        @if (item.WebUnitTypesHandicap != null)
+                        {
+                            foreach (string webCode in item.WebUnitTypesHandicap)
+                            {
+                                <tr class="js-roomsection" data-handicap="1" data-room-size="@webCode" data-resortid="@item.ResortId"></tr>
+                            }
+                        }
+                        @if (item.WebUnitTypesNonHandicap != null)
+                        {
+                            foreach (string webCode in item.WebUnitTypesNonHandicap)
+                            {
+                                <tr class="js-roomsection" data-handicap="0" data-room-size="@webCode" data-resortid="@item.ResortId"></tr>
+                            }
+                        }
+                    </table>
+                }
+            </div><!-- .media.resort-preview-details -->
+        }
+    }
+

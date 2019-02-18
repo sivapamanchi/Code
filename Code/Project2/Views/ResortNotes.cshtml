@@ -1,0 +1,26 @@
+﻿@model BGModern.Models.ResortModel
+
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<div id="ResortWrapper" style="margin:0 0 0 0; width:100%;">
+    @{Html.RenderAction("ResortPagesPhotoHeader", "ResortPagesPhotoHeader", new { id = Model.ResortPageID });}
+</div>
+
+<br />
+
+<div style="width:100%; text-align:justify;">
+    <span></span>
+    <div class="resort-notes-list" style="margin: 0 auto;">
+        <div class="heading">Important Notes</div>
+        <ul>
+            @{
+                foreach (var note in Model.ResortNotesList.Notes)
+                {
+                    <li><div><span style="font-weight:bold;">@note.Title:</span>&nbsp;&nbsp;@Html.Raw(@note.Description)</div></li>
+                }
+            }
+        </ul>
+    </div>
+</div>

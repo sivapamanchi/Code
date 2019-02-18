@@ -1,0 +1,23 @@
+﻿@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models.Payments
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<MailPayment>
+@if (Model != null || Sitecore.Context.PageMode.IsExperienceEditor)
+{
+    @Editable(x => Model.Description)
+
+    long amountInteger = (long)Model.Amount;
+    decimal fraction = Model.Amount - amountInteger;
+
+<div class="row">
+    <div class="col-xs-6 col-md-3">
+        <div class="col-border col-border-default">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p class="callout text-dark"><sup>@Sitecore.Globalization.Translate.Text("Payment_Currency")</sup>@amountInteger.ToString("N0", Sitecore.Context.Language.CultureInfo)<sup>@fraction.ToString("N2", Sitecore.Context.Language.CultureInfo).TrimStart('0')</sup></p>
+                    <p>@Editable(x => x.TotalPayment)</p>
+                </div>
+            </div><!-- .row -->
+        </div><!-- .col-border -->
+    </div>
+</div><!-- .row -->
+}

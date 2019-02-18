@@ -1,0 +1,35 @@
+﻿@model BGSitecore.Models.Reward.CartTotal
+
+@{
+
+    string AvailableRewards = Convert.ToString(Model.AvailableRewards);
+    string TotalRewardsinCart = Convert.ToString(Model.TotalRewardsinCart);
+    string AvailablePoints = Convert.ToString(Model.AvailablePoints);
+    
+}
+    
+<div class="panel panel-narrow panel-default">
+    <div class="panel-heading">
+        <h2 class="h3 panel-title"><strong>Cart</strong> Total</h2>
+    </div><!-- .panel-heading -->
+    <input id="hdnRemainingRewards" type="hidden" value="@Convert.ToString(AvailablePoints)" />
+    <input id="hdntotalRewardsInCart" type="hidden" value="@Convert.ToString(TotalRewardsinCart)" />
+    <input id="hdntotalAvailableRewards" type="hidden" value="@Convert.ToString(AvailableRewards)" />
+    <table class="table-striped">
+        <tbody>
+            <tr>
+                <td class="text-right">@Sitecore.Globalization.Translate.Text("RR_Available")</td>
+                <td class="text-right">@Convert.ToString(Model.AvailableRewards.ToString("#,##0"))</td>
+            </tr>
+            <tr>
+                <td class="text-right font-size-medium"><strong>Total Rewards in Cart</strong></td>
+                <td class="text-right font-size-medium"><strong>@Convert.ToString(Model.TotalRewardsinCart.ToString("#,##0"))</strong></td>
+            </tr>
+            <tr>
+                <td class="text-right">Remaining Rewards</td>
+                <td class="text-right">@Convert.ToString(Model.AvailablePoints.ToString("#,##0"))</td>
+            </tr>
+        </tbody>
+    </table>
+</div><!-- .panel -->
+      

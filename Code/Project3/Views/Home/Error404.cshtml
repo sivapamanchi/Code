@@ -1,0 +1,24 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Error404>
+
+<div id="error404" class="site-content  cover-image" @Html.Raw(ImageUtils.BuildBackgroundImage(@Model.BackGroundImage, Model.SiteSettings.RemoteImageUrl))>
+    <div class="container">
+        <div class="col-xs-12 col-md-6 col-lg-5 col-primary">
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1 class="h1 text-capitalize"><strong>@Model.PageTitle</strong></h1>
+                    <p class="h2 margin-top-xs--20">@Model.SubTitle</p>
+
+                    @Html.Raw(Model.Content)
+
+                </div>
+            </div><!-- .row -->
+        </div>
+    </div>
+</div>

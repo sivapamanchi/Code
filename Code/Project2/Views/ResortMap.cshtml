@@ -1,0 +1,10 @@
+﻿@model BGModern.Models.ResortModel
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<div style="height:100%; padding-top:10px;">
+    <object data="@Model.ResortMap.MapFile" type="application/pdf" style="width:100%; height:450px; z-index:99;">
+        alt : <a href="@Model.ResortMap.MapFile">Resort Map File</a>
+    </object>
+</div>

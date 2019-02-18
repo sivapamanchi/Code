@@ -1,0 +1,42 @@
+﻿@model BGModern.Models.SiteHeaderModel
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin:0 0 auto 0; padding:0 0 0 0;">
+    <div class="row">
+        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 dropdown" id="buttonMenu" style="float:left;">
+            <a id="dLabel" role="button" data-toggle="dropdown" class="btn btn-primary" data-target="#" href="#">Menu</a>
+            <ul id="topLevelMenu" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu"></ul>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 phone">
+            @if (@Model.PhoneNumberURL == "")
+            {
+                <img src="@Html.GetFullSitePath()/Content/Images/@Model.PhoneNumberImage" alt="@Model.PhoneNumberAltText" style="float:right;" />
+            }
+            else
+            {
+                <a id="AskLink" href="@Model.PhoneNumberURL" target="_self">
+                    <img src="@Html.GetFullSitePath()/Content/Images/@Model.PhoneNumberImage" alt="@Model.PhoneNumberAltText" style="float:right;" />
+                </a>
+            }
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-7 col-xs-8" style="margin-left: 2px;">
+            <a id="HomeLink" href="@Html.GetFullSitePath()/Home">
+                <img src="@Html.GetFullSitePath()/Content/Images/ResortsLogo.gif" />
+            </a>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<style type="text/css">
+    .dropdown a {
+        font-size: 14px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    .phone {
+        float: right;
+    }
+</style>
+

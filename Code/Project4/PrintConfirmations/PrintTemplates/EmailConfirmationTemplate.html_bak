@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>Bluegreen Corporation</title>
+</head>
+<body>
+<table align="center" width="550" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="133"><a href="https://bluegreenowner.com//owner/home.aspx" target="_blank"><img src="http://bluegreenonline.com/Images/ResortsLogo.gif"  border="0" /></a></td>
+		<td width="168"><img src="http://bluegreenonline.com/BonusTime/Images/blank.gif" width="168" height="66" border="0" /></td>
+        <td width="249" align="right"><a href="#"><img src='http://bluegreenonline.com/Images/goseedo.gif' alt='Phone us at 800.456.CLUB (2582)'  border="0" usemap="#Image1Map" /></a>
+        <map name="Image1Map">
+        <area shape="circle" coords="142,24,13" href="http://www.bluegreenonline.com" alt="Bluegreen Owner" target="_blank" />
+        <area shape="circle" coords="108,24,14" href="http://www.bluegreenexplore.com" alt="Explore Bluegreen" target="_blank" />
+        <area shape="circle" coords="73,25,14" href="http://www.bluegreencorp.com" alt="Bluegreen Corporate" target="_blank" />
+        </map></td>
+	</tr>
+</table>
+	<table align="center" width="550" border="0" cellspacing="0" cellpadding="0" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 10px;">
+		<tr>
+			<td>
+				<img src="http://bluegreenonline.com/BonusTime/Images/top_grey.gif" width="550" height="7" border="0" /></td>
+		</tr>
+		<tr>
+			<td>
+				<img src="http://pro-leadstg.bxgcorp.com/bluegreenonline/BonusTime/Images/top_orange.gif" width="550" height="12" border="0" /></td>
+		</tr>
+	</table>
+<table align="center" width="550" border="0" cellpadding="0" cellspacing="0" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;">
+    <tr>
+		<td colspan="2" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 15px; color:#999999; font-weight: bold;"><br />Your Reservation Confirmation <br /></td>
+    </tr>
+    <tr>
+    	<td><b><font color="#ee9900"><br />Date Confirmed: |DATECONFIRMED|<br /></font></b></td>
+    	<td align="right"><b><font color="#ee9900"><br />
+		    Confirmation Number: |CONFNUM|<br /></font></b></td>
+    </tr>
+</table>
+<table align="center" width="550" border="0" cellpadding="0" cellspacing="0" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;">
+	<tr>
+   		<td><br />Dear |GUESTNAME|,<br><br>
+			Thanks for making your reservation with Bluegreen Vacation Services. To expedite your check-in, present this confirmation to the front desk when you arrive at the resort.<br /> </td>
+	</tr>
+    <tr>
+        <td align="center" colSpan="550" style="height: 32px">
+            <table cellspacing="0" cellpadding="0" width="100%" border="0" >
+                <tr>
+                    <td align="center" width="100%" background="http://bluegreenonline.com/BonusTime/Images/DotRule.gif"><IMG height="1" src="http://bluegreenonline.com/BonusTime/Images/blank.gif" width="456" border="0"></td>
+                </tr>
+            </table>
+            <table cellSpacing="0" cellPadding="0" width="550" bgColor="#efefef" border="0">
+                <tr>
+                    <td align="center" bgColor="#ff9900" style="width: 176px; height: 18px;"><span style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;"><b>Reservation Detail</b></span></td>
+                    <td align="right" background="http://bluegreenonline.com/BonusTime/Images/reservBarBkgd.gif" style="width:374px;height: 18px"></td>
+                </tr>
+            </table>
+            <table cellspacing="0" cellpadding="0" width="100%" border="0" >
+                <tr>
+                    <td align="center" width="100%" background="http://bluegreenonline.com/BonusTime/Images/DotRule.gif"><IMG height="1" src="http://bluegreenonline.com/BonusTime/Images/blank.gif" width="456" border="0"></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<table align="center" class="text" cellSpacing="1" cellPadding="1" width="550" border="0" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;">
+    <tr>
+        <td>&nbsp;</td>
+    	<td valign="top" style="width: 275px">
+            <table class="text" cellSpacing="0" cellPadding="0" border="0" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;">
+                 <tr>
+                    <td valign="top"><b>Resort Name:</b></td>
+                    <td valign="top"><b><span class="Font12px">|RESORTNAME|</span></b><br>
+                       |ADDRESS|<br>
+                       |CITY|, |STATE| |ZIP|<br>
+                       |PHONE|</td>
+                </tr>
+                <tr>
+                    <td><b>Guest Name:<sup>(1)</sup></b></td>
+                    <td>|GUESTNAME|</td>
+                </tr>
+                <tr>
+                    <td><b>Check-In Date:</b></td>
+                    <td>|CHECK-IN|</td>
+                </tr>
+                <tr>
+                    <td style="height: 14px"><b>Check-Out Date:</b></td>
+                    <td style="height: 14px">
+					|CHECK-OUT|</td>
+                </tr>
+                <tr>
+                    <td><b>Number of<br />Guests:</b></td>
+                    <td>|GUESTS|</td>
+                </tr>
+
+                <tr>
+                    <td><b>Villa Size/Description:<sup>(2)</sup></b></td>
+                    <td>|VILLASIZE|</td>
+                </tr>
+                <tr>
+                    <td style="height: 16px"><b>Max. Occupancy<sup>(3)</sup>:</b></td>
+                    <td style="height: 16px">|ACCOMMODATES|</td>
+                </tr>
+                <tr>
+                    <td><b>Reservation Type:</b></td>
+                    <td>
+                        |RESTYPE|</td>
+                </tr>
+                <tr>
+                    <td><b>Points:</b></td>
+                    <td>|POINTS|</td>
+                </tr>
+                <tr>
+                    <td><b>Housekeeping Fees:</b></td>
+                    <td>|HOUSEKEEPING|</td>
+                </tr>
+                <tr>
+                    <td><b>Total Charge<br />(incl. Tax):</b></td>
+                    <td>|TOTALCHARGE|</td>
+                </tr>
+                
+            </table>
+		    </td>
+        <td valign="top" style="width:275px">
+          <table class="text" cellSpacing="0" cellPadding="0" border="0" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;"> 
+           <tr>
+                <td valign="top">|RESORTDETAILS|</td>
+            </tr>
+          </table>
+        </td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2"><font size="1" color="#666666"><br />(1) A valid driver's license and credit card will be required at time of check-in.<br>
+            (2) The resort reserves the right to assign a different unit of the same size and occupancy of the one confirmed.<br>
+            (3) The occupancy limit includes children of all ages and is strictly enforced.</font></td>
+    </tr>
+</table>
+<table align="center" width="550" border="0" cellpadding="0" cellspacing="0" style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;">
+	<tr>
+		<td>
+			<br />
+		</td>
+		<td>
+			<br />
+			These important notes are subject to change prior to your arrival. For the most updated information, plus resort photos, floor plans, area information, directions to the resort and more, please visit <a href="http://www.bluegreenonline.com/|RESORTNAME|" target="_blank">www.bluegreenonline.com/|RESORTNAME|</a>.<br />
+							
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<br />
+	     </td>
+		<td>
+			<br />
+			<span style="font-family: Lucida Grande,lucida,arial,helvetica,verdana,sans-serif; font-size: 11px;">|CancelPolicy| </span>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<br />
+		</td>
+		<td>
+			<br />
+			<br />
+			We look forward to seeing you soon!<br />
+			Bluegreen Vacation Services<br />
+		</td>
+	</tr>
+	
+</table>
+</body>
+</html>

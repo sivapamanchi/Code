@@ -1,0 +1,64 @@
+﻿@inherits UmbracoViewPage<BGModern.Models.OurResortsModel>
+
+@{
+    Layout = "~/Views/MasterLayout.cshtml";
+}
+
+<link href="@Html.GetFullSitePath()/css/style.css" rel="stylesheet" rev="stylesheet">
+
+<div class="container" style="width:100%; padding:0 0 0 0;">
+    <div class="row" style="width:100%; margin:0 0 0 0; padding:0 0 0 0;">
+        <div id="owner-home" style="width:100%; margin:0 0 0 0; padding:0 0 0 0;"></div>
+        <br />
+        @{
+            foreach (BGModern.Models.ResortModel resort in Model.OurResorts)
+            {
+                <div class="row" style="width:100%; margin:auto 0 auto auto; padding:0 0 0 0;">
+                    @{Html.RenderPartial("ResortSummary", resort);}
+                </div>
+            }
+        }
+        <br />
+        <br />
+        @section OwnerPaletteInfo {
+            <ul id="oLinks">
+                @if (@Model.VacationClubOrSamplerOwner)
+                {
+                    <li><a class="submenu" style="color: rgb(255, 153, 0);" href="@Html.GetFullSitePath()/home"><b>Reservations</b></a></li>
+                    <li><span style="visibility:hidden;"><br /></span></li> @*TODO: Added for space, is there a cleaner way????*@
+                    if (@Model.VacationClubOwner)
+                    {
+                        <li><a class="submenu" href="@Html.GetFullSitePath()/reservation-list">My Reservations</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        <li><a class="submenu" href="@Html.GetFullSitePath()/home.aspx" target="_blank">Make Points Reservations</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        <li><a class="submenu" href="@Html.GetFullSitePath()/home.aspx?srch=bt">Make Bonus Time Reservations</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        <li><a class="submenu" href="@Html.GetParentSitePath()/owner/ReservationReminder.aspx">Reservation Reminder</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        <li><a class="submenu" href="@Html.GetParentSitePath()/owner/calcPoints.aspx">Calculate Points</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    }
+                    <li><a class="submenu" href="@Html.GetParentSitePath()/owner/vacationWeekCal.aspx">Vacation Week Calendar</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    <li><a class="submenu" href="@Html.GetFullSitePath()/our-resorts">Our Resorts</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                }
+                else
+                {
+                    <li><a class="submenu" href="@Html.GetParentSitePath()/owner/vcBefore.aspx">Before You Go</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    <li><a class="submenu" href="@Html.GetParentSitePath()/BluegreenRewards/index.aspx">Bluegreen Rewards/Referrals</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/faq.aspx">Help/FAQs</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                }
+            </ul>
+        }
+    </div>
+
+    @Html.Action("GetPartialView", "ExperienceFilter")
+
+    @Html.Action("GetPartialView", "NewsSlider")
+
+</div>

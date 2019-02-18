@@ -1,0 +1,23 @@
+﻿@model BGModern.Models.MasterModel
+@using System.Collections;
+
+<div>
+    @{
+        var navItems = Model.MainNavigation;
+        int sepCtrl = navItems.Count;
+                
+        foreach (BGModern.Models.NavigationItemModel navItem in navItems)
+        {
+            sepCtrl--;
+            if (sepCtrl != 0)
+            {
+                <a href="@navItem.Url">@navItem.Name</a>
+                @Html.Raw(" / ");
+            }
+            else
+            {
+                @Html.Raw(@navItem.Name)
+            }
+        }
+}
+</div>

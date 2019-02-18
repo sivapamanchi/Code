@@ -1,0 +1,66 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Reward
+@using BGSitecore.Utils
+
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<RewardsSections>
+
+@if (!Sitecore.Context.PageMode.IsExperienceEditorEditing)
+{
+    if (Model.AllSections != null && Model.AllSections.Count() > 0)
+    {
+        <div class="hidden-print site-subnav">
+            <div class="container">
+                <a data-target="#collapse-site-subnav" data-toggle="collapse" class="hidden-md hidden-lg btn btn-sm btn-default btn-block collapsed">@Sitecore.Globalization.Translate.Text("Global_JumpTo")</a>
+
+                <div class="collapse" id="collapse-site-subnav">
+                    <div class="nav-label">@Sitecore.Globalization.Translate.Text("Global_JumpTo"):</div>
+                    <div id="site-subnav">
+                        <ul class="nav navbar-submenu" role="tablist">
+                            @{
+                                int i = 0;
+                                var activestring = "";
+                                bool rewardsCartitemExists = Model.AllSections.Any(x => x.Id.ToString().Equals("E661FC73-9B93-47B3-BD11-27F06781AC72", StringComparison.CurrentCultureIgnoreCase));
+                                Section rewardsCartitem = new Section();
+                                if (rewardsCartitemExists)
+                                {
+                                    rewardsCartitem = Model.AllSections.Where(x => x.Id.ToString().Equals("E661FC73-9B93-47B3-BD11-27F06781AC72", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                                }
+                            }
+                            @foreach (var item in Model.AllSections)
+                            {
+                                if (item.ShowJumpToSection)
+                                {
+                                    if (ResortUtils.SectionHasChildItem(item))
+                                    {
+                                        if (SitecoreUtils.EvaluateRules(item.RestrictionRule, item.InnerItem))
+                                        {
+                                            string href = (i == 0) ? "site-content" : item.BuildJumpToLink();
+
+                                            <li class="@activestring"><a href="#@href" id="jump-to-@item.JumpUniqueId" class="navbar-submenu-link" title="@item.JumpCaption">@item.JumpDisplayName</a></li>
+
+                                            activestring = "";
+
+                                        }
+                                    }
+                                }
+                                i++;
+                            }
+                            @if (rewardsCartitemExists)
+                            {
+                                string hrefCart = rewardsCartitem.BuildJumpToLink();
+                                <li class="pull-right-md pull-right-lg">
+                                    <a href="#@hrefCart" id="jump-to-@rewardsCartitem.JumpUniqueId" title="@rewardsCartitem.JumpCaption">
+                                        <i class="fa fa-lg fa-shopping-cart"></i>&nbsp;<label class="badge badge-default" id="redeemRewardsCartCount"></label>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div><!-- .container -->
+        </div><!-- .site-subnav -->
+                                    }
+                                }

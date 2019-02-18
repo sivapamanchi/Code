@@ -1,0 +1,25 @@
+﻿@Html.Raw(ViewBag.MetaLoginRefresh)
+@using Sitecore.Mvc
+
+@{
+    string pageSummaryField = @Html.Sitecore().Field("Page Summary") != null ? Convert.ToString(@Html.Sitecore().Field("Page Summary")) : string.Empty;
+    string[] resultContent = string.IsNullOrEmpty(pageSummaryField) ? new string[0] : pageSummaryField.Trim().Split('\n');
+   
+}
+
+<div class="loading">
+    <div class="loading-information">
+        <p><i class="fa fa-refresh fa-spin fa-5x fa-fw" aria-hidden="true"></i></p>
+        @if (string.IsNullOrEmpty(pageSummaryField) || resultContent.Count() != 2 )
+        {
+            <p class="h2 margin-bottom-xs-10"><strong>Please Wait</strong></p>
+            <p>You will be redirected shortly.</p>
+        }
+        else
+        {
+            <p class="h2 margin-bottom-xs-10"><strong>@resultContent[0]</strong></p>
+            <p>@resultContent[1]</p>
+        }
+
+    </div><!-- .loading-information -->
+</div><!-- .loading -->

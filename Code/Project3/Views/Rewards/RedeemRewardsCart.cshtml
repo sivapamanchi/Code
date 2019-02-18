@@ -1,0 +1,87 @@
+﻿@model List<BGSitecore.Models.Reward.CartItem>
+@using BGSitecore.Components;
+
+@{
+    var editShippingAddressUrl = UrlMapper.Map("https://www.bluegreenowner.com/owner/ownerAccount.aspx");
+    var continueRedeemingRewardsUrl = UrlMapper.Map("https://sc.bluegreenowner.com/rewards/redeem-rewards");
+    var confirmUrl = UrlMapper.Map("https://sc.bluegreenowner.com/rewards/redeem-rewards-confirmation");
+
+
+
+    var controller = new BGSitecore.Controllers.RewardsController();
+    var cartItems = controller.GetAllCartItems();
+    var cartTotalModel = new BGSitecore.Models.Reward.CartTotal();
+
+    BlueGreenContext context = new BlueGreenContext();
+    var shippingInformation = string.Empty;
+    if (context != null && context.bxgOwner != null)
+    {
+        var encoreAvailRewards = (context.bxgOwner.EncoreBenefits != null) ? context.bxgOwner.EncoreBenefits.DividendsBalance : 0;
+        cartTotalModel = new BGSitecore.Models.Reward.CartTotal()
+        {
+            AvailableRewards = encoreAvailRewards,
+            TotalRewardsinCart = (cartItems.Count > 0) ? cartItems.Select(t => t.SubTotal).Sum() : 0,
+            AvailablePoints = encoreAvailRewards - ((cartItems.Count > 0) ? cartItems.Select(t => t.SubTotal).Sum() : 0)
+        };
+
+        //Pick from Updated Session If not pick from Old session
+        var BOcontext = Session["Bluegreenowner"] != null ? (BGO.BluegreenOnline.Bluegreenowner)Session["Bluegreenowner"] : null;
+        if (BOcontext != null)
+        {
+            string ownerFullName = BOcontext.FullName;
+            string streetAddess = (!string.IsNullOrEmpty(BOcontext.OwnerAddress2)) ? (BOcontext.OwnerAddress1 + "<br/>" + BOcontext.OwnerAddress2).Trim() : (BOcontext.OwnerAddress1).Trim();
+
+            string cityStateZip = BOcontext.OwnerCity + ", " + BOcontext.OwnerStateAbr + " " + BOcontext.OwnerPostalCode;
+            string phoneNumber = BOcontext.OwnerHomePhone != string.Empty ? BOcontext.OwnerHomePhone : BOcontext.OwnerAlternatePhone;
+            phoneNumber = (phoneNumber.Length == 10) ? string.Format("({0}) {1}-{2}", phoneNumber.Substring(0, 3), phoneNumber.Substring(3, 3), phoneNumber.Substring(6, phoneNumber.Length - 6)) : phoneNumber;
+            shippingInformation = ownerFullName + "<br/>" + streetAddess + "<br/>" + cityStateZip + "<br/>" + phoneNumber;
+        }
+        else
+        {
+            string ownerFullName = context.bxgOwner.firstName + " " + context.bxgOwner.lastName;
+            string streetAddess = (!string.IsNullOrEmpty(context.bxgOwner.Address2)) ? (context.bxgOwner.Address1 + "<br/>" + context.bxgOwner.Address2).Trim() : (context.bxgOwner.Address1).Trim();
+
+            string cityStateZip = context.bxgOwner.City + ", " + context.bxgOwner.StateAbr + " " + context.bxgOwner.PostalCode;
+            string phoneNumber = context.bxgOwner.HomePhone != string.Empty ? context.bxgOwner.HomePhone : context.bxgOwner.AlternatePhone;
+            phoneNumber = (phoneNumber.Length == 10) ? string.Format("({0}) {1}-{2}", phoneNumber.Substring(0, 3), phoneNumber.Substring(3, 3), phoneNumber.Substring(6, phoneNumber.Length - 6)) : phoneNumber;
+            shippingInformation = ownerFullName + "<br/>" + streetAddess + "<br/>" + cityStateZip + "<br/>" + phoneNumber;
+
+        }
+    }
+    var isCartEmptyClass = (cartItems.Count > 0) ? "" : "disabled";
+}
+@Html.AntiForgeryToken()
+<script type="text/javascript" src="~/assets/js/Rewards/rewardscart.js"></script>
+<div class="hidden alert alert-danger js-alertmessage"></div><!-- .alert -->
+<div class="checkout-cart">
+    @Html.Partial("/Views/Rewards/RewardsCart.cshtml", cartItems)
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+        <div class="panel panel-default panel-narrow">
+            <div class="panel-heading">
+                <h2 class="h3 panel-title"><strong>Shipping</strong> Information</h2>
+            </div><!-- .panel-heading -->
+
+            <div class="panel-body">
+                <p>
+                    @Html.Raw(shippingInformation)
+                </p>
+                <p><a href="@editShippingAddressUrl" class="btn btn-secondary">Edit Account Information *</a></p>
+            </div><!-- .panel-body -->
+        </div>
+    </div>
+    <div class="pull-right col-xs-12 col-sm-6 col-md-5 col-lg-4">
+        <div id="rewardsCartTotal">
+            @Html.Partial("/Views/Rewards/RewardsCartTotal.cshtml", cartTotalModel)
+        </div>
+        <div class="form-group text-right-md">
+            <a id="continue-redeem-rewards" href="@continueRedeemingRewardsUrl" class="btn @(cartItems.Count > 0 ? "btn-secondary" : "btn-primary") ">Continue Redeeming Rewards</a>
+            <a id="place-order" data-confirmurl="@confirmUrl" href="#" class="btn @(cartItems.Count > 0 ? "btn-primary" : "btn-default")" @isCartEmptyClass>Place Order</a>
+        </div>
+    </div>
+</div><!-- .row -->
+<div class="legal">
+    <p>*Editing the shipping information will change the address on your account.</p>
+    <p>Rewards redeemed for RCI or Interval International fees will not be subtracted from your Rewards balance until a Bluegreen Rewards&reg; representative contacts you to confirm the transaction.</p>
+</div><!-- .legal -->

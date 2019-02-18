@@ -1,0 +1,23 @@
+﻿@using BGModern.Models;
+
+@model ResortModel
+@{
+    Layout = "ResortMasterLayout.cshtml";
+}
+<script src="~/Scripts/jquery.unobtrusive-ajax.js" type="text/javascript"></script>
+<div id="ResortWrapper" style="margin:0 0 0 0; width:100%;">
+    @{Html.RenderAction("ResortPagesPhotoHeader", "ResortPagesPhotoHeader", new { id = Model.ResortPageID });}
+</div>
+
+<br />
+
+@if(Model.VacationOrSamplerOwner)
+{ 
+    @Html.Action("GetPartialView", "PlanItPanel")
+}
+<br/>
+
+<div style="width:100%; text-align:justify;">
+    <br />
+    @Html.Raw(@Model.ResortDetail)
+</div>

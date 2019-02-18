@@ -1,0 +1,65 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Components
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<BannerWidget>
+@{
+    var mBannerSpeed = Model.BannerSpeed != null ? (1000 * int.Parse(Model.BannerSpeed)) : 5000;
+    var showItem = true;
+    String rule = Model.InnerItem.Fields[BaseComponent.RestrictionRuleId].Value;
+    if (!string.IsNullOrEmpty(rule))
+    {
+        if (!SitecoreUtils.EvaluateRules(rule, Model.InnerItem))
+        {
+            showItem = false;
+        }
+    }
+
+    if (showItem && (Model.VisibleFromDate == DateTime.MinValue || Model.VisibleFromDate <= DateTime.Now) &&
+       (Model.VisibleToDate == DateTime.MinValue || Model.VisibleToDate >= DateTime.Now))
+    {
+        showItem = true;
+    }
+    else
+    {
+        showItem = false;
+    }
+}
+@if (showItem)
+{
+    if (Model != null && Model.AllBannerImages != null && Model.AllBannerImages.Count() > 0)
+    {
+        if (Model.AllBannerImages.Count() > 1)
+        {
+        <div id="banner-widget" class="widget widget-banner">
+            <div class="slick-slider" data-autoplay="true" data-autoplaySpeed="@mBannerSpeed">
+                @foreach (BannerImage item in Model.AllBannerImages)
+                {
+                    var mBannerUrl = item.BannerUrl != null ? item.BannerUrl.Url : "#";
+                    var mImage = ImageUtils.BuildImageUrl(item, item.SiteSettings.RemoteImageUrl);
+                    <div>
+                        <a href="@mBannerUrl">
+                            <img src='@mImage' alt="@item.Caption" class="img-responsive">
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        }
+        else
+        {
+            foreach (BannerImage item in Model.AllBannerImages)
+            {
+                var mBannerUrl = item.BannerUrl != null ? item.BannerUrl.Url : "#";
+                <div class="widget widget-banner">
+                    <a href="@mBannerUrl">
+                        <img src='@ImageUtils.BuildImageUrl(item, item.SiteSettings.RemoteImageUrl)' alt="@item.Caption" class="img-responsive">
+                    </a>
+                </div>
+            }
+        }
+    }
+}

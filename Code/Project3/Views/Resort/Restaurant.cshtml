@@ -1,0 +1,136 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<RestaurantList>
+
+@{
+
+    var AddRestaurantClass = "";
+    var ActiveRestaurant = "active";
+    var ActiveRestaurantBtn = "true";
+    var ActiveRestaurantContent = "active";
+}
+
+
+@if (Model.Restaurants != null && Model.Restaurants.Count() > 0)
+{
+    <div id="menuHeaderTopBoarder" class="row"></div>
+    <div id="headerSectionSpacer" class="row"></div>
+    <div class="row" id="menuHeaderMain">
+        <div class="col-sm-7 col-sm-push-5 text-right">
+            @if (Model.Restaurants.First().RestaurantHeaderImage != null)
+            {
+                <img src="@Model.Restaurants.First().RestaurantHeaderImage.ImageFullUrl()" id="hdrImage" class="img-responsive center-block" />
+            }
+        </div>
+        <div class="col-sm-5 col-sm-pull-7">
+            @*<div class="row">
+                    <label style="width:100%;">@Model.ResortName, @Model.City, @Model.State.Code</label>
+                </div>*@
+            <ul class="nav nav-stacked">
+                @foreach (Restaurant item in Model.Restaurants)
+                {
+                    <li class="@ActiveRestaurant">
+                        @{var headerImage = "";
+                        }
+                        @if (item.RestaurantHeaderImage != null)
+                        {
+                            headerImage = item.RestaurantHeaderImage.ImageFullUrl();
+
+                        }
+                        <a id="anch-@TrimRestaurantName(item.RestaurantName)" class="rest-list" href="#menus-@TrimRestaurantName(item.RestaurantName)"
+                           data-toggle="tab" aria-expanded="@ActiveRestaurantBtn" data-image="@headerImage">@item.RestaurantName</a>
+
+                    </li>
+
+                    ActiveRestaurant = "";
+                    ActiveRestaurantBtn = "false";
+                }
+            </ul>
+
+        </div>
+    </div>
+    <div id="headerSectionSpacer" class="row"></div>
+    <div id="menuHeaderBottomBoarder" class="row"></div>
+    <br />
+    <div class="tab-content">
+        @foreach (Restaurant item in Model.Restaurants)
+        {
+            <div id="menus-@TrimRestaurantName(item.RestaurantName)" class="tab-pane restaurant-details @AddRestaurantClass @ActiveRestaurantContent">
+                <div class="row">
+                    @if (item.RestaurantLogoImage != null)
+                    {
+                        <div class="col-md-3">
+                            @if (item.RestaurantLogoImage != null)
+                            {
+                                <img src="@item.RestaurantLogoImage.ImageFullUrl()" class="img-responsive center-block" />
+                            }
+                        </div>
+                    }
+                    <div class="col-md-9">
+                        <h3 class="sub-content-title">@item.RestaurantName:</h3>
+                        <p>@Html.Raw(item.RestaurantTeaser)</p>
+                        <p>
+                            <label>HOURS OF OPERATION:</label>&nbsp;<label>@item.HoursOfOperation</label><br />
+                            <label>PHONE NUMBER:</label>&nbsp;<label>@item.Phone</label><br />
+                            <label>LOCATION:</label>&nbsp;<label>@item.Location</label><br />
+                        </p>
+                    </div>
+                </div>
+                <br />
+
+                @foreach (MenuCategory category in item.MenuCategory)
+                {
+                    <h2 class="sub-content-title">
+                        @category.MenuCategoryName
+                        @if (!string.IsNullOrEmpty(category.MenuCategorySummary))
+                        {
+                            @:&nbsp;-&nbsp;@category.MenuCategorySummary
+                        }
+                    </h2>
+                    foreach (MenuCategoryItem categoryItem in category.MenuCategoryItems)
+                    {
+                        <h3 class="sub-content-title">
+                            @categoryItem.MenuCategoryItemName
+                            @if (!string.IsNullOrEmpty(@categoryItem.MenuCategoryItemSummary))
+                            {
+                                @:&nbsp; -&nbsp;@categoryItem.MenuCategoryItemSummary
+                        }
+                        </h3>
+                        <ul class="menuItemList">
+                            @foreach (MenuItem menuItem in categoryItem.MenuItems)
+                            {
+                                <li>
+                                    <label><b>@menuItem.MenuName</b></label>
+                                    @if (!string.IsNullOrEmpty(menuItem.MenuDescription))
+                                    {
+                                        <b> &nbsp;-&nbsp;</b>@menuItem.MenuDescription
+                                    }
+                                </li>
+                            }
+                        </ul>
+                        <p>
+                            <b>@categoryItem.MenuCategoryItemFooter</b>
+                        </p>
+                    }
+                    <p>
+                        <b>@category.MenuCategoryFooter</b>
+                    </p>
+                }
+            </div>
+
+            ActiveRestaurantContent = "";
+        }
+    </div>
+    AddRestaurantClass = "hidden";
+}
+
+    @functions{
+        public string TrimRestaurantName(string name)
+        {
+            return name.Replace(" ", "").Trim();
+        }
+    }

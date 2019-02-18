@@ -1,0 +1,22 @@
+﻿@using Sitecore.Mvc
+@using BGSitecore.Models.Teasers
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SocialWidget>
+
+@if (Sitecore.Context.PageMode.IsExperienceEditor)
+{
+    <p>[Twitter Widget]</p>
+    <p> Please edit twitter handle: @Editable(Model, x => x.UserHandle)</p>
+}
+
+    <h3> @Editable(Model, y => y.Title) </h3>
+<div>
+
+    @{
+        //bluegreentweets
+        var twitterUrl = "https://twitter.com/" + Model.UserHandle;
+    }
+    <a class="twitter-timeline" data-height="360" href="@twitterUrl">@Model.UserHandle</a>
+    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+<hr />

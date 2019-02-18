@@ -1,0 +1,28 @@
+﻿@model BGSitecore.Models.PointsSummary
+
+@{
+}
+
+<div class="col-xs-12">
+    <h2 class="h2" id="current-points"><strong>Current</strong> Points</h2>
+    <div class="col-border col-border-default">
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <div class="callout">@Model.AnnualPoints<span class="sr-only"> Points</span></div>
+                <p>annual points</p>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <div class="callout">@Model.SavedPoints<span class="sr-only"> Points</span></div>
+                <p>saved points</p>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <div class="callout">@Model.RestrictedPoints<span class="sr-only"> Points</span></div>
+                <p>restricted points</p>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <div class="callout text-dark">@Model.AvailablePoints<span class="sr-only"> Points</span></div>
+                <p>available points</p>
+            </div>
+        </div><!-- .row -->
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿@using Sitecore.Mvc
+@using BGSitecore.Models
+@using BGSitecore.Utils;
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Wysiwyg>
+@if (Model != null && SitecoreUtils.EvaluateRules(Model.RestrictionRule, Model.InnerItem))
+{
+<div class="page-header">
+    <h1 class="h1 text-lowercase first-word">@Editable(Model, x => x.Title)</h1>
+    @Html.Sitecore().Placeholder("pagesubtitle")
+</div>
+@Html.Raw(Editable(Model, x => x.Content))
+}

@@ -1,0 +1,249 @@
+﻿@model BGModern.Models.ResortModel
+
+@section PageStyles{
+<link href="~/css/foodAndBeverages.css" rel="stylesheet" type="text/css">
+}
+
+@section PageScript{
+    <script type="text/javascript" >
+    var headerImages = [];
+    @{
+        foreach (BGModern.Models.RestaurantModel rest in Model.FoodAndBeverage.Restaurants)
+        {
+            @:headerImages['@rest.Name.Replace(" ", String.Empty)'] = '@rest.HeaderImageURL';
+        }
+    }
+
+    function setSelectedRestaurant(restaurantName) {
+        var restListItems = document.getElementsByClassName("rest-list");
+        for(var element = 0; element<restListItems.length; element++)
+        {
+            if (restListItems[element].id == ("anch" + restaurantName)) {
+                var hdrImg = document.getElementById("hdrImage");
+                if (hdrImg != null) {
+                    hdrImg.src = headerImages[restaurantName];
+                }
+
+                var mnuDiv = document.getElementById("menus" + restaurantName);
+                if( mnuDiv != null){
+                    mnuDiv.show();
+                }
+
+                var arrowDiv = document.getElementById("caret" + restaurantName);
+
+                if (arrowDiv != null) {
+                    jQuery(arrowDiv).fadeIn();
+                }
+            }
+            else {
+                var hdrImg = document.getElementById("hdr" + restaurantName);
+                if (hdrImg != null) {
+                    hdrImg.hide();
+                }
+
+                var mnuDiv = document.getElementById("menus" + (restListItems[element].id).substring(4));
+                if( mnuDiv != null){
+                    mnuDiv.hide();
+                }
+
+                var arrowDiv = document.getElementById("caret" + (restListItems[element].id).substring(4));
+
+                if (arrowDiv != null) {
+                    jQuery(arrowDiv).fadeOut();
+                }
+            }
+        }
+    }
+
+    function getOffset(elem) {
+        if (elem.getBoundingClientRect) {
+            return getOffsetRect(elem)
+        }
+        else { // old browser
+            return getOffsetSum(elem)
+        }
+    }
+
+    function getOffsetSum(elem) {
+        var top=0, left=0
+
+        while(elem) {
+            top = top + parseInt(elem.offsetTop)
+            left = left + parseInt(elem.offsetLeft)
+            elem = elem.offsetParent
+        }
+
+        return {top: top, left: left}
+    }
+
+    function getOffsetRect(elem) {
+        var box = elem.getBoundingClientRect()
+        var body = document.body
+        var docElem = document.documentElement
+        var scrollTop = window.pageYOffset || docElem.scrollTop || body.scrollTop
+        var scrollLeft = window.pageXOffset || docElem.scrollLeft || body.scrollLeft
+        var clientTop = docElem.clientTop || body.clientTop || 0
+        var clientLeft = docElem.clientLeft || body.clientLeft || 0
+        var top  = box.top +  scrollTop - clientTop
+        var left = box.left + scrollLeft - clientLeft
+
+        return { top: Math.round(top), left: Math.round(left) }
+    }
+
+    </script>
+}
+
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<div class="col-lg-12" style="margin:7px 0 0 0; padding:0 0 0 0;">
+    <div class="container" style="width:100%; padding-right:0;">
+        <div id="menuHeaderTopBoarder" class="row"></div>
+        <div id="headerSectionSpacer" class="row"></div>
+        <div class="row" id="menuHeaderMain">
+            <div class="col-lg-3">
+                <div class="container" style="width:100%;">
+                    <div class="row">
+                        <label style="width:100%;">@Model.Name, @Model.City, @Model.State</label>
+                    </div>
+                    @{
+                        int restCnt = 0;
+                        
+                        foreach (BGModern.Models.RestaurantModel rest in Model.FoodAndBeverage.Restaurants)
+                        {
+                            <div class="row" style="width:auto;">
+                                <div >
+                                    @{if (restCnt == 0)
+                                    {
+                                        <label id="caret@{@rest.Name.Replace(" ", String.Empty);}" class="rest-list glyphicon glyphicon-triangle-right greenArrow"></label>
+                                        <a id="anch@{@rest.Name.Replace(" ", String.Empty) }" class="rest-list" href="#" onclick="setSelectedRestaurant('@rest.Name.Replace(" ", String.Empty)');" style="z-index:99;">@rest.Name.Trim()</a>
+                                    }
+                                      else
+                                      {
+                                        <label id="caret@{@rest.Name.Replace(" ", String.Empty);}" class="rest-list glyphicon glyphicon-triangle-right greenArrow" style="display:none;"></label>
+                                        <a id="anch@{@rest.Name.Replace(" ", String.Empty) }" class="rest-list" href="#" onclick="setSelectedRestaurant('@rest.Name.Replace(" ", String.Empty)');" style="z-index:99;">@rest.Name.Trim()</a>
+                                    }
+                                    }
+                                </div>
+                            </div>
+
+                            restCnt++;
+                        }
+                    }
+                </div>
+            </div>
+            <div class="col-lg-9" style="margin:0 0 0 0; padding:0 0 0 0;text-align:right;">
+                <img style="display:inline-block; text-align:right;" src="@Model.FoodAndBeverage.Restaurants.ElementAtOrDefault(0).HeaderImageURL" id="hdrImage" />
+            </div>
+        </div>
+        <div id="headerSectionSpacer" class="row"></div>
+        <div id="menuHeaderBottomBoarder" class="row"></div>
+        <br />
+        <br />
+        @{
+        int restDivCnt = 0;
+        String displayNone = "";
+        String menuDetailsClass = "col-lg-9";
+    
+        foreach (BGModern.Models.RestaurantModel rest in Model.FoodAndBeverage.Restaurants)
+        {
+            if (restDivCnt > 0)
+            {
+                displayNone = "; display: none;";
+            }
+            
+            <div id="menus@{@rest.Name.Replace(" ", "");}" style="margin:0 0 0 0; padding:0 0 0 0; width:100%; @displayNone">
+                <div class="row" style="margin:0 0 0 0; padding:0 0 0 0; width:100%;">
+                    @{if(!String.IsNullOrWhiteSpace(rest.LogoImageURL))
+                    {
+                        menuDetailsClass = "col-lg-9";
+                          
+                        <div class="col-lg-3" style="margin:0 0 0 0; padding:0 0 0 0;">
+                            <img src="@rest.LogoImageURL" style="width:85%; resize:both;" />
+                        </div>                        
+                    }
+                    else
+                      {
+                          menuDetailsClass = "col-lg-12";
+                      }
+                    }
+                    <div class="@menuDetailsClass" style="margin:0 0 0 0; padding:0 0 0 0;">
+                        <div class="container" style="width:auto;">
+                            <div class="row restaurantDetails">
+                                <div>@rest.Name:</div>
+                            </div>
+                            <div class="row" style="width:100%;">@rest.TeaserLine</div>
+                            <div class="row" style="line-height:5px;">&nbsp;</div>
+                            <div class="row"><label class="restaurantDetails">HOURS OF OPERATION:</label>&nbsp;<label>@rest.HoursOfOperation</label></div>
+                            <div class="row"><label class="restaurantDetails">PHONE NUMBER:</label>&nbsp;<label>@rest.Phone</label></div>
+                            <div class="row"><label class="restaurantDetails">LOCATION:</label>&nbsp;<label>@rest.Location</label></div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <hr style="height: 1px; background: #333; background-image: linear-gradient(to right, #ccc, #333, #ccc);"/>
+
+                @foreach (BGModern.Models.MenuCategoryModel category in rest.MenuCategories)
+                {
+                    if (String.IsNullOrWhiteSpace(category.CategorySummary))
+                    {
+                        <div class="row" style="margin:0 0 0 0; padding:0 0 0 0; width:100%;"><label class="lime14">@category.Name</label></div><br />
+                    }
+                    else
+                    {
+                        <div class="row" style="margin:0 0 0 0; padding:0 0 0 0; width:100%;"><label class="lime14">@category.Name.Trim() &nbsp;-&nbsp;@category.CategorySummary.Trim()</label></div><br />
+                    }
+
+                    foreach (BGModern.Models.MenuItemCategoryModel itemCat in category.MenuItemCategories)
+                    {
+                        if (String.IsNullOrWhiteSpace(itemCat.ItemCategorySummary))
+                        {
+                            <div class="row" style="margin:0 0 0 0; padding:0 0 0 0; width:100%;"><label style="font-weight:bold;">@itemCat.Name</label></div>
+                        }
+                        else
+                        {
+                            <div class="row" style="margin:0 0 0 0; padding:0 0 0 0; width:100%;"><label style="font-weight:bold;">@itemCat.Name.Trim() &nbsp;-&nbsp;</label>@itemCat.ItemCategorySummary.Trim()</div>
+                        }
+
+                        <ul class="menuItemList">
+                            @foreach (BGModern.Models.MenuItemModel item in itemCat.MenuItems)
+                            {
+                                if (String.IsNullOrWhiteSpace(item.Description))
+                                {
+                                    <li><label style="font-weight:bold;">@item.Name.Trim()</label></li>
+                                }
+                                else
+                                {
+                                    <li><label style="font-weight:bold;">@item.Name.Trim() &nbsp;-&nbsp;</label>@item.Description.Trim()</li>
+                                }
+                            }
+                        </ul>
+                        <br />
+                        if (!String.IsNullOrWhiteSpace(itemCat.ItemCategoryFooter))
+                        {
+                            <p>
+                                @itemCat.ItemCategoryFooter<br>
+                                <br>
+                            </p>
+                        }
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(category.CategoryFooter))
+                    {
+                        <p style="font-weight:bolder;">
+                            @category.CategoryFooter
+                        </p>
+                        <br>
+                        <br>
+                    }
+                }
+            
+            </div>
+        
+            restDivCnt++;
+        }
+        }
+    </div>
+    
+</div>

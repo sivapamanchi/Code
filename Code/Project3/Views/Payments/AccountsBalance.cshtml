@@ -1,0 +1,237 @@
+﻿@using BGSitecore.Utils
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Configuration;
+@using BGSitecore.Models.Payments
+@using System.Globalization;
+<script>
+    var language='@Sitecore.Context.Language.CultureInfo.ThreeLetterISOLanguageName';
+</script>
+@model AccountsListViewModel
+
+@{
+    //Collecting Data
+    BGSitecore.Models.Section section = Model.SectionData;
+    PaymentSection paymentSection = Model.PaymentSectionData;
+
+    string[] columns = null;
+    int colCount = 99;
+    if (section.ColumnList != null)
+    {
+        columns = section.GetColumnList();
+        colCount = columns.Length;
+    }
+    string sorterData = OwnerUtils.GetTableSorterDataForPayments(section);
+    string sorterCss = (!string.IsNullOrEmpty(sorterData)) ? "js-table-sorter" : "";
+
+    string itemsPerPage = (section.MaxItemsPerPage > 0) ? "data-items-per-page=" + section.MaxItemsPerPage.ToString() : "data-items-per-page=999";
+    //string itemsPerPage = (section.MaxItemsPerPage > 0) ? "data-items-per-page=2"  : "data-items-per-page=999";
+
+
+    <div class="clearfix"></div>
+    <div class="payment-error-message alert alert-danger hide">
+        @Html.Raw(Model.PaymentSectionData.ErrorMessage)
+    </div>
+
+    if (Model != null && Model.Alert != null && !string.IsNullOrEmpty(Model.Alert.Text))
+    {
+        <div class="alert alert-@Model.Alert.Type.ToString()" role="alert">
+            @Html.Raw(Model.Alert.Text)
+        </div>
+    }
+    else
+    {
+        @Html.Sitecore().Placeholder("paymentcontent")
+    }
+
+
+}
+
+
+
+@if (Model.AccountList != null)
+{
+    <div class="payment-account-balance">
+        @foreach (var account in Model.AccountList)
+        {
+            string paginatorCss = OwnerUtils.GetTablePaginatorCss(section, account.UserPayInfoList);
+
+            string sectionId = UiUtils.ToCssClass(false, "section", account.GroupTitle);
+            <div id="@sectionId" class="section">
+                @*@using (Ajax.BeginForm(MvcSettings.SitecoreRouteName, new AjaxOptions() { HttpMethod = "POST", OnBegin = "payment.paymentBegin", OnComplete = "payment.paymentComplete", OnFailure = "payment.paymentFail", OnSuccess = "payment.paymentSucess" }))*@
+                @using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Sitecore().FormHandler("Payments", "AccountsBalance")
+                    <h2><strong>@account.GroupTitle</strong></h2>
+                    @Html.HiddenFor(x => account.GroupID, new { @name = "GroupID" })
+                    @Html.HiddenFor(x => account.GroupTitle, new { @name = "GroupTitle" })
+                    <table class="table-collapse table-striped table-hidden-rows  @sorterCss @paginatorCss" @sorterData @itemsPerPage>
+                        <thead>
+                            <tr class="tablesorter-headerRow">
+                                @if (columns != null)
+                                {
+                                    string cssClass = "";
+                                    for (int i = 0; i < columns.Length; i++)
+                                    {
+                                        string colClass = string.Format("c{0}", i);
+                                        var colTitle = UiUtils.GetColumnTitle(columns[i]);
+                                        var restrictCol = Model.SectionData.RestrictColumnFromSort.Split(',').Contains(i.ToString()) ? "data-sorter=false" : "";
+
+                                        <th class="@cssClass @colClass" @restrictCol>
+                                            @if (colTitle.ToLower().Contains("arda"))
+                                            {
+                                                <abbr title="@Sitecore.Globalization.Translate.Text("Payments_ARDA_Acronym")">@Sitecore.Globalization.Translate.Text("Payments_ARDA")</abbr>
+                                            }
+                                            else
+                                            {
+                                                @Html.Raw(UiUtils.GetColumnTitle(columns[i]))
+                                            }
+                                        </th>
+
+
+                                        cssClass = (i == columns.Length - 2) ? "text-right" : (i != 0) ? "text-left" : "";
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        @if (account.UserPayInfoList != null)
+                        {
+                            //var userPayInfoList = account.UserPayInfoList;
+                            <tbody>
+
+                                @for (int i = 0; i < account.UserPayInfoList.Count; i++)
+                                {
+                                    var item = account.UserPayInfoList[i];
+                                    <tr class="tablesorter-hasChildRow">
+                                        <td class="c0" data-label="@UiUtils.GetDataLabel(columns[0])">
+                                            @if (!string.IsNullOrEmpty(item.AccountHelpContent))
+                                            {
+                                                <a href="#show-details-@StringUtils.CleanToAlphaNumeric(item.AccountNunmber)" class="collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="#show-details-@StringUtils.CleanToAlphaNumeric(item.AccountNunmber)">@item.AccountNunmber <i class="fa fa-caret-down rotate-text" aria-hidden="true"></i></a>
+                                            }
+                                            else
+                                            {
+                                                @item.AccountNunmber
+                                            }
+                                            @Html.HiddenFor(x => account.UserPayInfoList[i].AccountNunmber)
+                                        </td>
+                                        <td class="text-right c1 past" data-label="@UiUtils.GetDataLabel(columns[1])">@(item.PaymentAmount > 0 ? item.PastDue.ToString("C", Sitecore.Context.Language.CultureInfo) as string : "—")</td>
+                                        <td class="text-right c2 current" data-label="@UiUtils.GetDataLabel(columns[2])">@item.CurrentDue.ToString("C", Sitecore.Context.Language.CultureInfo)</td>
+                                        <td class="text-right c3" data-label="@UiUtils.GetDataLabel(columns[3])">
+                                            <div class="checkbox ">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => account.UserPayInfoList[i].IsARDAAmount, item.ARDAAmount <= 0 ? (object)new { @data_amt = item.ARDAAmount, @disabled = "disabled" } : (object)new { @data_amt = item.ARDAAmount })
+                                                    <span class="sr-only-md">@Sitecore.Globalization.Translate.Text("Payments_ARDA_Donation_Text")</span>
+                                                </label>
+                                            </div><!-- .checkbox -->
+                                        </td>
+                                        <td class="text-right c4" data-label="@UiUtils.GetDataLabel(columns[4])">
+                                            <div class="form-group is-required margin-bottom-xs-0">
+                                                <label for="total-payment" class="control-label sr-only">@UiUtils.GetDataLabel(columns[4])</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">@Sitecore.Globalization.Translate.Text("Payment_Currency")</span>
+                                                    @Html.TextBoxFor(x => account.UserPayInfoList[i].PaymentAmount, new { @type = "text", @class = "form-control", @max = item.PaymentAmount,@data_val= false })
+                                                </div><!-- .input-group -->
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    <tr class="collapsed-row">
+                                        <td colspan="5" class="hidden-print flush">
+                                            @if (!string.IsNullOrEmpty(item.AccountHelpContent))
+                                            {
+                                                <div class="collapse no-form-focus" id="show-details-@StringUtils.CleanToAlphaNumeric(item.AccountNunmber)">
+
+                                                    <div class="panel panel-narrow panel-default margin-bottom-xs-0">
+                                                        <div class="panel-body">
+                                                            <p>
+                                                                @Html.Raw(@item.AccountHelpContent)
+                                                            </p>
+                                                        </div><!-- .panel-body -->
+                                                    </div><!-- .panel -->
+
+                                                </div><!-- .collapse -->
+                                            }
+                                        </td>
+                                    </tr>
+
+                                }<!--loop PayInfo-->
+                            </tbody>
+                        }
+                    </table>
+                    <div class="pager paging-nav" style="display: none">
+                        <a href="#" class="prev">‹</a>
+                        <span class="pagecount"></span>
+                        <a href="#" class="view-all">@Sitecore.Globalization.Translate.Text("Section_Paginator_All")</a>
+                        <a href="#" class="next">›</a>
+                    </div>
+                    <div class="row">
+                        <div class="pull-left col-xs-12 col-sm-6">
+
+                            <ul class="list-inline list-inline-narrow">
+                                @if (account.IsAccountSecondaryLinkAllowed)
+                                {
+                                    <li>
+                                        @if (paymentSection != null && paymentSection.SecondaryButtonLink != null && !string.IsNullOrEmpty(paymentSection.SecondaryButtonLinkText))
+                                        {
+                                            <a href="@(paymentSection.SecondaryButtonLink.Url)" target="_blank" title="@(paymentSection.SecondaryButtonLinkText)" class="text-lowercase">@paymentSection.SecondaryButtonLinkText</a>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+
+                        </div>
+                        <div class="pull-right col-xs-12 col-sm-6 col-md-5">
+
+                            <div class="panel panel-narrow panel-default">
+                                <div class="panel-heading">
+                                    <h2 class="h3 panel-title"><strong>@account.GroupTitle</strong> @Sitecore.Globalization.Translate.Text("Payments_Summary")</h2>
+                                </div><!-- .panel-heading -->
+                                <table class="table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-right font-size-medium"><strong>@Sitecore.Globalization.Translate.Text("Payments_TotalPayment") </strong></td>
+                                            <td class="text-right font-size-medium"><strong>@Sitecore.Globalization.Translate.Text("Payment_Currency")<span class="spnTotalDues">@account.TotalDues</span></strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div><!-- .panel -->
+
+                            <div class="form-group text-right-sm margin-top-xs--10">
+                                @if (account != null && !string.IsNullOrEmpty(account.ViewStatementLink) && !string.IsNullOrEmpty(account.ViewStatementLinkText))
+                                {
+
+                                    <a href="@(account.ViewStatementLink)" target="_blank" title="@(account.ViewStatementLinkText)" class="btn btn-sm btn-secondary">@account.ViewStatementLinkText</a>
+
+                                }
+                                @if (paymentSection != null && !string.IsNullOrEmpty(paymentSection.PrimaryButtonText) && account.IsPaymentAllowed)
+                                {
+                                    <input type="submit" class="btn btn-sm btn-primary" value="@(paymentSection.PrimaryButtonText)" />
+
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+            <hr />
+        }
+    </div>
+    @*if (Model.IsFooterNoteAllowed)
+        {
+            @Html.Raw(paymentSection.FooterNotes)
+        }*@
+
+    if (Model.IsARDATextAllowed)
+    {
+        <div class="legal">
+            <p>
+                @Html.Raw(paymentSection.ARDAText)
+            </p>
+        </div>
+    }
+}
+
+
+

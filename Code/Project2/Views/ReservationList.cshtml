@@ -1,0 +1,43 @@
+﻿@model BGModern.Models.ReservationListModel
+@{
+    Layout = "ReservationsMasterLayout.cshtml";
+}
+<div class="col-lg-12" style="padding:0 0 0 0; margin:0 0 0 0;">
+    <br />
+    <div>
+
+        @{
+            Html.RenderPartial("BreadcrumbNavigation", Model);
+        }
+    </div>
+    <div class="page-title">
+        @Model.Title
+    </div>
+    
+    <br />
+    @*TODO SET visibility*@
+    <div id="pnlResList" class="col-lg-12" style="padding:0 0 0 0; margin:0 0 0 0;">
+        @Html.Action("ReservationsLists", "ReservationLists")
+    </div>
+
+    @*@Html.ValidationSummary()*@
+
+    @*@if (TempData.ContainsKey("ErrorMessage"))
+    {
+        <label id="LblError">@TempData["ErrorMessage"].ToString()</label>
+    }*@
+   
+    <br />
+    <br />
+    <font size="1">
+        (1) A valid driver's license and credit card will be required at time
+        of check-in.
+        <br />
+        (2) The occupancy limit includes children of all ages and is strictly enforced.
+    </font>
+    <br />
+    <br />
+    <br />
+    <div id="footnote" visible="true">
+    </div>
+</div>

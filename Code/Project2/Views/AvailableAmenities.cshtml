@@ -1,0 +1,47 @@
+﻿@model BGModern.Models.ResortModel
+@{
+    Layout = "ResortMasterLayout.cshtml";
+}
+
+<div id="ResortWrapper" style="margin:0 0 0 0; width:100%;">
+    @{Html.RenderAction("ResortPagesPhotoHeader", "ResortPagesPhotoHeader", new { id = Model.ResortPageID });}
+</div>
+
+<br />
+
+<div style="margin:0 auto; width:100%;">
+    <div class="amenity-list" style="float:left; width:33%;">
+        <h5>Resort Amenities</h5>
+
+        <ul>
+            @foreach (var amnty in @Model.AmenitiesLists.ResortAmentityItems)
+            {
+                <li>@amnty.Name</li>
+            }
+        </ul>
+    </div>
+
+    <div class="amenity-list" style="float:left; width:33%;">
+        <h5>Villa Amenities</h5>
+
+        <ul>
+            @foreach (var amnty in @Model.AmenitiesLists.ResortVillaItems)
+            {
+                <li>@amnty.Name</li>
+            }
+        </ul>
+    </div>
+
+
+
+    <div class="amenity-list" style="float:left; width:33%;">
+        <h5>Area Amenities</h5>
+
+        <ul>
+            @foreach (var amnty in @Model.AmenitiesLists.ResortAreaItems)
+            {
+                <li>@amnty.Name</li>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,226 @@
+﻿@using BGSitecore.Components;
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Analytics.Extensions
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<BasePage>
+
+@{
+    BlueGreenContext bgContext = new BlueGreenContext();
+    string ownerId = bgContext.OwnerId; // (false) ? "775700" : "430142";
+    string ownerType = bgContext.OwnerType;
+
+    var cssLoggedIn = (bgContext.IsAuthenticated) ? "user-logged-in" : "user-logged-out";
+    var chatActive = (Model.ShowChatNowLink) ? "chat-active" : "chat-not-active";
+    var chatNowUrl = Sitecore.Configuration.Settings.GetSetting("ChatNowUrl");
+    var chatNowText = @Sitecore.Globalization.Translate.Text("Global_StartChatNow");
+
+    var pageNameCss = SitecoreUtils.GetPageCss(Sitecore.Context.Item);
+
+    var inEditMode = (Sitecore.Context.PageMode.IsExperienceEditorEditing) ? "js-experienceeditor" : "";
+
+    var gaAccount = Sitecore.Configuration.Settings.GetSetting("Analytics");
+    var gaTagManager = Sitecore.Configuration.Settings.GetSetting("TagManager");
+
+    var buildVersion = Sitecore.Configuration.Settings.GetSetting("BuildVersion");
+    var buildDate = Sitecore.Configuration.Settings.GetSetting("BuildDate");
+
+    var cssDebug = DebugUtils.DebugCss();
+}
+
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html itemscope itemtype="http://schema.org/WebPage" lang="en" class="ie ie8 no-js"><![endif]-->
+<!--[if IE 9 ]>	 <html itemscope itemtype="http://schema.org/WebPage" lang="en" class="ie ie9 no-js"><![endif]-->
+<!--[if (gte IE 9)|!(IEMobile)|!(IE)]><!-->
+<html itemscope itemtype="http://schema.org/WebPage" class="no-js">
+<!--<![endif]-->
+<head>
+    <script src="https://cdn.optimizely.com/js/5892990096.js"></script>
+    <meta charset="UTF-8">
+    @if (string.IsNullOrEmpty(Model.HeaderTitle))
+    {
+        <title>Bluegreen</title>
+    }
+    else
+    {
+        <title> @Model.HeaderTitle </title>
+    }
+
+    @if (Model.DisableCaching)
+    {
+        <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+        <META HTTP-EQUIV="Expires" CONTENT="-1">
+    }
+    <meta name="MobileOptimized" content="320">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="robots" content="noindex" />
+
+    <link rel="manifest" href="/images/favicon/manifest.json?ver=@buildVersion">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png?ver=@buildVersion">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png?ver=@buildVersion">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon/favicon-96x96.png?ver=@buildVersion">
+    <link rel="icon" type="image/png" sizes="194x194" href="/images/favicon/favicon-194x194.png?ver=@buildVersion">
+    <link rel="icon" type="image/png" sizes="192x192" href="/images/favicon/android-chrome-192x192.png?ver=@buildVersion">
+    <!--[if IE]><link rel="shortcut icon" href="/images/favicon/favicon.ico?ver=@buildVersion"><![endif]-->
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/favicon/apple-touch-icon-57x57.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="60x60" href="/images/favicon/apple-touch-icon-60x60.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/favicon/apple-touch-icon-72x72.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/favicon/apple-touch-icon-76x76.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/favicon/apple-touch-icon-114x114.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/favicon/apple-touch-icon-120x120.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/favicon/apple-touch-icon-144x144.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/favicon/apple-touch-icon-152x152.png?ver=@buildVersion">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon-180x180.png?ver=@buildVersion">
+    <!-- <link rel="mask-icon" href="/images/favicon/safari-pinned-tab.svg" color="#0099cc"> -->
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Bluegreen Owners">
+    <meta name="msapplication-TileColor" content="#0099cc">
+    <meta name="msapplication-TileImage" content="/images/favicon/mstile-144x144.png?ver=@buildVersion">
+    <meta name="msapplication-config" content="/images/favicon/browserconfig.xml?ver=@buildVersion">
+    <meta name="application-name" content="Bluegreen Vacations | Owner">
+
+    <link rel="canonical" href="http://bluegreenowner.com/">
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/reset.css?ver=@buildVersion" media="all">
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css?ver=4.6.3" media="all">
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/cartogothic/style.css?ver=@buildVersion" media="screen">
+    @*<link rel="stylesheet" type="text/css" href="/assets/css/style(MergeToStyle).css?ver=@buildVersion" media="all">*@
+    <link rel="stylesheet" type="text/css" href="/assets/css/dev.css?ver=@buildVersion" media="all">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.min.css?ver=@buildVersion" media="all">
+
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css?ver=@buildVersion" media="print">
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js?ver=2.2.4"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js?ver=1.11.4"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.validation/1.15.1/jquery.validate.js?ver=1.15.1"></script>
+
+    @Html.Sitecore().VisitorIdentification()
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','@gaTagManager');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Start WebsiteAlive AliveTracker Code -->
+    <script type="text/javascript">
+        function wsa_include_js() {
+            var wsa_host = (("https:" == document.location.protocol) ? "https://" : "http://");
+            var js = document.createElement("script");
+            js.setAttribute("language", "javascript");
+            js.setAttribute("type", "text/javascript");
+            js.setAttribute("src", wsa_host + "tracking-v3.websitealive.com/3.0/?objectref=a1&groupid=5980&websiteid=0");
+            document.getElementsByTagName("head").item(0).appendChild(js);
+        }
+        if (window.attachEvent) { window.attachEvent("onload", wsa_include_js); }
+        else if (window.addEventListener) { window.addEventListener("load", wsa_include_js, false); }
+        else { document.addEventListener("load", wsa_include_js, false); }
+    </script>
+    <!-- End WebsiteAlive AliveTracker v3.0 Code -->
+
+    <script type="text/javascript" src="~/assets/js/third-party/modernizr.js"></script>
+</head>
+
+<!-- NOTE: Chat button is displayed when "chat-not-active" class is changed to "chat-active" -->
+<body class="@cssLoggedIn @chatActive @pageNameCss @cssDebug @inEditMode" data-spy="scroll" data-target="#site-subnav" data-offset="131">
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=@gaTagManager" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager -->
+
+    @if (DebugUtils.IsDebug())
+    {
+        <a id="debug" href="/home" class="hidden-xs hidden-sm" title="@ownerType (@ownerId)">debug mode<br />build-@buildVersion</a>
+    }
+
+
+    <a href="#top" class="sr-only sr-only-focusable skip-to-content">Skip to Main Navigation</a>
+    <a href="#site-content" class="sr-only sr-only-focusable skip-to-content">Skip to Main Content</a>
+    <a href="#colophon" class="sr-only sr-only-focusable skip-to-content">Skip to Footer</a>
+
+
+    @Html.Sitecore().Placeholder("ownerheader")
+
+
+    <div class="site-body">
+        <div class="hidden-print alert alert-upgrade alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-9">
+                        <p><strong>Oh no! Your browser is not supported.</strong> This website will not function properly unless you update to a newer version of Internet Explorer. Also consider using a different browser like <a href="https://www.google.com/intl/en/chrome/browser/" target="_blank" class="alert-link">Google Chrome</a>, <a href="http://www.apple.com/safari/" target="_blank" class="alert-link">Apple Safari</a> or <a href="http://www.mozilla.org/en-US/firefox/new/" target="_blank" class="alert-link">Mozilla Firefox</a>.</p>
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" class="pull-right-md pull-right-lg btn btn-danger btn-knockout" target="_blank">Update Internet Explorer</a>
+                    </div>
+                </div><!-- .row -->
+
+            </div><!-- .container -->
+        </div><!-- .alert-upgrade -->
+        @Html.Sitecore().Placeholder("ownercontent")
+
+        <a href="#" onclick="@chatNowUrl" class="btn btn-chat"><i class="fa fa-fw fa-lg fa-comments"></i>@chatNowText</a>
+
+        @Html.Hidden("BGOServerTime", DateTime.Now.ToString())
+    </div><!-- .site-body -->
+
+    <div class="hidden loading">
+        <div class="loading-information">
+            <p><i class="fa fa-refresh fa-spin fa-5x fa-fw" aria-hidden="true"></i></p>
+            <p class="h2"><strong>Loading...</strong></p>
+        </div><!-- .loading-information -->
+    </div>
+
+    @Html.Sitecore().Placeholder("ownerfooter")
+    <script src="~/assets/js/bluegreen/jquery.custom.js"></script>
+    <script src='~/assets/js/third-party/jquery.cookie.js?ver=@buildVersion'></script>
+    <script src="~/assets/js/third-party/jquery.doubletaptogo.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.panzoom.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.theia.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.validate.min.js?ver=@buildVersion"></script>
+
+    <script src="~/assets/js/third-party/jquery.validate.unobtrusive.min.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/bootstrap/collapse.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.slick.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/sticky-kit.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/bootstrap-select.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/bootstrap/bootstrap.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.maskedinput.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.flexslider.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.print.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.tablesorter.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.tablesorter.widgets.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.tablesorter.widget-sortTbodies.js?ver=@buildVersion"></script>
+
+    <script src="~/assets/js/third-party/jquery.tablesorter.pager.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/detect-card.js?ver=@buildVersion"></script>
+    <script src="~/assets/js/third-party/jquery.unobtrusive-ajax.min.js?ver=@buildVersion"></script>
+
+
+    @if (DebugUtils.IsDebugJs())
+    {
+        <script src='~/assets/js/min/bluegreen.js?ver=@buildVersion'></script>
+        @*<script src='~/assets/js/bluegreen/debug.js?ver=@buildVersion'></script>*@
+    }
+    else
+    {
+        <script src='~/assets/js/min/bluegreen.min.js?ver=@buildVersion'></script>
+    }
+
+    <div id="build">
+        <div id="version">@buildVersion</div>
+        <div id="date">@buildDate</div>
+    </div>
+
+</body>
+</html>

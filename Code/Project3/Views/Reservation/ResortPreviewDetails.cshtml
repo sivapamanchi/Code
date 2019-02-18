@@ -1,0 +1,143 @@
+﻿@using System.Collections.Generic
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Models
+@using BGSitecore.Components
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models.ResortService.SearchReservationResponse
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortPreviewDetails>
+@{ 
+    string checkIn = null;
+    string checkOut = null;
+    string maxGuests = null;
+    string Amount = null;
+    string roomDisplayName = "N/A";
+    string roomDesription = "n/a";
+    ImportantNotesList noteList = new ImportantNotesList();
+}
+@if (Model != null && Model.ResortDetail != null)
+{
+    {
+
+        if (Model.ResortDetail.ImportantNoteList != null)
+        {
+            noteList.ImportantNotes = Model.ResortDetail.ImportantNoteList;
+        }
+
+        if (Model.ActiveReservation != null)
+        {
+            checkIn = FormatUtils.GetDate(Model.ActiveReservation.CheckInDate);
+            checkOut = FormatUtils.GetCheckoutDate(Model.ActiveReservation);
+            maxGuests = Model.SleepsUpTolabel + " " + Model.ActiveReservation.MaximumOccupancy;
+            if (!string.IsNullOrEmpty(Model.ActiveReservation.Points) && Model.ActiveReservation.Points != "0")
+            {
+                Amount = FormatUtils.FormatPoints(Model.ActiveReservation.Points) + " " + Model.PointsLabel;
+            }
+            else 
+            {
+                Amount = FormatUtils.FormatAmount(Model.ActiveReservation.Amount.ToString());
+            }
+            var Room = ResortManager.GetRoom(Convert.ToInt16(Model.ActiveReservation.ProjectStay), Model.ActiveReservation.AS400UnitType);
+            if (Room != null)
+            {
+                roomDisplayName = Room.ViewTitle;
+                roomDesription = Room.RoomDescription;
+            }
+        }
+
+    }
+        <div class="media resort-preview-details" itemscope itemtype="http://schema.org/LocalBusiness">
+            <div class="media-left" itemscope itemtype="http://schema.org/ImageObject">
+                <a href="@Model.ResortDetail.Url">
+                    <img src="@Model.ResortDetail.MainResortImage.ImageFullUrl()" class="media-object img-responsive" alt="@Model.ResortDetail.ResortName" itemprop="contentUrl">
+                </a>
+            </div>
+            <div class="media-body">
+                <a href="@Model.ResortDetail.Url">
+                    <h2 class="h2 resort-name"><span itemprop="name">@Model.ResortDetail.ResortName</span></h2>
+                </a>
+
+                @if (Model.ResortDetail.ClubAffiliation != null)
+                {
+                    <div class="resort-designation"><i class='fa fa-circle' aria-hidden='true' style='color:#@Model.ResortDetail.ClubAffiliation.Color'></i>@Model.ResortDetail.ClubAffiliation.DisplayName</div>
+                }
+
+                <address class="resort-address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                    <span itemprop="streetAddress">@Model.ResortDetail.AddressLine1</span>
+                    @if (!string.IsNullOrEmpty(Model.ResortDetail.AddressLine2))
+                {
+                        <span itemprop="streetAddress">@Model.ResortDetail.AddressLine2</span>
+                    }
+                    <br /><span itemprop="addressLocality">@Model.ResortDetail.City</span>,
+                    @if (@Model.ResortDetail.State != null)
+                {
+                        <span itemprop="addressRegion">@Model.ResortDetail.State.Code</span>
+                    }
+                    <span itemprop="postalCode">@Model.ResortDetail.ZipCode</span>
+                    <br><span itemprop="telephone">@Model.ResortDetail.PhoneNumber</span>
+                </address>
+
+                @if (!string.IsNullOrEmpty(Model.ResortDetail.Latitude) && !string.IsNullOrEmpty(Model.ResortDetail.Longitude))
+                {
+                    <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                        <meta itemprop="latitude" id="resort-latitude" content="@Model.ResortDetail.Latitude">
+                        <meta itemprop="longitude" id="resort-longitude" content="@Model.ResortDetail.Longitude">
+                    </span>
+                }
+
+            </div><!-- .media-body -->
+        </div><!-- .media.resort-preview-details -->
+
+        <table class="table-collapse table-striped">
+            <thead>
+                <tr>
+                    <th>@Editable(Model, x => x.VillaTypeHeader)</th>
+                    <th class="text-left">@Editable(Model, x => x.CheckinHeader)</th>
+                    <th class="text-left">@Editable(Model, x => x.CheckouHeader)</th>
+                    <th class="text-left">@Editable(Model, x => x.MaxoccupanceHeader)</th>
+                    <th class="text-right">@Editable(Model, x => x.AmountHeader)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+
+                        <strong class="details">@roomDisplayName*
+                        @if (Model.HandicapAccessible)
+                        {
+                            <i class="fa fa-wheelchair fa-2x fa-border" aria-hidden="true"></i>
+                        }
+                    </strong>
+                    <div class="sub-details">@roomDesription</div>
+
+                </td>
+                    <td class="text-left" data-label="@Model.CheckinHeader">@checkIn</td>
+                    <td class="text-left" data-label="@Model.CheckouHeader">@checkOut</td>
+                    <td class="text-left" data-label="@Model.MaxoccupanceHeader">@maxGuests</td>
+                    <td class="text-right" data-label="@Model.AmountHeader">
+                        @if (Model.ActiveReservation.ReservationType != "F")
+                        {
+                            @Amount
+                        }
+                        else
+                        {
+                            @:N/A
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+       
+
+        <h2 class="h2 text-lowercase first-word" id="important-notes">@Editable(Model, x => x.ImportantNotesLabel)</h2>
+        if (noteList != null)
+        {
+
+            @Html.Partial("/Views/Resort/ImportantNotes.cshtml", (ImportantNotesList)noteList);
+        }
+}

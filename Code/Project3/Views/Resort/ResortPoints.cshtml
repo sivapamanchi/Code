@@ -1,0 +1,111 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortPointList>
+
+@{
+}
+
+
+@if (Model.PointCategory != null && Model.PointCategory.Count() > 0)
+{
+    <table class="table-collapse table-points">
+        <thead>
+            <tr>
+                <!-- <th class="text-left">Season</th> -->
+                <th>Season/Week Numbers</th>
+                <th class="text-left">Mon</th>
+                <th class="text-left">Tue</th>
+                <th class="text-left">Wed</th>
+                <th class="text-left">Thu</th>
+                <th class="text-left">Fri</th>
+                <th class="text-left">Sat</th>
+                <th class="text-left">Sun</th>
+                <th class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (PointsCategory item in Model.PointCategory)
+            {
+                <tr class="unit-label">
+                    <td colspan="9">@item.Name</td>
+                </tr>
+                foreach (PointsWeekDetails week in item.AllPointsDetails)
+                {
+                    <tr class="unit-points season-@week.CssClass">
+                        <!-- <td class="season-name text-left" data-label="Season">High Red</td> -->
+                        <td class="weeks" data-label="Week Numbers">
+                            <span class="week-numbers">@week.Title</span>
+                            <span class="season-badge">@week.DisplayName <span class="hidden-lg"> Season</span></span>
+                        </td>
+
+                        <td class="season-day text-left" data-label="Mon">@FormatUtils.FormatPoints(week.Monday)</td>
+                        <td class="season-day text-left" data-label="Tue">@FormatUtils.FormatPoints(week.Tuesday)</td>
+                        <td class="season-day text-left" data-label="Wed">@FormatUtils.FormatPoints(week.Wednesday)</td>
+                        <td class="season-day text-left" data-label="Thu">@FormatUtils.FormatPoints(week.Thursday)</td>
+                        <td class="season-day text-left" data-label="Fri">@FormatUtils.FormatPoints(week.Friday)</td>
+                        <td class="season-day text-left" data-label="Sat">@FormatUtils.FormatPoints(week.Saturday)</td>
+                        <td class="season-day text-left" data-label="Sun">@FormatUtils.FormatPoints(week.Sunday)</td>
+
+                        @{
+                            var mTotalWeekPoints = FormatUtils.ConvertStringToInt(week.Monday) + FormatUtils.ConvertStringToInt(week.Tuesday) + FormatUtils.ConvertStringToInt(week.Wednesday) + FormatUtils.ConvertStringToInt(week.Thursday) + FormatUtils.ConvertStringToInt(week.Friday) + FormatUtils.ConvertStringToInt(week.Saturday) + FormatUtils.ConvertStringToInt(week.Sunday);
+                        }
+                        <td class="season-total text-right" data-label="Total">
+                            @FormatUtils.FormatPoints(mTotalWeekPoints)
+                        </td>
+                    </tr>
+                }
+                if (!string.IsNullOrEmpty(item.Note))
+                {
+                <tr>
+                    <td colspan="9">@item.Note</td>
+                </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@if (Model.ActivityCategory != null && Model.ActivityCategory.Count() > 0)
+{
+
+    <table class="table-collapse">
+        <thead>
+            <tr>
+                <th>Activities</th>
+                <th class="text-left">Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ActivityCategory item in Model.ActivityCategory)
+            {
+                <tr class="unit-label">
+                    <td colspan="9">@item.Name</td>
+                </tr>
+                foreach (ActivityDetail activity in item.AllActivitiesDetails)
+                {
+                    <tr class="unit-points season-@activity.CssClass">
+                        <td >
+                            <span class="on-badge">@activity.DisplayName</span>
+                        </td>
+
+                        <td class="season-day text-left" data-label="Mon">@FormatUtils.FormatPoints(activity.Points)</td>
+                    </tr>
+                }
+                if (!string.IsNullOrEmpty(item.Note))
+                {
+                    <tr>
+                        <td colspan="9">@Html.Raw(item.Note)</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+}

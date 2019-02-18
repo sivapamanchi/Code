@@ -1,0 +1,80 @@
+﻿@using BGSitecore.Utils
+@using BGSitecore.Models.Reward
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<RewardsSections>
+   
+@if (Model.AllSections != null && Model.AllSections.Count() > 0)
+{
+    foreach (Section item in Model.AllSections)
+    {
+        if (ResortUtils.SectionHasChildItem(item) && !item.HideSection)
+        {
+            var sectionItemId = string.IsNullOrEmpty(item.JumpUniqueId) ? "section_" + item.classname : item.JumpUniqueId;
+            var jumpto = item.BuildJumpToLink();
+            var customClass = (item.HideSectionWhenPrinting) ? "hidden-print" : "";
+            var isPageMedia = (item.AllImages != null && item.AllImages.Count() > 0) ? "page-media" : "";
+            var print = "";
+            var visiblePrint = "";
+            var hiddenPrint = "";
+
+            <div class="@isPageMedia @customClass" id="@jumpto">
+                @Html.Raw(visiblePrint) @*Can not put title h3 as the first-word JS kicks in and breaks the h3*@
+
+
+                <h3 class="@hiddenPrint @(item.HideName ? "hidden " : "")">
+                    @if (item.isHeaderNumbering)
+                    {<span class="badge badge-lg badge-round badge-default">@Model.AllSections.ToList().IndexOf(item)</span>} <span class="h2 text-lowercase first-word">@Editable(item, x => x.Displayname)@Html.Raw(print)</span>
+                </h3>
+                @if (item.AllImages != null && item.AllImages.Count() > 0)
+                {
+                    @Html.Partial("/Views/Rewards/GetFlexSlider.cshtml", item.AllImages);
+                }
+              
+                @if (item.AllRichText != null && item.AllRichText.Count() > 0)
+                {
+                    foreach (BGSitecore.Models.Resort.RichText richTextItem in item.AllRichText)
+                    {
+                        @Html.Partial("/Views/Rewards/RichText.cshtml", richTextItem)
+                        if (item.Id.ToString().Equals("AD268D51-FA06-4929-8CC2-50BCDC10BE47", StringComparison.CurrentCultureIgnoreCase) && richTextItem.ItemId.ToString().Equals("{A7D0A8F2-17F1-4D8E-BB4A-2E8E001B30CF}", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            var emtyModel = GetLayoutItem<BGSitecore.Models.ReferFriend>();
+                            emtyModel.TOC = item.SliderGalleryDescription;
+                            emtyModel.SuccessMessage = item.SuccessMessage;
+                            @Html.Partial("/Views/Rewards/ReferFriend.cshtml", emtyModel);
+                        }
+                    }
+                }
+                @if (item.FolderWithFeaturedItems != null && item.FolderWithFeaturedItems.AllFeaturedItems != null && item.FolderWithFeaturedItems.AllFeaturedItems.Any())
+                {
+                    var filteredList = item.FolderWithFeaturedItems.AllFeaturedItems.Where(x => ((x.StartDate == DateTime.MinValue || x.StartDate <= DateTime.Now) && (x.EndDate == DateTime.MinValue || x.EndDate >= DateTime.Now))).Select(featuredItem => featuredItem);
+                    <div id="featured">
+                        <div class="row row-narrow hidden-print">
+                            <div class="col-xs-12 col-lg-10 col-lg-push-1">
+                                <div class="slick-slider" data-autoplay="true" role="toolbar">
+                                    @foreach (BGSitecore.Models.FeaturedItem featuredItem in filteredList)
+                                    {
+
+                                        <div>
+                                            <a href="@(featuredItem.RedirectLink == null ? featuredItem.Url : featuredItem.RedirectLink.Url)" class="thumbnail">
+                                                <img src='@ImageUtils.BuildImageUrl(featuredItem.FeaturedImage, featuredItem.SiteSettings.RemoteImageUrl, "/images/white.png")' alt="@featuredItem.Caption">
+                                                <div class="caption"><p>@featuredItem.PageTitle</p></div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div><!-- .row -->
+                    </div>
+                }
+
+
+                @if (item.ShowLineAfterSection)
+                {
+                    <hr />
+                }
+            </div>
+        }
+    }
+}
+
+

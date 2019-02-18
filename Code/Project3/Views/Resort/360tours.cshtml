@@ -1,0 +1,65 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<tours360>
+
+@{
+
+}
+@if (!string.IsNullOrEmpty(@Model.ToursId))
+{
+    <div class="embed-responsive embed-responsive-16by9 hidden-xs">
+        <div class="embed-responsive-item" id="virtual-tour-embed"></div>
+        <noscript>
+            <div class="alert alert-danger" role="alert">
+                <p><strong>ERROR:</strong> JavaScript not activated in your browser</p>
+            </div>
+        </noscript>
+    </div><!-- .embed-responsive -->
+
+    <p><a href="https://www.vpix.net/index.php?tour=@Model.ToursId" class="btn btn-primary" target="_blank">Show 360 view</a></p>
+
+    <script type="text/javascript" src="https://www.vpix.net/assets/krpano.js"></script>
+    <script type="text/javascript">
+        function getParameterByName( name )
+
+        {
+        name = name.replace( /[\[]/, "\\[" ).replace( /[\]]/, "\\]" );
+
+        var regex   = new RegExp( "[\\?&]" + name + "=([^&#]*)" ),
+            results = regex.exec( location.search );
+
+        return ( results === null ) ? "" : decodeURIComponent( results[1].replace( /\+/g, " " ) );
+    }
+
+    var prodId = getParameterByName( 'start_scene' ),
+        html5 = getParameterByName( 'html5' );
+
+    var is_html5   = '1',
+        is_android = '0';
+
+    if( html5 === '' )
+    {
+        html5 = ( is_html5 == '1' && is_android == '1' ) ? 'only' : 'fallback';
+
+    } // endif
+
+    embedpano({
+    js      : 'assets/krpano.js',
+		    swf     : 'https://www.vpix.net/assets/krpano.swf?20110717',
+		    xml     : 'https://www.vpix.net/get_xml_dev.php?tour=@Model.ToursId',
+		    html5   : html5,
+		    wmode   : 'transparent',
+		    target  : 'virtual-tour-embed',
+		    vars    : {
+            'start_scene' : prodId,
+			    'only_scene'  : ''
+
+            },
+		    passQueryParameters : 'true'
+
+        });
+    </script>
+}

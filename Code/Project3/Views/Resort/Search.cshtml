@@ -1,0 +1,46 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+    if (!string.IsNullOrEmpty(Model.CurrentResortName))
+    {
+        Model.searchParameters.ShowResortOnly = true;
+    }
+    else
+    {
+        Model.searchParameters.ShowResortOnly = false;
+    }
+    }
+<div id="reserverContainer" class="reserverContainer"></div>
+@using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.Sitecore().FormHandler("Home", "DoSearch")
+
+
+    <div class="widget widget-account-summary" id="reserve">
+        <div class="panel panel-default panel-narrow">
+            <div class="sr-only panel-heading">
+                <h3 class="h2 panel-title"><strong>Make</strong> a Reservation</h3>
+            </div><!-- .panel-heading -->
+            <div class="panel-body">
+
+                @Html.Partial("SearchOptions", Model)
+                <div class="form-fields">
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block js-homesearch" name="btnSubmit">@Sitecore.Globalization.Translate.Text("Resort_Search_SearchButton")</button>
+                    </div><!-- .form-group -->
+                </div><!-- .form-fields -->
+            </div>
+        </div><!-- .collapse -->
+    </div><!-- .search-filters -->
+}
+
+
+

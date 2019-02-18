@@ -1,0 +1,141 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models.Payments
+@using BGSitecore.Utils
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<CardPayment>
+
+@{
+
+}
+
+<div id="card-payment-forms">
+    @using (Html.BeginForm())
+    {
+        <div class="collapse in" id="card-details" aria-expanded="true">
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                    <div class="form-group is-required">
+                        <label class="control-label">
+                            @Editable(Model, x => x.NameOnCard)
+                        </label>
+                        @Html.TextBoxFor(m => m.txtNameOnTheCard, new { @class = "form-control", })
+
+                    </div>
+                </div>
+            </div><!-- .row -->
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group is-required">
+                        <label class="control-label" for="cc_number">@Editable(Model, x => x.CardNumber)</label>
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-5 col-md-5 col-lg-4">
+
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.txtCardNumber, new { @class = "form-control input-credit-card", })
+                                    <span class="input-group-addon"><i class="fa fa-fw fa-lg fa-credit-card-alt" aria-hidden="true"></i></span>
+                                </div><!-- .input-group -->
+
+                            </div>
+                        </div><!-- .row -->
+                    </div><!-- .form-group -->
+
+                    <div class="hide-if-js credit-card-type">
+                        <fieldset class="form-group is-required">
+                            <label class="control-label"><strong>@Editable(Model, x => x.txtCardType)</strong></label>
+                            <div class="radio">
+                                <label class="control-label"><input name="card_type" id="cc_type_amex" value="american-express" type="radio"> American Express</label>
+                            </div><!--.radio -->
+                            <div class="radio">
+                                <label class="control-label"><input name="card_type" id="cc_type_discover" value="discover" type="radio"> Discover</label>
+                            </div><!--.radio -->
+                            <div class="radio">
+                                <label class="control-label"><input name="card_type" id="cc_type_mastercard" value="mastercard" type="radio"> MasterCard</label>
+                            </div><!--.radio -->
+                            <div class="radio">
+                                <label class="control-label"><input name="card_type" id="cc_type_visa" value="visa" checked="" type="radio"> Visa</label>
+                            </div><!--.radio -->
+                        </fieldset><!-- .form-group -->
+                    </div>
+
+                </div>
+            </div><!-- .row -->
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group is-required">
+                        <label class="control-label" for="cc_ccv">@Editable(Model, x => x.CVV)</label>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-2 col-md-2">
+                                @Html.TextBoxFor(m => m.txtCVV, new { @class = "form-control", })
+                            </div><!-- .form-group -->
+                        </div><!-- .row -->
+
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <a href="#cvv-description" role="button" class="small collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="cvv-description">@Editable(Model, x => x.CVVLink)<i class="fa fa-caret-down rotate-text" aria-hidden="true"></i></a>
+
+                                <div class="collapse" id="cvv-description" aria-expanded="false">
+                                    <div class="alert alert-info margin-top-xs-10 margin-bottom-xs-0" role="alert">
+                                        <p>@Editable(Model, x => x.CVVInstructions)</p>
+                                    </div><!-- .alert -->
+                                </div>
+                            </div>
+                        </div><!-- .row -->
+                    </div><!-- .form-group -->
+                </div>
+            </div><!-- .row -->
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group is-required">
+                        <label class="control-label" for="cc_exp">@Editable(Model, x => x.ExpirationDate)</label>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-2 col-md-2">
+                                @Html.TextBoxFor(m => m.txtCardExpMonthYear, new { @class = "form-control", })
+                            </div>
+                        </div><!-- .row -->
+                    </div><!-- .form-group -->
+                </div>
+            </div><!-- .row -->
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group is-required">
+                        <label class="control-label" for="cc_postal_code">@Editable(Model, x => x.PostalCode)</label>
+                        <div class="row">
+                            <div class="col-xs-4 col-sm-2 col-md-2">
+                                @Html.TextBoxFor(m => m.txtZipCode, new { @class = "form-control", })
+                            </div>
+                        </div><!-- .row -->
+
+                        <div class="checkbox margin-top-xs-5">
+                            <label class="control-label" for="cc_intl_postal_code"> @Html.CheckBoxFor(m => m.txtIsInternationalZipCode, new { @class = "form-control", }) @Editable(Model, x => x.InternationalPostalCode)</label>
+                        </div><!-- .checkbox -->
+                    </div><!-- .form-group -->
+                </div>
+            </div><!-- .row -->
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label class="control-label"><input name="confirm_toc" value="1" type="checkbox"> @Editable(Model, x => x.TermsAndConditions)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="@Editable(Model, x => x.ButtonSubmit)" />
+            </div><!-- .form-group -->
+
+            <p><span class="required"></span> @Editable(Model, x => x.RequiredFields)</p>
+
+            <div class="legal small">
+                <p>@Editable(Model, x => x.SubmitButtonHintText)</p>
+                <p>@Editable(Model, x => x.SecureTransmissionText)</p>
+            </div><!-- .legal -->
+        </div><!-- .collapse -->
+    }
+</div>

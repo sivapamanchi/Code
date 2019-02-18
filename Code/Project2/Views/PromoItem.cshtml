@@ -1,0 +1,43 @@
+﻿@model BGModern.Models.PromoItemModel
+
+@{
+    ViewBag.Title = "PromoItem";
+}
+
+<div style="margin-top:25px;">
+    @{
+        Html.RenderPartial("BreadcrumbNavigation", Model);
+    }
+</div>
+
+<div class="page-title">
+    @Model.PageTitle
+</div>
+
+@section LeftElements {
+    @{Html.RenderAction("GetFeaturedResorts", "FeaturedResorts");}
+}
+<br />
+@{
+    if (Model.MainImage != null)
+    {
+        <br />
+
+        <h2><span id="lblTitle">@Model.PromoTitle</span></h2>
+        if (!string.IsNullOrEmpty(@Model.Thumbnail))
+        {
+            <img alt="" src="@Model.Thumbnail" border="0" align="left" style="width:200px; float:right; padding-top:.5em; padding-left:.5em;">
+        }
+    }
+
+    <span class="text">@Html.Raw(@Model.PromoDetail)</span>
+
+}
+<p>
+    <br />
+    <br />
+    <br />
+    @{
+        <a href="@Model.GoBackUrl"><img src="~/Content/Images/goBackBtn.gif" /></a>
+    }
+</p>

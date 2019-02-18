@@ -1,0 +1,65 @@
+﻿@model List<BGSitecore.Models.Reward.CartItem>
+
+@using BGSitecore.Components;
+
+@{
+    BlueGreenContext context = new BlueGreenContext();
+    var ownerArvact = string.Empty; var EncoreOWnerId = 0;
+    if (context != null && context.bxgOwner != null && context.bxgOwner.EncoreBenefits != null)
+    {
+        ownerArvact = context.bxgOwner.Arvact;
+        EncoreOWnerId = context.bxgOwner.EncoreBenefits.EncoreOwnerID;
+    }
+    var isCartEmptyClass = (Model.Count > 0) ? "" : "disabled";
+    var cartItemsQuantityCount = (Model.Count > 0) ? Model.Select(t => t.Quantity).Sum() : 0;
+}
+@Html.AntiForgeryToken()
+<table id="cart-total-component" class="table-collapse table-striped">
+    <thead>
+        <tr>
+            <td class="text-left">&nbsp;</td>
+            <td>Item</td>
+            <td class="text-right">Rewards</td>
+            <td class="text-right">Quantity</td>
+            <td class="text-right">Total</td>
+        </tr>
+    </thead>
+
+    @if (Model.Count > 0)
+    {
+        <tbody>
+            @foreach (var cartItem in Model)
+            {
+
+                <tr>
+                    <td class="hidden-print text-left">
+                    <input class="js-attributeForCart" type="hidden" data-rewardCartId="@cartItem.ItemID" data-OwnerArvact="@ownerArvact" data-EncoreOwnerId="@EncoreOWnerId" data-ItemName="@cartItem.ItemName" data-UnitPrice="@cartItem.UnitPrice" />
+                    <a href="#" class="js-rewardsCart-delete" data-rewardCartId="@cartItem.ItemID" data-OwnerArvact="@ownerArvact"><i class="fa fa-fw fa-lg fa-times-circle text-danger"></i> <strong class="hidden-md hidden-lg">Remove this item from cart</strong></a></td>
+                    <td><strong class="details">@Html.Raw(cartItem.ItemName)</strong></td>
+                    <td class="text-right" data-label="Rewards">@Html.Raw(cartItem.UnitPrice)<span class="sr-only">Rewards</span></td>
+                    <td class="text-right" data-label="Quantity">
+                        <input name="quantity" class="form-control input-spinner js-maxlengthCheck js-quantity" style="min-width:104px !important;" role="spinbutton" type="text"  data-min-value="1" data-max-value="999" value="@cartItem.Quantity" autocomplete="off" @(cartItem.ItemID == "MF" ? "disabled" : "")>
+                    </td>
+                    <td class="text-right" data-label="Total">@Html.Raw(cartItem.SubTotal)<span class="sr-only">Rewards</span></td>
+                </tr>
+            }
+        </tbody>
+
+    }
+    else
+    {
+        <tbody>
+            <tr class="text-center">
+                <td colspan="5">There are no items in your cart.</td>
+            </tr>
+        </tbody>
+    }
+    <tfoot>
+        <tr>
+            <th colspan="5" class="text-right-md"><a id="ctc-trigger-Update" name="ctc-trigger-Update" href="#" class="btn @(Model.Count > 0 ? "btn-primary" : "btn-default")" @isCartEmptyClass>Update Cart</a></th>
+        </tr>
+    </tfoot>
+</table>
+<input id="CartItemCount" type="hidden" value="@cartItemsQuantityCount" />
+
+

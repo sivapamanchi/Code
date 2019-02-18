@@ -1,0 +1,12 @@
+﻿@model BGModern.Models.PromoListModel
+
+@{var listTitle = Model.ListTitle;}
+<div class="col-md-6">
+    <div class="barTitle">@listTitle</div>
+    @foreach (BGModern.Models.PromoItemModel item in Model.PromoItems)
+    {
+        <div>
+            @{Html.RenderPartial("PromoItemSummary", item);}
+        </div>
+    }
+</div>

@@ -1,0 +1,68 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<MapAndDirections>
+
+@{
+    string apiKey = Sitecore.Configuration.Settings.GetSetting("ApiKey");
+}
+
+@if (Model.MapZoom != 0)
+{
+    <div class="google-map-wrapper">
+        <div class="google-map-input">
+            <form id="js-google-map-address-submit">
+                <div class="input-group" id="google-map-address-form">
+                    <a id="map-get-directions-position" class="location-point" href="#" title="Directions from current location"><i class="fa fa-map-marker"></i></a>
+                    <input type="text" class="controls form-control google-map-control" id="google-map-start-address" placeholder="@Model.DirectionMessage">
+                    <div class="input-group-btn">
+                        <a id="map-get-directions-address" href="#" class="btn btn-default">@Model.GetDirectionButton</a>
+                    </div><!-- .input-group-btn -->
+                </div><!-- .input-group -->
+            </form>
+        </div>
+
+        <div class="google-map" id="map-canvas"></div>
+
+        <noscript>
+            <div class="alert alert-danger" role="alert">
+                <p><strong>ERROR:</strong> JavaScript not activated in your browser</p>
+            </div>
+        </noscript>
+
+    </div><!-- .google-map-wrapper -->
+
+    <div style="display:none; padding:0px; width:100%;" id="directions"></div>
+
+    
+    <script src='~/assets/js/bluegreen/mapdirections.js'></script> <!-- KEEP HERE -->
+
+     <script type="text/javascript">
+         var directionService = null;
+         function init_map(){
+
+              @if (string.IsNullOrEmpty(Model.Latitude) || string.IsNullOrEmpty(Model.Longitude))
+              {
+                  @:var latitude  = parseFloat( document.getElementById( 'resort-latitude' ).getAttribute( 'content' ) )
+                  @:var longitude = parseFloat( document.getElementById( 'resort-longitude' ).getAttribute( 'content' ) )
+              }
+              else
+              {
+                  @:var latitude  = parseFloat(  @Model.Latitude)
+                  @:var longitude = parseFloat(   @Model.Longitude );
+               }
+
+
+             mapdirections.initMap(latitude, longitude, @Model.MapZoom);
+
+          
+        }
+
+    </script>
+
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?callback=map.initMap&key=@apiKey&callback=init_map"></script>
+
+}

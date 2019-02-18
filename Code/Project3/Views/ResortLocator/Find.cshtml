@@ -1,0 +1,180 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortLocator>
+
+@{
+    string apiKey = Sitecore.Configuration.Settings.GetSetting("ApiKey");
+    List<ResortDetails> SortedByState = ResortUtils.SortResortByState(Model.AllResorts);
+    List<ResortDetails> SortedByResort = ResortUtils.SortResortByResortName(Model.AllResorts);
+    DebugUtils.StartLogEvent("find.cshtml");
+
+}
+
+<div class="site-content window-height-columns resort-locator" id="site-content">
+    <div class="container">
+        <div class="row row-narrow">
+            <div class="col-xs-12 col-md-4 col-sidebar" id="site-sidebar">
+                <div class="collapse-sidebar resort-filters">
+                    <a href="#collapse-sidebar" class="hidden-md hidden-lg btn btn-default btn-block collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-sidebar"><span class="view-text">Show Filters</span><span class="close-text">Hide Filters</span></a>
+                    <div class="collapse" id="collapse-sidebar">
+                       
+                        <div class="page-header">
+                            <h1 class="h1 color-primary text-lowercase">@Model.PageTitle</h1>
+                        </div><!-- .page-header -->
+
+                        <div class="form-group js-experiences">
+                            <fieldset>
+                                <legend class="margin-bottom-xs-15"><strong>@Model.ExperienceHeader</strong></legend>
+                                <div class="row row-narrow">
+                                    @{
+                                        var itemCount = 0;
+                                        var itemsPerColumns = Model.AllExperience.Count() / 2;
+                                    }
+                                    @foreach (Experience item in Model.AllExperience)
+                                    {
+                                        var breakColumn = (itemCount % itemsPerColumns == 0);
+
+                                        if (itemCount != 0 && breakColumn)
+                                        {
+                                            @Html.Raw("</div>");
+                                        }
+                                        if (breakColumn)
+                                        {
+                                            @Html.Raw("<div class='col-xs-6'>");
+                                        }
+                                        <div class="checkbox">
+                                            <label class="control-label"><input type="checkbox" class="js-experience" value="@UiUtils.SpaceToHyphen(item.ExperienceName)">@item.ExperienceName</label>
+                                        </div><!-- .checkbox -->
+                                        itemCount++;
+                                    }
+
+
+                                </div><!-- .row -->
+                            </fieldset>
+
+                        </div><!-- .form-group -->
+
+                        <div class="form-group">
+                            <label class="h2 color-heading text-lowercase margin-bottom-xs-15"><strong>@Model.DestinationHeader</strong></label>
+                            <select name="choose_destination" class="form-control selectpicker js-destination" title="Choose a Destination" data-live-search="true">
+                                   @Html.Raw(ResortUtils.BuildDestinationsDropdown(SortedByState))
+                            </select>
+                            <div id="js-destination-backup" class="hidden"></div>
+                        </div><!-- .form-group -->
+
+                        <div class="form-group">
+                            <label class="h2 color-heading text-lowercase margin-bottom-xs-15"><strong>@Model.ResortHeader</strong></label>
+                            <select name="choose_resort" class="form-control selectpicker js-resort" title="Choose a Resort" data-live-search="true">
+                                @Html.Raw(ResortUtils.BuildResortsDropdown(SortedByResort))
+                            </select>
+                            <div id="js-resort-backup" class="hidden"></div>
+                        </div><!-- .form-group -->
+
+                        <div class="form-group">
+                            <fieldset>
+                                <legend class="margin-bottom-xs-15"><strong>Display</strong> Results As</legend>
+                                <div class="row row-narrow">
+                                    <div class="col-xs-6">
+                                        <div class="radio">
+                                            <label class="control-label"><input type="radio" name="js-resort-display" value="map" checked> Map</label>
+                                        </div><!-- .radio -->
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="radio">
+                                            <label class="control-label"><input type="radio" name="js-resort-display" value="list"> List</label>
+                                        </div><!-- .radio -->
+                                    </div>
+                                </div><!-- .row -->
+                            </fieldset>
+                        </div><!-- .form-group -->
+
+                    </div><!-- .collapse -->
+                </div><!-- .collapse-sidebar -->
+
+
+
+            </div>
+            <div class="col-xs-12 col-md-8 col-primary">
+                <div id="js-map-view">
+                    <p class="text-center">
+                        <div id="map"></div>
+                    </p>
+	                <div class="widget">
+	                    <div class="panel panel-default panel-narrow">
+	                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-10 col-sm-11">
+                                    <ul class="list-unstyled list-inline list-inline-narrow">
+                                        @{
+                                            int index = 0;
+
+                                            foreach (ClubAffiliation item in Model.ClubAffiliation)
+                                            {
+                                                <li>
+                                                    <div class='affiliation'>
+                                                        @Html.Raw(UiUtils.BuildMapPin(index++, item.Color, item.DisplayName))
+                                                    </div>
+                                                </li>
+                                                }
+                                            }
+
+                                    </ul>
+                                </div>
+                                <div class="col-xs-2 col-sm-1 text-right">
+                                    <a href="#mapLegendInfo" data-toggle="collapse" class="h2 collapsed" aria-expanded="false"><i class="fa fa-question-circle"></i></a>
+                                </div>
+                            </div>
+
+                            <div id="mapLegendInfo" class="collapse" aria-expanded="false" style="height: 0px;">
+                                <ul class="list-unstyled">
+
+                                    @foreach (ClubAffiliation item in Model.ClubAffiliation)
+                                    {
+                                        <li>
+                                            <label class="h2 color-heading margin-bottom-xs-5"><strong>@item.DisplayName</strong></label><br>
+                                            <p>@item.Details</p>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+
+	                        </div><!-- .panel-body -->
+	                    </div><!-- .panel -->
+	                </div><!-- .widget -->
+
+                </div>
+
+                <div id="js-list-view" class="hidden">
+	                <div id="js-resort-list"></div>
+	                <div class='resort-synopsis well no-match' style="display: none">
+                        <h1>@Sitecore.Globalization.Translate.Text("Resort_Locator_NoMatchTitle")</h1>
+	                    <div class='row bg-warning'>
+	                        <div class='col-xs-12'>@Sitecore.Globalization.Translate.Text("Resort_Locator_NoMatch")</div>
+	                    </div>
+	                </div>
+	            </div>
+
+            </div>
+
+        </div><!-- .row -->
+
+    </div><!-- .container -->
+</div><!-- .site-content -->
+
+<!-- script src="~/assets/js/third-party/markerclusterer.js" --> <!-- KEEP HERE -->
+<script src="https://maps.googleapis.com/maps/api/js?callback=map.initMap&key=@apiKey"></script>
+<script src='~/assets/js/bluegreen/device.js'></script> <!-- KEEP HERE -->
+<script src='~/assets/js/bluegreen/map.js'></script> <!-- KEEP HERE -->
+<script src='~/assets/js/bluegreen/resort.js'></script> <!-- KEEP HERE -->
+
+<script>
+    map.resorts = [@Html.Raw(Model.AllResortsToJson())];
+</script>
+
+@{
+    DebugUtils.StartLogEvent("find.cshtml");
+}

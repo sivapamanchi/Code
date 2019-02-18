@@ -1,0 +1,62 @@
+﻿@model BGSitecore.Models.PointsSummary
+
+@{
+    var columnClass = ""; var countOfBlocksNotEmpty = 0;
+
+    if (!string.IsNullOrEmpty(@Model.AnnualPoints)) { countOfBlocksNotEmpty++; }
+    if (!string.IsNullOrEmpty(@Model.SavedPoints)) { countOfBlocksNotEmpty++; }
+    if (!string.IsNullOrEmpty(@Model.RestrictedPoints)) { countOfBlocksNotEmpty++; }
+    if (!string.IsNullOrEmpty(@Model.AvailablePoints)) { countOfBlocksNotEmpty++; }
+
+    if (countOfBlocksNotEmpty == 4) { columnClass = "col-xs-6 col-md-3"; }
+    else if (countOfBlocksNotEmpty == 3) { columnClass = "col-xs-6 col-md-4"; }
+    else if (countOfBlocksNotEmpty == 2) { columnClass = "col-xs-6"; }
+    else if (countOfBlocksNotEmpty == 1) { columnClass = "col-xs-12"; }
+}
+
+<div class="no-print">
+    @if (!string.IsNullOrEmpty(Model.Title))
+    {
+        <h2 class="h2 first-word">@Model.Title</h2>
+    }
+    <div class="col-border col-border-default">
+        <div class="row">
+        @if (!string.IsNullOrEmpty(Model.AnnualPoints))
+        {
+            <div class="@columnClass">
+                <div class="callout">@Model.AnnualPointsValue<span class="sr-only">@Model.AnnualPoints</span></div>
+                <p>@Model.AnnualPoints</p>
+            </div>
+        }
+         @if (!string.IsNullOrEmpty(Model.SavedPoints))
+         {
+            <div class="@columnClass">
+                <div class="callout">@Model.SavedPointsValue <span class="sr-only">@Model.SavedPoints</span></div>
+                <p>@Model.SavedPoints</p>
+            </div>
+         }
+         @if (!string.IsNullOrEmpty(Model.RestrictedPoints))
+         {
+            <div class="@columnClass">
+                <div class="callout"><span class="sr-only"> Service Call</span></div>
+                <p>@Model.RestrictedPoints</p>
+            </div>
+         }
+         @if (!string.IsNullOrEmpty(Model.AvailablePoints))
+         {
+            <div class="@columnClass">
+                <div class="callout text-dark"><span class="sr-only"> Service Call</span></div>
+                <p>@Model.AvailablePoints</p>
+            </div>
+         }   
+        </div><!-- .row -->
+    </div>
+    @if (!string.IsNullOrEmpty(Model.SummaryRichText))
+    {
+       @(Html.Raw(Model.SummaryRichText))
+    }
+    @if (Model.printEnabled)
+    {
+        <span><button class="btn btn-link text-lowercase js-printRewardsActivity hidden"><i class="fa fa-lg fa-print"></i>&nbsp;@Sitecore.Globalization.Translate.Text("RA_PrintList")</button></span>
+    }
+</div>

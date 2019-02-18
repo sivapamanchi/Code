@@ -1,0 +1,94 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<PointsProtectionPlan>
+
+@{
+    var CreditCardInfoErrors = (List<string>)ViewData["CreditCardInfoErrors"];
+   
+
+}
+
+@if (@CreditCardInfoErrors != null && @CreditCardInfoErrors.Count > 0)
+{
+    <div id="validation" class="validation-summary-errors">
+        @for (int i = 0; i < @CreditCardInfoErrors.Count; i++)
+        {
+            @CreditCardInfoErrors[i]
+            if (i < @CreditCardInfoErrors.Count - 1)
+            {
+                <br />
+            }
+        }
+    </div>
+}
+
+@using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post , new { id="form-submit-ppp" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+
+    @Html.Sitecore().FormHandler("Reservation", "SubmitPPP")
+    <div class="hidden loading js-loadingpage loading-wrapper" id="loading-overlay" aria-hidden="true"><div class="loading-icon"><i class="fa fa-refresh fa-spin"></i></div></div>
+
+    <p>@Editable(Model, x => x.InstructionalText)</p>
+    <div class="hidden-print alert alert-danger hidden js-alertmessage" role="alert"></div>
+
+    <div class="col-border col-border-default">
+        <div class="row">
+            <div class="col-xs-6">
+                <p class="callout">@Html.Raw(FormatUtils.FormatPoints(Model.points))<span class="sr-only"> Points</span></p>
+                <p>@Editable(Model, x => x.PointsProtected)</p>
+            </div>
+            <div class="col-xs-6">
+                <p class="callout dark">@Html.Raw(@FormatUtils.FormatFancyAmount(Model.payment))</p>
+                <p>@Editable(Model, x => x.TotalPayment)</p>
+            </div>
+        </div><!-- .row -->
+    </div><!-- .col-border -->
+
+    <h2 class="h2 first-word" id="billing-information">@Editable(Model, x => x.BillingInformation)</h2>
+    @Html.Sitecore().Placeholder("creditcardcontent")
+
+    @*@Html.Partial("/Views/Reservation/CreditCardInfo.cshtml", Model.CreditCardDetail);*@
+
+    <div class="form-group">
+        <div class="checkbox">
+            <span class="required"></span><label class="control-label"><input type="checkbox" name="confirm_toc" id="confirm_toc" value="1"> @Editable(Model, x => x.TermsAndConditions)</label>
+        </div>
+    </div><!-- .form-group -->
+
+    <div class="collapse" id="confirm-toc-alert">
+        <div class="alert alert-warning" role="alert">
+            <p>@Editable(Model, x => x.TermsAndConditionsAlert)</p>
+        </div><!-- .alert -->
+    </div>
+
+    <div class="collapse in" id="collapse-ppp-purchase-step-1">
+        <div class="form-group">
+            <a href="#" class="btn btn-primary check-toc js-showloading" value="action:usecreditcard" name="btnSubmit">@Editable(Model, x => x.ProtectMyPoints)</a>
+            <a href="#collapse-ppp-purchase-step-2" role="button" class="btn btn-link" data-toggle="collapse" data-hide="#collapse-ppp-purchase-step-1" aria-expanded="false" aria-controls="collapse-ppp-purchase-step-2">@Editable(Model, x => x.NoThankYou)</a>
+        </div><!-- .form-group -->
+    </div>
+
+    <div class="collapse" id="collapse-ppp-purchase-step-2">
+        <div class="alert alert-warning" role="alert">
+            <p>@Editable(Model, x => x.Cancellations)</p>
+            <a href="#collapse-ppp-purchase-step-1" value="action:usecreditcard" name="btnSubmit" class="btn btn-primary check-toc js-showloading" data-toggle="collapse" data-hide="#collapse-ppp-purchase-step-2" aria-expanded="false" aria-controls="collapse-ppp-purchase-step-1">@Editable(Model, x => x.ProtectMyPointsNow)</a>
+           @* <a href="/owner/reservation-confirmation" class="btn btn-link">@Editable(Model, x => x.NotInterested)</a>*@
+
+            <button  class="btn btn-link js-showloading" name="btnSubmit" value="action:nocreditcard">@Editable(Model, x => x.NotInterested)</button>
+
+        </div><!-- .alert -->
+    </div><!-- .collapse -->
+
+    <div class="legal small">
+        <p>@Editable(Model, x => x.SecureTransmissionText)</p>
+    </div><!-- .legal -->
+
+    <p>@Editable(Model, x => x.RequiredFields)</p>
+}

@@ -1,0 +1,124 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Models
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+    List<ResortDetails> SortedList = ResortUtils.SortResortByState(Model.AllResorts);
+    var disabled = Model.ShowRevervationTypeSection ? "enabled" : "disabled";
+    var classhide = Model.ShowRevervationTypeSection ? "" : "hidden";
+
+    string destination = Model.searchParameters.Destination;
+    string city = "";
+    if (Model.searchParameters.ShowResortOnly)
+    {
+        try
+        {
+            int rid = Int32.Parse(Model.searchParameters.ResortId);
+            ResortDetails resort = ResortManager.FindResort(rid);
+            if (resort != null)
+            {
+                city = resort.City;
+                destination = "city-" + resort.City;
+                Model.searchParameters.Destination = destination;
+            }
+        }
+        catch (Exception ex)
+        {
+            Sitecore.Diagnostics.Log.Error("Unexpection exception locating resort from resortid=" + Model.searchParameters.ResortId, ex);
+        }
+    }
+}
+
+<div class="form-settings">
+    @Html.TextBoxFor(m => m.searchParameters.ResortId, new { @class = "hidden", Name = "ResortId" })
+
+
+    <div class="form-group">
+        <fieldset @disabled>
+            <legend class="sr-only">Reservation Type</legend>
+            <div class="radio">
+                <label class="control-label">
+                    @Html.RadioButtonFor(m => m.searchParameters.ReservationType, "1", new { Name = "ReservationType" })
+                    @Sitecore.Globalization.Translate.Text("Resort_Search_PointsReservation")
+                </label>
+            </div><!--.radio -->
+            <div class="radio @classhide">
+                <label class="control-label">
+                    @Html.RadioButtonFor(m => m.searchParameters.ReservationType, "2", new { Name = "ReservationType" })
+                    @Sitecore.Globalization.Translate.Text("Resort_Search_BonusTimeReservation")
+                </label>
+            </div><!--.radio -->
+        </fieldset>
+    </div><!-- .form-group -->
+</div><!-- .form-settings -->
+
+<div class="form-fields">
+    <div class="form-group">
+        <label for="Destination" class="control-label"><strong>destination</strong></label>
+        <select name="Destination" id="Destination" class="form-control js-search-ds js-selectdestination" data-live-search="true">
+            <option value="" class="indent-1" @UiUtils.SetDefaultValue("", Model.searchParameters.Destination)>@Sitecore.Globalization.Translate.Text("Resort_Search_Destination_Default")</option>
+
+
+            @Html.Raw(UiUtils.BuildDestination(SortedList, Model.searchParameters.Destination, Model.SavedSearches))
+        </select>
+        @if (Model.AllResortsSecondaryMarket != null)
+            {
+            <select name="DestinationBonusTime" id="DestinationBonusTime" class="form-control js-search-ds-bonustime hidden" data-live-search="true">
+                @Html.Raw(UiUtils.BuildDestination(Model.AllResortsSecondaryMarket, Model.searchParameters.Destination, Model.SavedSearches))
+            </select>
+        }
+
+    </div><!-- .form-group -->
+    <div class="form-group js-month-search">
+        <label for="monthsearch" class="control-label"><strong>month</strong></label>
+        <select name="monthsearch" id="monthsearch" class="form-control js-monthsearchselect">
+            <option class="js-monthsearch" value="" label="month">@Sitecore.Globalization.Translate.Text("Resort_Search_Month_Default")</option>
+            @foreach (SearchMonth item in Model.AllSearchMonths)
+            {
+                <option class="js-monthsearch" value="@item.Value" label="@item.DisplayName" @UiUtils.SetDefaultValue(item.Value, @Model.searchParameters.MonthSearch.ToShortDateString())>@item.DisplayName</option>
+            }
+        </select>
+
+
+    </div><!-- .form-group -->
+
+    <div class="form-group js-month-search">
+        <label for="monthsearchduration" class="control-label"><strong># of nights</strong></label>
+      <select name="monthsearchduration" id="monthsearchduration" class="form-control js-monthsearchduration">
+            <option class="js-nightstay" value="" label="nights">@Sitecore.Globalization.Translate.Text("Resort_Search_Night_Default")</option>
+
+            @foreach (SearchNumberOfNight item in Model.AllSearchNumberOfNights)
+            {
+                <option class="js-nightstay" value="@item.Value" label="@item.DisplayName" @UiUtils.SetDefaultValue(item.Value, @Model.searchParameters.monthsearchduration)>@item.DisplayName</option>
+            }
+        </select>
+
+    </div><!-- .form-group -->
+
+    <div class="form-group is-required js-date-search">
+        <label for="search-dates" class="control-label"><strong>@Sitecore.Globalization.Translate.Text("Resort_Search_TravelDates")</strong></label>
+        <div class="input-group is-required input-daterange">
+            <input type="date" name="CheckInDate" id="CheckInDate" class="form-control datepicker-align-right input-datepicker-check-in dropdown-datepicker js-search-ci js-home-datepicker" value="@Model.searchParameters.CheckInDate.ToString("MM/dd/yyyy")" placeholder="Check-in" autocomplete="off">
+            <span class="input-group-addon">&ndash;</span>
+            <input type="date" name="CheckOutDate" id="CheckOutDate" class="form-control datepicker-align-right input-datepicker-check-out dropdown-datepicker js-search-co js-home-datepicker" value="@Model.searchParameters.CheckOutDate.ToString("MM/dd/yyyy")" placeholder="Check-out" autocomplete="off">
+        </div><!-- .input-group -->
+        <div class="search-duration">
+            <i class="fa fa-bed"></i> <span id="number-of-nights">0</span> night stay
+        </div><!-- .search-duration -->
+    </div><!-- .form-group -->
+</div>
+
+<div id="js-daterange-error" class="row hidden">
+    <div class="col-xs-12">
+        <div id="js-daterange-message" class="alert alert-danger js-alert date-range-error" role="alert">
+            Please provide valid dates
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,159 @@
+﻿@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Models.Resort
+@using BGSitecore.Components;
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ReferFriend>
+@{
+    List<ResortDetails> SortedByResort = ResortUtils.SortResortByResortName(Model.AllResorts);
+    SortedByResort = SortedByResort.Where(p => p.ShowInDestinations == true).OrderBy(x => x.City).ToList();
+}
+
+@Html.AntiForgeryToken()
+
+<div class="collapse in" id="collapse-refer-a-referral-button-step-1">
+    <div class="form-group">
+        <a href="#refer-a-referral-form" role="button" class="btn btn-primary" data-toggle="collapse" data-hide="#collapse-refer-a-referral-button-step-1" aria-expanded="false" aria-controls="refer-a-referral-form">@Sitecore.Globalization.Translate.Text("RF_RegisterToday")</a>
+    </div><!-- .form-group -->
+</div>
+<div class="hidden-print collapse" id="refer-a-referral-form">
+    <h2 class="h2 text-lowercase first-word">@Sitecore.Globalization.Translate.Text("RF_SectionButton")</h2>
+
+
+    <div class="alert alert-danger hidden alert-dismissable js-refer-alertmessage " role="alert">
+    </div>
+    <div class="alert alert-success js-ConfirmationMessage hidden" role="alert">
+        @Html.Raw(Model.SuccessMessage)
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group is-required">
+                <label class="control-label" for="referral-first-name"><strong>@Sitecore.Globalization.Translate.Text("RF_FirstName")</strong></label>
+                @Html.TextBoxFor(m => m.txtFirstName, new
+                   {
+                       @class = "form-control",
+                       id = "referral-first-name",
+                       maxlength = "30"
+
+                   })
+            </div><!-- .form-group -->
+        </div>
+        <div class="col-md-6">
+            <div class="form-group is-required">
+                <label class="control-label" for="referral-last-name"><strong>@Sitecore.Globalization.Translate.Text("RF_LastName")</strong></label>
+                @Html.TextBoxFor(m => m.txtLastName, new
+                   {
+                       @class = "form-control",
+                       id = "referral-last-name",
+                       maxlength = "30"
+
+                   })
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group  is-required">
+                <label class="control-label" for="referral-email-address"><strong>@Sitecore.Globalization.Translate.Text("RF_Email")</strong></label>
+                @Html.TextBoxFor(m => m.txtEmail, new
+                   {
+                       @class = "form-control",
+                       id = "referral-email-address",
+                       maxlength = "50"
+
+                   })
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group is-required">
+                <label class="control-label" for="referral-telephone"><strong>@Sitecore.Globalization.Translate.Text("RF_Phone")</strong></label>
+                @Html.TextBoxFor(m => m.txtPhone, new
+                   {
+                       @class = "form-control",
+                       id = "referral-telephone",
+                       maxlength = "12",
+                       placeholder = "XXX-XXX-XXXX"
+
+                   })
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group is-required">
+                <label class="control-label" for="referral-city"><strong>@Sitecore.Globalization.Translate.Text("RF_City")</strong></label>
+                @Html.TextBoxFor(m => m.txtCity, new
+                   {
+                       @class = "form-control",
+                       id = "referral-city",
+                       maxlength = "30"
+
+                   })
+            </div><!-- .form-group -->
+        </div>
+        <div class="col-xs-12 col-md-3">
+            <div class="form-group is-required">
+                <label class="control-label" for="referral-state"><strong>@Sitecore.Globalization.Translate.Text("RF_State")</strong></label>
+                @Html.DropDownListFor(x => x.txtState, BGSitecore.Models.State.BuildStateDropdown(), new { @class = "form-control selectpicker", id = "referral-state", data_live_search = "true" })
+            </div><!-- .form-group -->
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label" for="referral-destination"><strong>@Sitecore.Globalization.Translate.Text("RF_Destination")</strong> @Sitecore.Globalization.Translate.Text("Global_Optional_Key")</label>
+                <select name="choose_destination" id="referral-destination" class="form-control selectpicker  js-explore-destinations" title="Choose a Destination">
+                    @Html.Raw(ResortUtils.BuildResortsDropdownByCity(SortedByResort))
+                </select>
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="control-label" for="referral-message"><strong>@Sitecore.Globalization.Translate.Text("RF_Message")</strong> @Sitecore.Globalization.Translate.Text("Global_Optional_Key")</label>
+                @Html.TextAreaFor(m => m.txtMessage, new
+                   {
+                       @class = "form-control",
+                       id = "referral-message",
+                       rows = "5"
+                   })
+            </div><!-- .form-group -->
+        </div>
+    </div><!-- .row -->
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label class="control-label">
+                        @Html.CheckBoxFor(m => m.IsSendMailChecked, new
+                           {
+
+                               id = "confirm_toc",
+                               name = "WheelchairAccessible",
+                           })
+
+                        @Html.Raw(Model.TOC)
+                    </label>
+                </div><!-- .checkbox -->
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <input type="hidden" id="registerText" value="@Sitecore.Globalization.Translate.Text("RF_Register")" />
+                <input type="hidden" id="sendOfferText" value="@Sitecore.Globalization.Translate.Text("RF_SendOffer")" />
+
+                <button id="js-referFriend" class="btn btn-primary" name="btnSubmit" value="action:referFriend">@Sitecore.Globalization.Translate.Text("RF_Register")</button>
+
+                <a href="http://friendsandfamily.bluegreenvacations.com/" target="_blank" class="btn btn-link">@Sitecore.Globalization.Translate.Text("RF_ViewOffer")</a>
+            </div>
+        </div>
+
+    </div><!-- .row -->
+</div>
+<input id="rfFormValidationMessage" type="hidden" value="@Sitecore.Globalization.Translate.Text("RF_ValidationMessage")" />
+
+
+
+
+
+

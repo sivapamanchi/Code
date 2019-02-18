@@ -1,0 +1,37 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<FeaturedItemsCache>
+@{
+//var sorted = FeaturedUtils.SortByCategory(Model.AllFeaturedItems);
+}
+
+<div id="featured" class="site-content">
+    <div class="container">
+        @if (!string.IsNullOrEmpty(Model.PageTitle))
+        {
+            <h2 class="h1 text-center first-word" id="whats-new">@Model.PageTitle</h2>
+        }
+        <div class="row">
+            <div class="col-xs-12 col-lg-10 col-lg-push-1">
+                <div class="slick-slider" data-autoplay="true">
+                    @foreach (FeaturedItemCache item in Model.AllFeaturedItems)
+                    {
+
+                        <div>
+                            <a href="@item.ImageHref" class="thumbnail">
+                                <img src='@item.ImageSrc' alt="@item.ImageCaption">
+                                <div class="caption"><p>@item.PageTitle</p></div>
+                            </a>
+                        </div>
+
+
+                    }
+                </div>
+            </div>
+        </div><!-- .row -->
+    </div>
+</div>

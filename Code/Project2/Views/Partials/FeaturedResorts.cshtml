@@ -1,0 +1,34 @@
+﻿@model BGModern.Models.FeaturedResortsListModel
+@if (Model.FeaturedResortsList != null && Model.FeaturedResortsList.Count > 0)
+{
+    <div>
+        <table class="resortText" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+                <td>
+                    <p>
+                        <h2>Our Featured Resorts</h2>
+                        @foreach (var featuredResort in Model.FeaturedResortsList)
+                        {
+                            <a class="submenu" href="@featuredResort.ResortLink">
+                                <b>
+                                    @featuredResort.ResortName
+                                </b>
+                            </a>
+                            <br />
+                            <a class="submenu" href="@featuredResort.ResortLink">
+                                @if (@featuredResort.ImageName != null && @featuredResort.ImageName != "")
+                                {
+                                    <img src="@featuredResort.ImageName" align="right" border="0" hspace="10" style="width:100px; height:100px;" alt="@featuredResort.ResortName">
+                                }
+                            </a>
+                            @Html.Raw(featuredResort.ResortDescShort);
+                            <img height="11" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" width="183" border="0">
+                        }
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+
+    

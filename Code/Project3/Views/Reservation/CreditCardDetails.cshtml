@@ -1,0 +1,89 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<CreditCardInfo>
+
+@{
+  
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group is-required">
+            <label class="control-label" for="BillingName">@Editable(Model, x => x.BillingName)</label>
+            @Html.TextBoxFor(m => m.CreditCard_Name, new { @class = "form-control" , })
+
+        </div><!-- .form-group -->
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+        <div class="form-group is-required">
+            <label class="control-label">@Editable(Model, x => x.CardNumber)</label>
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.CreditCard_Number, new { @class = "form-control input-credit-card", name = "cc_number" ,@maxlength ="16" })
+                <span class="input-group-addon"><i class="fa fa-fw fa-lg fa-credit-card-alt" title="Credit Card" aria-hidden="true"></i></span>
+            </div><!-- .input-group -->
+            <span class="help-block">@Editable(Model, x => x.CreditCardInstructions)</span>
+        </div>
+    </div>
+    <div class="hide-if-js col-xs-12 col-md-4">
+        <fieldset class="form-group is-required credit-card-type">
+            <label class="control-label"><strong>@Editable(Model, x => x.CreditCard_Type)</strong></label>
+            <div class="radio">
+                <label class="control-label"><input type="radio" name="CreditCard_Type" id="cc_type_amex" value="american-express"> American Express</label>
+            </div><!--.radio -->
+            <div class="radio">
+                <label class="control-label"><input type="radio" name="CreditCard_Type" id="cc_type_discover" value="discover"> Discover</label>
+            </div><!--.radio -->
+            <div class="radio">
+                <label class="control-label"><input type="radio" name="CreditCard_Type" id="cc_type_mastercard" value="mastercard"> MasterCard</label>
+            </div><!--.radio -->
+            <div class="radio">
+                <label class="control-label"><input type="radio" name="CreditCard_Type" id="cc_type_visa" value="visa"> Visa</label>
+            </div><!--.radio -->
+        </fieldset><!-- .form-group -->
+    </div>
+    <div class="col-xs-6 col-md-4">
+        <div class="form-group is-required">
+            <a href="#collapse-cvv" role="button" class="pull-right small" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-cvv">@Editable(Model, x => x.CVVLink)</a>
+            <label class="control-label" for="CVV"><strong><abbr title="Card Verification Value">@Editable(Model, x => x.CVV)</abbr></strong></label>
+            @Html.TextBoxFor(m => m.CreditCard_VerificationNumber, new { @class = "form-control", name = "cc_cvv" })
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+
+<div class="collapse" id="collapse-cvv">
+    @Editable(Model, x => x.CVVInstructions)
+</div>
+
+<div class="row">
+    <div class="col-xs-6 col-md-4">
+        <div class="form-group is-required">
+            <label class="control-label"><strong>@Editable(Model, x => x.ExpirationMonth)</strong></label>
+            @Html.DropDownListFor(x => x.CreditCard_ExpDateMonth, UiUtils.BuildMonthDropdown(), new { @class = "form-control" })
+        </div><!-- .form-group -->
+    </div>
+    <div class="col-xs-6 col-md-4">
+        <div class="form-group is-required">
+            <label class="control-label"><strong>@Editable(Model, x => x.ExpirationYear)</strong></label>
+            @Html.DropDownListFor(x => x.CreditCard_ExpDateYear, UiUtils.BuildYearDropdown(), new { @class = "form-control" })
+
+        </div><!-- .form-group -->
+    </div>
+    <div class="col-xs-6 col-md-4">
+        <div class="form-group is-required">
+            <label class="control-label" for="PostalCode"><strong>@Editable(Model, x => x.PostalCode)</strong></label>
+            @Html.TextBoxFor(m => m.CreditCard_ZipCode, new { @class = "form-control", name = "cc_postal_code" })
+            <div class="checkbox">
+
+                <label class="control-label">
+                    @Html.CheckBoxFor(m => m.CreditCard_InternationalZipCode) @Model.PostalCodeNote
+                </label>
+            </div><!-- .checkbox -->
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->

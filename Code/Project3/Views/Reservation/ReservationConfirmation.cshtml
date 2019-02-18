@@ -1,0 +1,410 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Components
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ReservationConfirmation>
+
+@{
+    string reservationNumber = Request.QueryString["reservationNo"];
+    bool trackBazaar = Request.QueryString["bv"] == "true";
+    string reservationType = "";
+    string reservationLabel = "";
+    string reservationAmount = "";
+
+    string maxOccupancy = "2";
+    string showEditGuestClass = "hidden";
+
+
+    string reservedUnderName = (Model.BxgOwner != null) ? UiUtils.GetFullName(Model.BxgOwner.fullName) : "";
+
+    bool ShowAddGuest = SitecoreUtils.CanAddNewGuest();
+    Model.Guest_AddNew = "OwnerSelected";
+    if (Model.ActiveReservation != null)
+    {
+        reservationType = FormatUtils.GetReservationType(Model.ActiveReservation);
+        reservationLabel = FormatUtils.GetResortName(Model.ActiveReservation);
+        reservationAmount = FormatUtils.GetAmount(Model.ActiveReservation);
+        maxOccupancy = (!string.IsNullOrEmpty(Model.ActiveReservation.MaximumOccupancy)) ? Model.ActiveReservation.MaximumOccupancy : "2";
+
+        if (Model.ActiveReservation.Guests != null && Model.ActiveReservation.Guests.Count > 0)
+        {
+            reservedUnderName = UiUtils.GetFullName(Model.ActiveReservation.Guests[0].FullName);
+
+        }
+        if (Model.ActiveReservation.Guests[0].GuestID == "0")
+        {
+            Model.Guest_Selected = Model.ActiveReservation.Guests[0].FullName;
+            if (!string.IsNullOrEmpty(Model.Guest_Selected) && Model.Guest_Selected.Contains(","))
+            {
+                var splitName = Model.Guest_Selected.Split(',');
+                Model.Guest_FirstName = splitName[1];
+                Model.Guest_LastName = splitName[0];
+            }
+
+        }
+        else
+        {
+            Model.Guest_AddNew = "";
+            Model.Guest_Selected = "GuestId-" + Model.ActiveReservation.Guests[0].GuestID;
+            Model.Guest_Id = Model.ActiveReservation.Guests[0].GuestID;
+            Model.Guest_FirstName = Model.ActiveReservation.Guests[0].FirstName;
+            Model.Guest_LastName = Model.ActiveReservation.Guests[0].LastName;
+            Model.Guest_Relationship = Model.ActiveReservation.Guests[0].Relationship;
+            if (Model.ActiveReservation.Guests[0].Phones != null && Model.ActiveReservation.Guests[0].Phones.Count > 0)
+            {
+                Model.Guest_PhoneNumber = Model.ActiveReservation.Guests[0].Phones[0].PhoneNumber;
+            }
+            if (Model.ActiveReservation.Guests[0].Addresses != null && Model.ActiveReservation.Guests[0].Addresses.Count > 0)
+            {
+                Model.Guest_City = Model.ActiveReservation.Guests[0].Addresses[0].City;
+                Model.Guest_State = Model.ActiveReservation.Guests[0].Addresses[0].StateCode;
+            }
+            if (Model.ActiveReservation.Guests[0].Emails != null && Model.ActiveReservation.Guests[0].Emails.Count > 0)
+            {
+                Model.Guest_Email = Model.ActiveReservation.Guests[0].Emails[0].EmailAddress;
+                Model.Guest_Email = Model.ActiveReservation.Guests[0].Emails[0].EmailAddress;
+            }
+            if (ShowAddGuest)
+            {
+                showEditGuestClass = "";
+            }
+        }
+    }
+
+}
+
+@if (Model.ActiveReservation != null)
+    {
+    <div class="page-header">
+        <h1 class="h1 first-word">@Editable(Model, x => x.PageTitle)</h1>
+        @if (Model.CanCancelReservation())
+        {
+            Model.HeaderCancelReservation.Url = UrlMapper.Map(Model.HeaderCancelReservation.Url);
+            @RenderLink(Model, x => x.HeaderCancelReservation)
+            @*<a href="@UrlMapper.Map(Model.SiteSettings.CancelReservation.Url)" class="hidden-print hidden-mobile btn btn-link btn-collapse pull-right-md">@Model.HeaderCancelReservation</a>*@
+        }
+    </div>
+
+    <div class="col-border col-border-default">
+        <input type="hidden" id="ReservationType" value="@Model.ActiveReservation.ReservationType" />
+        <input type="hidden" id="ReservationNumber" value="@Model.ActiveReservation.ReservationNumber" />
+        <input type="hidden" id="AS400UnitType" value="@Model.ActiveReservation.AS400UnitType" />
+        <input type="hidden" id="CheckInDate" value="@Model.ActiveReservation.CheckInDate" />
+        <input type="hidden" id="ProjectStay" value="@Model.ActiveReservation.ProjectStay" />
+        <input type="hidden" id="NumberOfNights" value="@Model.ActiveReservation.NumberOfNights" />
+        <input type="hidden" id="MaxOccupancy" value="@Model.ActiveReservation.MaximumOccupancy" />
+      
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="hidden-print callout"><i class="fa fa-fw fa-check text-success" aria-hidden="true"></i></div>
+                <p>@Editable(Model, x => x.HeaderReservationConfirmed) <strong>@FormatUtils.GetDate(Model.ActiveReservation.DateConfirmed)</strong></p>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="callout"><span class="text-uppercase">@Model.ActiveReservation.ReservationNumber</span></div>
+                <p>@Editable(Model, x => x.HeaderConfirmationNumber)</p>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="callout">@FormatUtils.FormatPoints(Model.ActiveReservation.Points)</div>
+                <p>
+                    @Editable(Model, x => x.HeaderPointsUsed)
+                    @if (Model.CanProtectPoints())
+                    {
+                        Model.HeaderProtectPointsNow.Url = Model.HeaderProtectPointsNow.Url + "?reservationNo=" + Model.ActiveReservation.ReservationNumber;
+                        <span class="hidden-print">| @Editable(Model, x => x.HeaderProtectPointsNow)</span>
+                    }
+                    else
+                    {
+                        if (!ReservationUtils.isExchangeReservation(Model.ActiveReservation.ExchangeCode))
+                        {
+                            if (Model.ActiveReservation.PolicyStatus == "A")
+                            {
+                            <span class="hidden-print">| @Editable(Model, x => x.HeaderPointsProtected)</span>
+                            }
+                            else
+                            {
+                            <span class="hidden-print">| @Editable(Model, x => x.HeaderPointsNotProtected)</span>
+
+                            }
+                        }
+                    }
+                </p>
+            </div>
+        </div><!-- .row -->
+    </div>
+
+    @Editable(Model, x => x.HeaderNotes)
+
+
+    @Html.Sitecore().Placeholder("resortdetailsummary")
+
+    <h2 class="h2 visible-xs-block visible-sm-block visible-md-inline-block visible-lg-inline-block first-word" id="reservation-information">@Editable(Model, x => x.ReservationInformation) <small>(<strong>owner</strong> @Model.BxgOwner.fullName)</small></h2>
+
+    <div class="collapse in" id="collapse-reservation-information">
+        @if (Model.CanEditReservation())
+        {
+        <a href="#collapse-edit-reservation-information" class="hidden-print js-edit-reservation pull-right-md btn btn-link btn-collapse margin-bottom-xs-30 margin-top-md--45 margin-bottom-md-0" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-edit-reservation-information">@Editable(Model, x => x.EditReservationInformation)</a>
+        }
+        <div class="row">
+            <div class="col-md-8">
+                <label class="control-label"><strong>@Editable(Model, x => x.GuestCheckingIn)</strong>*</label>
+                <div class="js-DisplayGuestname"><p>@reservedUnderName</p></div>
+            </div>
+            <div class="col-md-4">
+                <label class="control-label"><strong>@Editable(Model, x => x.NumberOfGuests)</strong>**</label>
+                <div class="js-DisplayGuestCount">@Model.Guest_NumberOfGuest</div>
+            </div>
+        </div><!-- .row -->
+    </div>
+
+    <div id="confirmationmessage" class="hidden-print hidden alert alert-info  js-ReservationConfirmationMessage" role="alert"><p>@Editable(Model, x => x.UpdateSuccessfulMessage)</p></div>
+    <div class="hidden-print alert alert-danger hidden js-alertmessage" role="alert"></div>
+
+
+    <div class="collapse hidden-print" id="collapse-edit-reservation-information">
+        <div class="row">
+
+
+            <div class="col-md-9">
+                <div class="form-group is-required">
+                    <label class="control-label"><strong>@Editable(Model, x => x.GuestCheckingIn)</strong>*</label>
+                    <div class="input-group">
+                        @Html.DropDownListFor(x => x.Guest_Selected, UiUtils.BuildGuestDropDown(ShowAddGuest, Model.allGuest), new { @class = "selectpicker" })
+                        @Html.HiddenFor(m => m.Guest_AddNew)
+
+
+                        @if (Model.ActiveReservation.ReservationType == "P" && ShowAddGuest)
+                        {
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary js-add-guest">@Editable(Model, x => x.NewGuestAddNewGuest)
+                                </button>
+                            </span>
+                        }
+                    </div><!-- .input-group -->
+                </div><!-- .form-group -->
+            </div>
+            <div class="col-md-3">
+                <div class="form-group is-required">
+                    <label class="control-label"><strong>@Editable(Model, x => x.NumberOfGuests)</strong>**</label>
+                    @Html.TextBoxFor(m => m.Guest_NumberOfGuest, new { data_min_value = "1", data_max_value = maxOccupancy, @class = "form-control input-spinner check-in-guest-count" })
+                </div><!-- .form-group -->
+            </div>
+        </div><!-- .row -->
+
+       
+        <div class="hidden-print js-guest-details @showEditGuestClass" id="collapse-add-new-guest">
+     
+            <div class="row">
+                <div class="col-md-12">
+                    <fieldset>
+                        <h2 class="h2 first-word" id="new-guest first-word">@Html.Raw(@Editable(Model, x => x.NewGuestInformation))</h2>
+                        @Html.HiddenFor(m => m.Guest_Id)
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group is-required">
+                                    <label class="control-label"><strong>@Editable(Model, x => x.NewGuestFirstName)</strong></label>
+                                    @Html.TextBoxFor(m => m.Guest_FirstName, new { @class = "form-control " })
+                                </div><!-- .form-group -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group is-required">
+                                    <label class="control-label"><strong>@Editable(Model, x => x.NewGuestLastName)</strong></label>
+                                    @Html.TextBoxFor(m => m.Guest_LastName, new { @class = "form-control " })
+                                </div><!-- .form-group -->
+                            </div>
+                        </div><!-- .row -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label"><strong>@Editable(Model, x => x.NewGuestEmail)</strong></label>
+                                    @Html.TextBoxFor(m => m.Guest_Email, new { @class = "form-control " })
+                                </div><!-- .form-group -->
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label"><strong>@Editable(Model, x => x.NewGuestTelephoneNumber)</strong></label>
+                                    @Html.TextBoxFor(m => m.Guest_PhoneNumber, new { @class = "form-control " })
+                                </div><!-- .form-group -->
+                            </div>
+                        </div><!-- .row -->
+                        <div class="row">
+                            <div class="col-xs-12 col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label"><strong>@Editable(Model, x => x.NewGuestCity)</strong></label>
+                                    @Html.TextBoxFor(m => m.Guest_City, new { @class = "form-control " })
+                                </div><!-- .form-group -->
+                            </div>
+                            <div class="col-xs-12 col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label"><strong>@Editable(Model, x => x.NewGuestState)</strong></label>
+                                    @Html.DropDownListFor(x => x.Guest_State, State.BuildStateDropdown(), new { @class = "form-control", title = "Not Selected" })
+
+                                </div><!-- .form-group -->
+                            </div>
+                            <div class="col-xs-12 col-md-3">
+                                <div class="form-group is-required">
+                                    <label class="control-label"><strong>@Editable(Model, x => x.NewGuestRelationship)</strong></label>
+                                    @Html.DropDownListFor(x => x.Guest_Relationship, Lookup.BuildRelationshipDropdown(), new { @class = "form-control", title = "Not Selected" })
+                                </div><!-- .form-group -->
+                            </div>
+                        </div><!-- .row -->
+
+                    </fieldset>
+                </div>
+            </div><!-- .row -->
+        </div><!-- .collapse -->
+        
+
+        <div class="row hidden-print">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <a href="#" class="btn btn-primary js-updatereservation">@Editable(Model, x => x.NewGuestUpdateReservationInformation)</a>
+                    
+                    <a href="#collapse-edit-reservation-information" class="hidden-print btn btn-default js-cancelupdatereservation" data-hide="#collapse-edit-reservation-information" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-edit-reservation-information">@Editable(Model, x => x.NewGuestCancel)</a>
+                </div><!-- .form-group -->
+
+                @Editable(Model, x => x.NewGuestRequiredFields)
+
+                <div class="collapse" id="collapse-missing-information">
+                    <div class="alert alert-warning" role="alert">
+                        <p>@Editable(Model, x =>x.EmailorPhoneMissingMessage)</p>
+                        <a href="#" class="btn btn-primary js-auto-spinner js-no-disable js-submitupdatereservation">Proceed Without Email or Telephone Number</a>
+    
+                    </div><!-- .alert -->
+                </div><!-- .collapse -->
+                
+            </div>
+        </div><!-- .row -->
+    </div>
+
+    if (!String.IsNullOrEmpty(Model.ActiveReservation.Comments))
+    {
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label class="control-label"><strong>@Editable(Model, x => x.SpecialRequests)</strong>****</label>
+                     <p>@Editable(Model, x => x.ActiveReservation.Comments)</p>
+                </div><!-- .form-group -->
+            </div>
+        </div><!-- .row -->
+    }
+    <hr>
+    if (Model.CanCancelReservation())
+    {
+
+        if (Model.ActiveReservation.ReservationType == "P")
+        {
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>@Editable(Model, x => x.CancellationPolicyPoints)</p>
+                </div>
+            </div>
+            <hr>
+        }
+        else
+        {
+            if (Model.ActiveReservation.ReservationType == "B")
+            {
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p>@Editable(Model, x => x.CancellationPolicyBonusTime)</p>
+                    </div>
+                </div>
+                <hr>
+            }
+        }
+    }
+    <div class="hidden-print">
+        <div class="form-group">
+            <a href="#collapse-send-email" id="send-email" role="button" class="btn btn-primary" data-toggle="collapse" aria-expanded="false" aria-controls="collapse-send-email">@Editable(Model, x => x.SendEmailWithItinerary)</a>
+            @Editable(Model, x => x.SeeAllReservations)
+
+        </div>
+        <div id="event-calendar" class="form-group">
+            @using (Html.BeginForm("GetCalendar", "Calendar", new { resNo = reservationNumber }))
+            {
+                <i class="fa fa-calendar"></i> <input class="btn btn-link btn-calendar" id="button" type="submit" value="@Editable(Model, x => x.AddThisReservationToMyCalendar)" />
+            }
+            <a href="javascript:window.print();" class="btn btn-link"><i class="fa fa-lg fa-print"></i> @Editable(Model, x => x.PrintMyReservationInformation)</a>
+        </div><!-- .form-group -->
+
+
+        <div class="collapse" id="collapse-send-email">
+            @using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post, new { id = "js-send-itinerary" }))
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.Sitecore().FormHandler("Email", "SendItinerary")
+
+                <input type="hidden" name="email-reservation-number" value="@reservationNumber" />
+                <fieldset>
+                    <legend class="first-word">@Editable(Model, x => x.EmailVacationReservationInformationTitle)</legend>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group is-required">
+                                <label class="control-label"><strong>@Editable(Model, x => x.EmailTo)</strong></label>
+                                <input type="text" name="email-reservation-to" class="form-control" value="">
+                                <span id="js-missing-to" class="hidden text-danger">Missing email address</span>
+                                <span id="js-invalid-email" class="hidden text-danger">Please supply valid email addresses separated with semicolons (;).</span>
+                                <span class="help-block">@Editable(Model, x => x.EmailToInstructions)</span>
+                            </div><!-- .form-group -->
+                        </div>
+                    </div><!-- .row -->
+                    <p><button id="js-submit" type="submit" class="btn btn-primary">@Editable(Model, x => x.SendVacationReservationInformation)</button></p>
+                </fieldset>
+                <p>@Editable(Model, x => x.EmailRequiredFields)</p>
+            }
+        </div><!-- .collapse -->
+    </div>
+    <div id="js-email-sent" class="hidden alert alert-info"><p>Email was sent.</p></div>
+    <div id="js-email-error" class="hidden alert alert-danger"><p>Unfortunately, we were unable to send the email.</p></div>
+}
+else
+{
+    <div class="page-header">
+        <h1 class="h1 first-word">@Model.PageTitle</h1>
+    </div>
+
+    <div class="col-border col-border-default">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>@Editable(Model, x => x.HeaderNoReservationFound)</h2>
+            </div>
+        </div><!-- .row -->
+    </div>
+
+}
+<div class="legal small">
+    <p>
+        @Editable(Model, x => x.Footnotes);
+    </p>
+</div><!-- .legal -->
+
+
+<script>
+    GuestInformation = [@Html.Raw(Json.Encode(Model.allGuest))];
+</script>
+@if (trackBazaar && Model.ActiveReservation != null)
+{
+
+    var BazaarVoiceUrl = Sitecore.Configuration.Settings.GetSetting("BazaarVoicePixelUrl");
+
+    <script type="text/javascript" src="@BazaarVoiceUrl"></script>
+
+    <!--load Conversion event and parameters-->
+    <script type="text/javascript">
+        BV.pixel.trackConversion({
+            "type": "@reservationType",
+            "label": "@reservationLabel",
+            "value": "@reservationAmount"
+        });
+    </script>
+
+}
+
+

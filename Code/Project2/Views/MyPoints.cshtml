@@ -1,0 +1,275 @@
+﻿@model BGModern.Models.MyPointsModel
+<div class="container" style="width:100%;">
+<div class="row">
+        <!--Todo  Add this to style sheet class-->
+        <div>
+            @{
+                Html.RenderPartial("BreadcrumbNavigation", Model);
+            }
+        </div>
+        <br />
+        <div class="page-title">
+            @Model.Title
+        </div>
+        <br />
+        <!--Override Message-->
+
+        @Html.Raw(@Model.Message)
+
+        @if (!@Model.HideSavePointsButton)
+        {
+            <a id="btnSaveMyPoints" class="tpRenew-SaveMyPoints"></a><br />}
+
+                                                                               
+            @if (TempData.ContainsKey("CCFormRequestFromMyPoints") && (bool)TempData["CCFormRequestFromMyPoints"] && TempData.ContainsKey("CreditCardStatusMessage"))
+            {
+                <label id="LblError">@Html.Raw(TempData["CreditCardStatusMessage"].ToString())</label>
+                TempData.Remove("CreditCardStatusMessage");
+                TempData.Remove("CCFormRequestFromMyPoints");
+            }
+                
+            @*@if (Request.HttpMethod == "POST")*@
+            @*@if (!@Model.HidePaymentInfo || (TempData.ContainsKey("DisplaySaveMyPoints") && (bool)TempData["DisplaySaveMyPoints"] == true))
+            {
+                <div id="PaymentInformation">
+                    @Html.Action("GetPartialView", "CreditCardInfo")
+                </div>
+                TempData.Remove("DisplaySaveMyPoints");
+            }
+            else
+            {*@
+                <div id="PaymentInformation" style="display:none">
+                    @Html.Action("GetPartialView", "CreditCardInfo")
+                </div>
+            @*}*@
+    @if(@Model.HomeProject == "52")
+    {
+        <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" border="0" style="width: 100%;display:none;" /><br />
+    }
+     else
+    { 
+        <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" border="0" style="width: 100%;" /><br />
+    }
+    @if (!@Model.HidePanelChoice)
+            {
+                <div id="PnlChoice">
+                    <div id="dynamic" style=" width: 100%; margin: 0px; padding: 10px; background-color: #E0E0E0; border-top-left-radius: 10px;  border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px;">
+                        <p>
+                            <strong>
+                                @Html.Raw(@Model.ConvertYourPoints)
+                            </strong>
+                        </p>
+                        <div style="text-align: center;"><a href="@Html.GetParentSitePath()/owner/cpconversion.aspx" style="text-align: center; font-size: 24"><strong><b>@Html.Raw(@Model.ConvertYourPointsURL)</b> </strong></a></div>
+                    </div>
+                    <br />
+                </div>
+            }
+
+            @if (!@Model.HideAccountInfo && @Model.AccountInfo.Any())
+            {
+                <div id="Contracts" style="visibility:visible">
+                    <table class="resortDataw" cellspacing="0" border="1" id="grdContracts1" style="width:100%;border-collapse:collapse;">
+                        <tr class="resortDataw" style="color:White;background-color:#333333; text-align:center">
+                            <th style="text-align:center" scope="col">No.</th>
+                            <th style="text-align:center" scope="col">Account Number</th>
+                            <th style="text-align:center" scope="col">Description</th>
+                            <th scope="col" style="width:15%;text-align:center">Next Earn Date</th>
+                            <th scope="col" style="width:15%;text-align:center">Next Earn Amount</th>
+                        </tr>
+                        @foreach (var datavalue in Model.AccountInfo)
+                        {
+                            <tr>
+                                <td class="resortData" style="text-align:center;color:#666666;background-color:White;font-weight:bold;">@datavalue.AccNo</td>
+                                <td class="resortData" style="text-align:center;color:#666666;background-color:White;font-weight:bold;">@datavalue.AccountNumber</td>
+                                <td class="resortData" style="text-align:center;color:#666666;background-color:White;font-weight:bold;">@datavalue.Description</td>
+                                <td class="resortData" align="center">
+                                    <span id="grdContracts1_ctl02_lblNextEarnDate" class="resortData" style="text-align:center;color:#666666;background-color:White;font-weight:bold;">@datavalue.NextEarnDate</span>
+                                </td>
+                                <td class="resortData" align="center">
+                                    @if (datavalue.NextEarnAmount == null || datavalue.NextEarnAmount.ToString() == "")
+                                    {
+                                        <span id="grdContracts1_ctl02_lblNextEarnAmount" class="resortData" style="text-align:center;color:#666666;font-weight:bold;">@datavalue.NextEarnAmount</span>
+                                    }
+                                    else
+                                    {
+                                        <span id="grdContracts1_ctl02_lblNextEarnAmount" class="resortData" style="text-align:center;color:#666666;font-weight:bold;">@datavalue.NextEarnAmount</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                    
+                <br />
+                <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" style="width: 100%;" border="0" /><br />
+            }
+
+            @Html.Action("GetMyPointsList", "MyPointsList")
+
+            @if (!@Model.HidePanelReminder)
+            {
+                @Html.Action("GetPartialView", "RemindMeLater");
+            }
+
+            @if(!@Model.HideRestricted)
+            { 
+            <span>*
+                <a class="textlink" href="#" onclick="newWin = window.open('@Html.GetParentSitePath()/Owner/helpWinRestrictedPts.aspx', 'newWin2', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=220,height=400,left=50,top=50'); return false;">
+                    Restricted
+                    Points
+                </a>
+            </span>
+            }
+
+            @if (!@Model.HidePageDisclaimer)
+            {
+                <img src="@Html.GetFullSitePath()/Content/images/reservDotRule.gif" style="width: 100%;" border="0" /><br />
+                <div style="color: #666;">
+                    <br />
+                    @Html.Raw(@Model.PageDisclaimer)
+                </div>
+            }
+            <!--Start AliveChat Button Code-->
+            <div style="z-index: 100000; border-bottom: red 0px solid; position: fixed; border-left: red 0px solid; width: 209px; bottom: 0px; height: 85px; border-top: red 0px solid; cursor: pointer; right: 0px; border-right: red 0px solid" id="Div1" class="wsa_box">
+                <img alt="Live Chat" src="https://images.websitealive.com/images/hosted/upload/52043.gif" border="0" onclick="window.open('https://a1.websitealive.com/5980/rRouter.asp?groupid=5980&amp;websiteid=0&amp;departmentid=5575&amp;dl='+escape(document.location.href),'','width=400,height=400');" style="cursor: pointer;">
+            </div>
+            <!--End AliveChat Button Code-->
+            @section OwnerPaletteInfo {
+                <ul id="oLinks">
+                    @if (!@Model.HideLinkMyPoints)
+                    {
+                        <li><a class="submenu" href="@Html.GetFullSitePath()/my-points">My Points</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    }
+                    <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/owneraccount.aspx" target="_self">Edit Account</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    @if (!@Model.HideLinkGoGreen)
+                    {
+                        <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/ownerpaperless.aspx">Go Green</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    }
+                    <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/changepassword.aspx" target="_self">Change Password</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/vacationprofile.aspx">My Vacation Profile</a></li>
+                    <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    @if (!Model.HideLinkChoice)
+                    {
+                        <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/cpaccounts.aspx">Choice Privileges®</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                    }
+                    @if (!@Model.HidePremier)
+                    {
+                        <li><span style="visibility:hidden;"><br /></span></li> @*TODO: Added for space, is there a cleaner way????*@
+                        <li><span style="visibility:hidden;"><br /></span></li>
+                        <li><a class="submenu" style="color: rgb(255, 153, 0);" href="@Html.GetParentSitePath()/Owner/vcPremier.aspx">Bluegreen Premier™</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/vcPremier.aspx">Home</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/vcPremierProfile.aspx">Guest Profile</a></li>
+                        <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        if (!@Model.HideFreeStay)
+                        {
+                            <li><a class="submenu" href="@Html.GetParentSitePath()/Owner/vcPremierCertificate.aspx">Free Stay Certificate</a></li>
+                            <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                        }
+                    }
+                </ul>
+            }
+            @section LeftElements {
+                <div style="margin:0px auto;" id="divSection">
+                    @Html.Action("GetDynamicSpecials", "DynamicSpecials")
+                </div>
+
+                @if (@Model.Show4K)
+                {<div>
+                    <br />
+                    <a href="@Html.GetParentSitePath()/owner/points4k.aspx">
+                        <img id="4kBanner" width="180" height="150" src="@Html.GetFullSitePath()/Content/Images/banners/4K_Bonus_PTS.gif" alt="" />
+                    </a>
+                </div>
+                }
+
+            }
+
+            <script type="text/javascript">
+                jQuery(document).ready(function () {
+                    jQuery('#btnSaveMyPoints').click(function () {
+                        jQuery('#PaymentInformation').toggle();
+                        return false;
+                    });
+                });
+            </script>
+            <style type="text/css">
+                /* Two pixels more than the line height set on line 1143 in owner.css */
+                #Contracts td, #Panel2 td, #Panel4 td {
+                    height: 14px;
+                }
+
+                #nav_links_background {
+                    background-color: #c0c0c0;
+                    width: 20em;
+                }
+
+                .auto-style1 {
+                    height: 23px;
+                }
+
+                .plainTab ul {
+                    list-style: none !important;
+                }
+
+                .plainTab {
+                    height: auto;
+                    overflow: auto;
+                }
+
+                .tabs-menu {
+                    float: left;
+                    clear: both;
+                    padding-left: 0px;
+                }
+
+                    .tabs-menu li {
+                        float: left;
+                    }
+
+                        .tabs-menu li.current {
+                            position: relative;
+                        }
+
+                        .tabs-menu li a {
+                            padding: 10px;
+                            color: Black;
+                        }
+
+                    .tabs-menu .current a {
+                        text-decoration: none;
+                        font-size: 15px;
+                    }
+
+                .tab {
+                    margin-bottom: 20px;
+                    width: auto;
+                }
+
+                .tab-content {
+                    padding-top: 0px;
+                    padding-left: 0px;
+                    display: none;
+                }
+
+                .reservData {
+                    float: left !important;
+                }
+
+                #CurrentpointsSummary, #FuturepointsSummary {
+                    display: block;
+                    color: black;
+                }
+
+                .clsPointsHeading {
+                    font-size: 18px;
+                }
+            </style>
+    </div>
+</div>

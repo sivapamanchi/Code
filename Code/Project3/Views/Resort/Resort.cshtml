@@ -1,0 +1,60 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortDetails>
+
+@{
+
+    DebugUtils.StartLogEvent("Resort.cshtml"); 
+}
+
+
+<div class="page-header" itemscope itemtype="http://schema.org/LocalBusiness" id="location">
+    <h1 class="h1 text-none"><strong itemprop="name">@Model.ResortName</strong><button href="#" class="print-resort hidden-print" onclick="window.print();"><i class="fa fa-print"></i></button></h1>
+  
+    @if (Model.ClubAffiliation != null)
+            {
+        <div class='resort-designation'>
+            <i class='fa fa-circle' aria-hidden='true' style='color:#@Model.ClubAffiliation.Color'></i> @Model.ClubAffiliation.DisplayName <div class="resort-legend">
+                <a href="#" class="resort-legend-trigger" data-toggle="dropdown"><i class="fa fa-question-circle"></i></a>
+                <ul class="dropdown-menu resort-legend-menu">
+                    <li>
+                        <label class="h2 color-heading"><strong>@Model.ClubAffiliation.DisplayName</strong></label><br>
+                        <p class="margin-bottom-xs-0">@Model.ClubAffiliation.Details</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+  
+    <address class="resort-address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+        <span itemprop="streetAddress">@Model.AddressLine1</span>
+        @if (!string.IsNullOrEmpty(Model.AddressLine2))
+        {
+            <span itemprop="streetAddress">@Model.AddressLine2</span>
+        }
+        <span itemprop="addressLocality">@Model.City</span>,
+        @if (@Model.State != null)
+        {
+            <span itemprop="addressRegion">@Model.State.Code</span>
+        }
+        <span itemprop="postalCode">@Model.ZipCode</span>
+        <span itemprop="telephone">@Model.PhoneNumber</span>
+    </address>
+
+    <div id="BVRRSummaryContainer"></div>
+    <a id="see-reviews" href="#BVRRContainer">see reviews</a>
+
+    @if (!string.IsNullOrEmpty(Model.Latitude) && !string.IsNullOrEmpty(Model.Longitude))
+            {
+        <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+            <meta itemprop="latitude" id="resort-latitude" content="@Model.Latitude">
+            <meta itemprop="longitude" id="resort-longitude" content="@Model.Longitude">
+        </span>
+    }
+</div><!-- .page-header -->
+
+@{   DebugUtils.EndLogEvent("Resort.cshtml"); }

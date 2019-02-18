@@ -1,0 +1,68 @@
+﻿
+@using BGSitecore.Models
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<FaqCategory>
+@{
+    var filteredCategories = Model.getFilteredCategoryList();
+    bool showNoResults = Server.HtmlEncode(Request.QueryString["noResult"]) == "true";// (Request.QueryString[""] == "true");
+}
+
+<div class="container-fluid" id="faq-search-box">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-xs-12 col-lg-10 col-lg-push-1 col-primary">
+                <div class="search-filters search-filters-horizontal">
+                    <div class="form-fields">
+                        <div class="row row-collapse">
+                            <div class="col-xs-12 col-md-11">
+                                <div class="form-group is-required">
+                                    <input class="form-control" name="searchKeywordFaq" id="searchKeywordFaq" type="search" placeholder="@Editable(Model, x => x.PlaceHolderText)">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-1">
+                                <div class="input-group">
+                                    <a title="Search" id="ask-bluegreen-faq" name="ask-bluegreen-faq" class="btn btn-primary btn-block" href="#"><span class="fa fa-fw fa-search"></span>@*@Editable(Model, x => x.ButtonText)*@</a>
+                                </div>
+                            </div>
+                        </div><!-- .row -->
+                    </div>
+                    @if (showNoResults)
+                    {
+                        <div class="clearfix padding-top-xs-20 padding-top-md-0">
+                            <p class="margin-bottom-xs-0 margin-bottom-md-20 font-size-16">@Editable(Model, x => x.NoResultsMessage)</p>
+                        </div>
+                    }
+                </div><!-- .search-filters -->
+            </div>
+        </div><!-- .row -->
+    </div>
+</div>
+<div class="site-content tab-content" id="site-content">
+    <div class="tab-pane active">
+        <div class="container">
+            <div class="row">
+                @foreach (FaqCategoryImage item in filteredCategories.Where(x => x.isVisible).ToList())
+                {
+                    var hrefLink = "";
+                    if (item.ImageUrl != null && item.ImageUrl.Url != null && !string.IsNullOrEmpty(item.ImageUrl.Url))
+                    {
+                        hrefLink = item.ImageUrl.Url + "#f:category=[" + item.category + "]";
+                    }
+                    else { hrefLink = "#"; }
+                    <div class="col-xs-12 col-md-4">
+                        <div class="hidden-print page-media">
+                            <a href="@hrefLink" class="thumbnail">
+                                <img class="img-responsive" src='@item.ImageFullUrl()' alt="@item.Caption">
+                                <div class="caption"><p>@item.Caption</p></div>
+                            </a>
+                        </div><!-- .page-media -->
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

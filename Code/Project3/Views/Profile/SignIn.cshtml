@@ -1,0 +1,122 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Components
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SignIn>
+
+@{
+    Image BgImage = null;
+    if (Model.RandomImageLocation != null && Model.RandomImageLocation.Count() > 0)
+    {
+        Random rnd = new Random();
+        int imageCount = rnd.Next(Model.RandomImageLocation.Count());
+        BgImage = Model.RandomImageLocation.ElementAt(imageCount);
+    }
+    else
+    {
+        BgImage = Model.BackGroundImage;
+    }
+
+    HttpCookie cookie = new HttpCookie(".ASPXAUTH");
+    cookie.Expires = DateTime.Now.AddDays(-1);
+    Response.Cookies.Add(cookie);
+
+}
+
+<div class="site-content cover-image js-signin" id="site-content" @Html.Raw(ImageUtils.BuildBackgroundImage(BgImage, Model.SiteSettings.RemoteImageUrl))>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-6 col-lg-5 col-primary">
+
+                <div id="medallia" data-ownerid="@Model.OwnerId" data-ownertype="@Model.OwnerType" data-tpstatus="@Model.TPStatus" data-surveypercent="@Model.SurveyPercent" />
+
+                <!-- This panel is ONLY displayed after a user logs out and is redirected to this page. -->
+                <div class="modal " id="feedback-modal" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="feedback-modal-title" aria-hidden="true" style="display:none;">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" id="medalliaPanel">
+                            @Html.Raw(Model.MedalliaPopup)
+                        </div><!-- .modal-header -->
+                    </div><!-- .modal-dialog -->
+                </div>
+
+                <div class="panel panel-default" id="form-owner-signin">
+                    <div class="panel-body">
+                        <h1 class="h1 color-primary text-lowercase">@Editable(Model, x => x.PageTitle)</h1>
+
+                        <!-- This alert is only displayed when required -->
+                        @if (Model.noAckError)
+                        {
+                            @Html.Raw(UiUtils.BuildMessage("The email address and/or password you entered does not match our records."));
+                        }
+                        
+                        @Html.Raw(Model.sMessage)
+
+                        @using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true,"")
+
+
+                            @Html.Sitecore().FormHandler("Profile", "SignInSitecore")
+                            <div class="form-group">
+                                <input type="hidden" name="IsTutorialTransfer" value="@Model.IsTutorialTransfer" />
+                                <input type="hidden" name="IsTravelerPlusOwner" value="@Model.IsTravelerPlusLogin" />
+                                <input type="hidden" name="IsEncoreRewardsOwner" value="@Model.IsEncoreRewardsLogin" />
+                                <input type="hidden" name="AgentLoginID" value='@Model.AgentLoginID' />
+
+                                <input type="text" name="username" style="display:none" value="fake input" />
+                                @Html.LabelFor(m => m.txtEmail, new { @class = "sr-only control-label" })
+                                @Html.TextBoxFor(m => m.txtEmail, new { @class = "form-control", placeholder = @Sitecore.Globalization.Translate.Text("SignIn_EmailPlaceholder") })
+                                @*@Html.ValidationMessageFor(model => model.txtEmail)*@
+
+                            </div><!-- .form-group -->
+                            <div class="form-group toggle-password">
+
+                                @Html.LabelFor(m => m.txtPassword, new { @class = "sr-only control-label" })
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.txtPassword, new { @class = "form-control", placeholder = @Sitecore.Globalization.Translate.Text("SignIn_PasswordPlaceholder"), type = "password", maxlength = "20" })
+
+                                    <span class="input-group-btn">
+                                        <a href="#toggle-password" class="btn btn-secondary btn-password" tabindex="-1">
+                                            <span class="show-password">show</span>
+                                            <span class="hidden hide-password">hide</span>
+                                        </a>
+                                    </span>
+                                </div>
+
+
+                                @* @Html.ValidationMessageFor(model => model.Password)*@
+
+                            </div><!-- .form-group -->
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label class="control-label"><input type="checkbox" id="cbRememberMe" value="1">@Sitecore.Globalization.Translate.Text("SignIn_RememberMe")</label>
+                                </div><!-- .checkbox -->
+                            </div>
+                                <div class="form-group">
+                                    <button id="btnSubmit" class="btn btn-primary btn-block">@Sitecore.Globalization.Translate.Text("SignIn_Action")</button>
+                                </div><!-- .form-group -->
+                        }
+
+                        <p><a href="@Model.SiteSettings.ForgotPasswordPage.Url" class="js-savetypedemail"><strong>@Model.SiteSettings.ForgotPasswordPage.Text</strong></a></p>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h1 class="h1 text-lowercase">@Editable(Model, x => x.RegistrationHeader)</h1>
+                        @Editable(Model, x => x.RegistrationUpperText)
+                        <p><a href="@Model.SiteSettings.RegistrationPage.Url" class="btn btn-default btn-block">@Model.SiteSettings.RegistrationPage.Text</a></p>
+                        <p><a href="@Model.SiteSettings.SignInHelpPage.Url" class="font-size-16"><strong>@Model.SiteSettings.SignInHelpPage.Text</strong></a></p>
+
+                        @Editable(Model, x => x.RegistrationLowerText)
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- .row -->
+    </div><!-- .container -->
+</div><!-- .site-content -->

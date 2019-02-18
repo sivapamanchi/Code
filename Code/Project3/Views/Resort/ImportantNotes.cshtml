@@ -1,0 +1,73 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ImportantNotesList>
+
+@{
+ }
+
+@if (Model.ImportantNotes != null && Model.ImportantNotes.Count() > 0)
+{
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    @foreach (ImportantNote item in Model.ImportantNotes)
+                    {
+                        if (item.ShowInSummary && item.ShowOnFirstColumn)
+                        {
+                            <div class="col-xs-6">
+                                <dl>
+                                    <dt>@item.SubHeader:</dt>
+                                    <dd>@Html.Raw(@item.NotesContent)</dd>
+                                </dl>
+                            </div>
+                        }
+                    }
+
+                </div><!-- .row -->
+                <div class="row">
+                    @foreach (ImportantNote item in Model.ImportantNotes)
+                    {
+                        if (item.ShowInSummary && !item.ShowOnFirstColumn)
+                        {
+                            <div class="col-xs-6">
+                                <dl>
+                                    <dt>@item.SubHeader:</dt>
+                                    <dd>@Html.Raw(@item.NotesContent)</dd>
+                                </dl>
+                            </div>
+                        }
+                    }
+                </div>
+                <hr>
+                <dl>
+                    @foreach (ImportantNote item in Model.ImportantNotes)
+                    {
+                        if (!item.ShowInSummary && item.ShowOnFirstColumn)
+                        {
+                            <dt>@item.SubHeader:</dt>
+                            <dd>@Html.Raw(@item.NotesContent)</dd>
+                        }
+                    }
+
+                </dl>
+
+            </div>
+            <div class="col-md-6">
+                <dl>
+                    @foreach (ImportantNote item in Model.ImportantNotes)
+                    {
+                        if (!item.ShowInSummary && !item.ShowOnFirstColumn)
+                        {
+                            <dt>@item.SubHeader:</dt>
+                            <dd>@Html.Raw(@item.NotesContent)</dd>
+                        }
+                    }
+
+                </dl>
+
+            </div>
+        </div><!-- .row -->
+}

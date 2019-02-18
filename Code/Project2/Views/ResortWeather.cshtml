@@ -1,0 +1,50 @@
+﻿@model BGModern.Models.ResortModel
+
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="center" style="margin: 0 auto;">
+            <table cellpadding="3" cellspacing="0" border="0" style="background-color:#ffffff; width:auto; min-width:75%; margin: 0 auto;">
+                <thead>
+                    <tr>
+                        <th colspan="4"><h2>Weather</h2></th>
+                    </tr>
+                    <tr style="background-color:#DBEF3B;">
+                        <th align="left" style="text-align:left; font-family:Arial; font-size:smaller; font-weight:bold;">Month</th>
+                        <th align="left" style="text-align:left; font-family:Arial; font-size:smaller;">Avg. High</th>
+                        <th align="left" style="text-align:left; font-family:Arial; font-size:smaller;">Avg. Low</th>
+                        <th align="left" style="text-align:left; font-family:Arial; font-size:smaller;">Avg. Precip.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int rowNumber = 0;
+                        String bgColor = "#ffffff";
+                        foreach (var record in Model.HistoricalWeatherData.HistoricalWeatherList)
+                        {
+                            if (rowNumber % 2 == 0)
+                            {
+                                bgColor = "#ffffff";
+                            }
+                            else
+                            {
+                                bgColor = "#eeeeee";
+                            }
+                            <tr style="background-color:@bgColor;">
+                                <td align="left" style="text-align:left; font-family:Arial; font-size:smaller; font-weight:bold;">@record.Month</td>
+                                <td align="left" style="text-align:left; font-family:Arial; font-size:smaller;">@record.HighTemp</td>
+                                <td align="left" style="text-align:left; font-family:Arial; font-size:smaller;">@record.LowTemp</td>
+                                <td align="left" style="text-align:left; font-family:Arial; font-size:smaller;">@record.AveragePrecip</td>
+                            </tr>
+
+                            rowNumber++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

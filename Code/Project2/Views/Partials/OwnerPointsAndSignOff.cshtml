@@ -1,0 +1,8 @@
+﻿@model BGO.OwnerWS.Owner 
+
+@{
+    Layout = null;
+}
+<div id="ownerPointsAndSignOff" style="width:100%; padding:0 0 0 0;">
+<p><strong>Owner:</strong>@Model.fullName&nbsp;|&nbsp;<strong>Available Points:</strong>@Model.PointsTotal&nbsp;|&nbsp;<a href="@Html.GetParentSitePath()/SignOff.aspx">Sign Out</a></p>
+</div>

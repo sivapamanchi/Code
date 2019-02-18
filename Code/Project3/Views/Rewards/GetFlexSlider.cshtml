@@ -1,0 +1,36 @@
+﻿@using BGSitecore.Utils
+@using BGSitecore.Models
+
+@model IEnumerable<FeaturedItem>
+
+@{
+    var filteredImages = Model.Where(x => ((x.StartDate == DateTime.MinValue && x.EndDate == DateTime.MinValue) || (x.StartDate != DateTime.MinValue && x.EndDate != DateTime.MinValue && x.EndDate >= DateTime.Now && x.StartDate <= DateTime.Now) || (x.EndDate >= DateTime.Now) || (x.StartDate != DateTime.MinValue && x.EndDate == DateTime.MinValue && x.StartDate <= DateTime.Now)))
+                                     .Select(imageItem => imageItem).ToList();
+
+}
+<div class="hidden-print page-media" id="bluegreen-rewards-gallery">
+    <div class="flexslider flexslider-gallery" id="gallery" data-autoplay="true" data-autoplaySpeed="350">
+        <ul class="slides">
+            @foreach (FeaturedItem item in filteredImages)
+            {
+                if (item.Active && item.AccessibleHomePage)
+                {
+                    var itemUrl = item.RedirectLink == null ? item.Url : item.RedirectLink.Url;
+                    var isGalleryImageCaptionExist = item.GalleryImageCaption != null;
+                    <li class="@(filteredImages.ToList().IndexOf(item) == 0 ? "slide-image flex-active-slide": "slide-image")">
+                        <a href="@itemUrl" class="thumbnail">
+                            <figure>
+                                <img src='@ImageUtils.BuildImageUrl(item.FeaturedImage, item.SiteSettings.RemoteImageUrl, "/images/white.png")' alt="@item.Caption">
+                                @if (isGalleryImageCaptionExist)
+                                {
+                                    <figcaption class="caption">@Html.Raw(item.GalleryImageCaption)</figcaption>
+                                }
+                            </figure>
+                        </a>
+                    </li>
+
+                }
+            }
+        </ul>
+    </div>
+</div><!-- .row -->

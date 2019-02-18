@@ -1,0 +1,62 @@
+﻿@model List<BGSitecore.Models.Reward.CartItem>
+@using BGSitecore.Components;
+
+@{
+    var redeemRewardsCartUrl = UrlMapper.Map("https://sc.bluegreenowner.com/rewards/redeem-rewards-cart");
+    var continueRedeemingRewardsUrl = UrlMapper.Map("https://sc.bluegreenowner.com/rewards/redeem-rewards");
+
+    if ((Request.UrlReferrer == null && Model.Count == 0) || (Request.UrlReferrer != null && !Request.UrlReferrer.AbsoluteUri.Equals(redeemRewardsCartUrl, StringComparison.CurrentCultureIgnoreCase) && Model.Count == 0))
+    {
+        Response.Redirect(continueRedeemingRewardsUrl);
+    }
+}
+@Html.AntiForgeryToken()
+<div class="alert alert-success" role="alert">
+    <p><strong>Thank you!</strong> Your order has been successfully received!</p>
+</div>
+<div>
+    <p><i class="fa fa-lg fa-shopping-cart"></i><a href="#" class="btn btn-link text-lowercase first-word js-printpage">Rewards Confirmation &nbsp;<i class="fa fa-lg fa-print"></i></a> <span class="pull-right">@DateTime.Now.ToString("MM/dd/yyyy")</span></p>
+</div><!-- .row -->
+<table class="table-collapse table-striped">
+    <thead>
+        <tr>
+            <td>Item</td>
+            <td class="text-right">Total</td>
+        </tr>
+    </thead>
+
+    @if (Model.Count > 0)
+    {
+        <tbody>
+            @foreach (var cartItem in Model)
+            {
+
+                <tr>
+                    <td><strong class="details">@Html.Raw(cartItem.ItemName)</strong></td>
+                    <td class="text-right" data-label="Total">@Html.Raw(cartItem.SubTotal)<span class="sr-only">Rewards</span></td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-right font-size-medium"><strong>Total</strong></td>
+                <td class="text-right font-size-medium"><strong>@(Model.Count > 0 ? Model.Sum(t => t.SubTotal) : 0)</strong></td>
+            </tr>
+        </tfoot>
+
+    }
+    else
+    {
+        <tbody>
+            <tr class="text-center">
+                <td colspan="5">There are no items in your cart.</td>
+            </tr>
+        </tbody>
+    }
+</table>
+<div class="legal">
+    <p>Rewards redeemed for RCI or Interval International fees will not be subtracted from your Rewards balance until a Bluegreen Rewards&reg; representative contacts you to confirm the transaction.</p>
+</div><!-- .legal -->
+
+
+

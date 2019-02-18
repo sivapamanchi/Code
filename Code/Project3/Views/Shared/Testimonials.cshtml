@@ -1,0 +1,22 @@
+﻿@using System.Text
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<PointsProtectionPlan>
+
+@{
+  
+}
+
+@foreach (Testimonial item in Model.Testimonials)
+{
+    <div class="widget widget-quote">
+        <blockquote>
+            @item.Content
+            <cite>@item.Signature</cite>
+        </blockquote>
+    </div>
+}
+

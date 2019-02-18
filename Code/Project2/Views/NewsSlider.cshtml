@@ -1,0 +1,127 @@
+﻿@model BGModern.Models.NewsSliderModel
+@using BGModern.Models
+
+<link rel="stylesheet" href="~/css/newsSlider.css" />
+
+@{ 
+    var numTotalItems = Model.NewsAndPromoList.Count;
+}
+
+@if (numTotalItems > 0)
+{
+    @*********************************************@
+    @* Picture carousel                          *@
+    @*********************************************@
+
+    <div class="container" style="width:100%;">
+        <div id="carousel-container" class="row" style="margin-left: -5px; margin-right: -10px;">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px;">
+                <div id="picture-carousel" class="carousel slide" style="width: 100%;" data-interval="false">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < numTotalItems; i++)
+                        {
+                            @DisplayItemPicture(Model.NewsAndPromoList[i], i == 0)
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @*********************************************@
+            @* Item blurb carousel                       *@
+            @*********************************************@
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding: 0px;">
+                <div id="blurb-carousel" class="carousel slide" style="width: 100%;" data-interval="15000">
+                    <ol class="carousel-indicators">
+                        @for (int i = 0; i < numTotalItems; i++)
+                    {
+                        var cssClass = i == 0 ? "active" : "";
+                            <li data-target="#blurb-carousel" data-slide-to="@i" class="@cssClass"></li>
+                    }
+                    </ol>
+
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < numTotalItems; i++)
+                    {
+                            @DisplayNewsItem(Model.NewsAndPromoList[i], i == 0)
+                    }
+                    </div>
+
+                    <a class="left carousel-control" href="#blurb-carousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                    <a class="right carousel-control" href="#blurb-carousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript" src="~/Scripts/newsSlider.js"></script>
+
+@helper DisplayItemPicture(dynamic item, bool first) {
+    var cssClass = first ? "active" : "";
+    bool validItem = false;
+    string imageUrl = string.Empty;
+    string linkUrl = item.URL;
+
+    if (item is NewsItemModel)
+    {
+        imageUrl = item.DisplayImage;
+        validItem = true;
+    }
+    else if (item is PromoItemModel)
+    {
+        imageUrl = item.MainImage;
+        validItem = true;
+    }
+
+    <div class="item @cssClass">
+
+        @if (validItem)
+        {
+            <a href="@linkUrl"><img src="@imageUrl" /></a>
+        }
+        else
+        {
+            <span class="error">Invalid item in news and promo list!</span>
+        }
+    </div>
+}
+
+@helper DisplayNewsItem(dynamic item, bool first) {
+    var cssClass = first ? "active" : "";
+
+    <div class="item @cssClass">
+        @DisplayBlurb(item)
+    </div>
+}
+
+@helper DisplayBlurb(dynamic item) {
+    string title = string.Empty;
+    string summary = string.Empty;
+
+    if (item is NewsItemModel)
+    {
+        title = item.ItemTitle;
+        summary = item.Blurb;
+    }
+    else if (item is PromoItemModel)
+    {
+        title = item.PromoTitle;
+        summary = item.Summary;
+    }
+
+    if (string.IsNullOrWhiteSpace(item.URL))
+    {
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 blurb">
+            <h3>@title</h3>
+            <span>@summary</span>
+        </div>
+    }
+    else
+    {
+        <a href="@item.URL" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 blurb">
+            <h3>@title</h3>
+            <span>@summary</span>
+        </a>
+    }
+}

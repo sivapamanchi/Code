@@ -1,0 +1,55 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ExploreBluegreen>
+
+@{
+    List<ResortDetails> SortedByState = ResortUtils.SortResortByState(Model.AllResorts);
+    List<ResortDetails> SortedByResort = ResortUtils.SortResortByResortName(Model.AllResorts);
+    DebugUtils.StartLogEvent("explore.cshtml");
+}
+
+<script src='~/assets/js/bluegreen/explore.js'></script> <!-- TODO move this to the bundle -->
+
+<script>
+    explore.Resorts = [@Html.Raw(Model.AllResortsToJson())];
+</script>
+
+<div class="widget widget-explore">
+    <div class="panel panel-default panel-narrow">
+        <div class="panel-heading">
+            <h3 class="h2 panel-title"><strong>Explore</strong> Bluegreen</h3>
+        </div><!-- .panel-heading -->
+        <div class="panel-body">
+            <div class="form-group">
+                <select name="choose_experience" class="form-control selectpicker js-explore-experiences" title="Choose an Experience" data-live-search="true">
+                    @foreach (Experience item in Model.AllExperience)
+                    {
+                        <option value="@UiUtils.SpaceToHyphen(item.ExperienceName)">@item.ExperienceName</option>
+                    }
+                </select>
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <select name="choose_destination" class="form-control selectpicker  js-explore-destinations" title="Choose a Destination" data-live-search="true">
+                    @Html.Raw(ResortUtils.BuildDestinationsDropdown(SortedByState))
+                </select>
+            </div><!-- .form-group -->
+            <div class="form-group">
+                <select name="choose_resort" class="form-control selectpicker  js-explore-resorts" title="Choose a Resort" data-live-search="true">
+                    @Html.Raw(ResortUtils.BuildResortsDropdown(SortedByResort))
+                </select>
+            </div><!-- .form-group -->
+
+            <p><a id="js-explore-btn" href="#" class="btn btn-default btn-block">Explore</a></p>
+
+        </div><!-- .panel-body -->
+    </div><!-- .panel -->
+</div><!-- .widget -->
+
+@{ 
+    DebugUtils.StartLogEvent("explore.cshtml");
+}
+				

@@ -1,0 +1,42 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<NearbyResortList>
+
+@{
+
+}
+@if (Model.Resort != null && Model.Resort.Count() > 0)
+{
+    <div class="widget widget-resorts-nearby">
+        <div class="panel panel-default panel-narrow">
+            <div class="panel-heading">
+                <h3 class="h2 panel-title text-lowercase first-word">@Model.Displayname</h3>
+            </div><!-- .panel-heading -->
+            <div class="panel-body">
+                <ul class="list-unstyled list-item-space">
+                    @foreach (ResortDetails item in Model.Resort)
+                    {
+                        <li>
+                            <a href="@item.Url">
+                                <span class="resort-name">@item.ResortName</span>
+                                @if (item.ClubAffiliation != null)
+                                {
+                                    <span class="resort-designation"><i class='fa fa-circle' aria-hidden='true' style='color:#@item.ClubAffiliation.Color'></i></span>
+                               }
+                                <span class="resort-distance">@item.Distance @Model.DistanceMessage</span>
+                                </a>
+                                </li>
+
+
+                    }
+
+                </ul>
+
+
+            </div><!-- .panel-body -->
+        </div><!-- .panel -->
+    </div><!-- .widget -->
+}   

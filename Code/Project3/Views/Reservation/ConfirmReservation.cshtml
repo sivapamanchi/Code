@@ -1,0 +1,108 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Components;
+@using BGSitecore.Utils;
+@using Sitecore.Mvc.Configuration
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ConfirmReservation>
+
+@{
+    BlueGreenContext bgContext = new BlueGreenContext();
+    string ownerName = bgContext.GetOwnerFullname();
+    int maxChars = Int32.Parse(Sitecore.Configuration.Settings.GetSetting("MaxCharsInSpecialRequests"));
+    int maxRows = Int32.Parse(Sitecore.Configuration.Settings.GetSetting("MaxRowsInSpecialRequests"));
+    ReservationParameters reservationContext = ReservationUtils.GetContextReservation();
+
+    if (reservationContext == null || Session["ReservationNumber"] != null)
+    {
+
+        ReservationUtils.HandelMissingReservationContext();
+    }
+}
+@if (!string.IsNullOrEmpty(reservationContext.WarningMessage))
+{
+    <div id="confirm-toc-alert">
+        <div class="alert alert-warning" role="alert">
+            <p>@Html.Raw(reservationContext.WarningMessage)</p>
+        </div><!-- .alert -->
+    </div>
+}
+@Html.ValidationSummary()
+
+
+<p>@Editable(Model, x => x.InstructionalText)</p>
+
+@Html.Sitecore().Placeholder("resortdetailsummary")
+
+
+@using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post ,new { id= "form-confirm-reservation-submit" }))
+{
+
+    @Html.AntiForgeryToken()
+
+    @Html.Sitecore().FormHandler("Reservation", "ConfirmReservationSubmit")
+
+    <hr>
+
+    <h2 class="h2 first-word  js-expandguest" id="reservation-information">@Editable(Model, x => x.ReservationInformation)<small> (<strong>@Editable(Model, x => x.Owner) </strong> @ownerName)</small></h2>
+
+    <div class="row">
+        <div name="alertmessage" class="hidden-print alert alert-danger hidden js-alertmessage" role="alert"></div>
+
+
+        @Html.Sitecore().Placeholder("guestdetailscontent")
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="control-label"><strong>@Editable(Model, x => x.SpecialRequests)</strong>****</label>
+                @Html.TextAreaFor(m => m.text_SpecialRequests, new { @class = "form-control", rows = maxRows, maxlength = maxChars })
+                <div class="help-block">@Editable(Model, x => x.SpecialRequestInstructions)</div>
+            </div><!-- .form-group -->
+
+            <hr>
+
+            <div class="form-group">
+                <div class="checkbox"><span class="required"></span> 
+                    <label class="control-label">
+                       <input type="checkbox" name="confirm_toc" id="confirm_toc" value="1">
+                        @if (bgContext.GetOwnerType() == BlueGreenContext.OWNER_TYPE_SAMPLER || bgContext.GetOwnerType() == BlueGreenContext.OWNER_TYPE_SAMPLER24)
+                        {
+                            @Editable(Model, x => x.TermsAndConditionsSampler)
+                        }
+                        else
+                        {
+                            @Editable(Model, x => x.TermsAndConditionsGlobal)
+                        }
+                    </label>
+                </div><!-- .checkbox -->
+            </div><!-- .form-group -->
+
+            <div class="form-group" id="collapse-confirm-reservation">
+                @*<a id="submit-reservation" href="#" role="button" class="btn btn-primary" aria-expanded="false">@Editable(Model, x => x.ConfirmMyReservation)</a>*@
+                <button class="btn btn-primary js-no-disable" aria-expanded="false" id="submit-reservation" name="submit-reservation">@Editable(Model, x => x.ConfirmMyReservation)</button>
+            </div><!-- .form-group -->
+
+            <div class="collapse" id="confirm-toc-alert">
+                <div class="alert alert-warning" role="alert">
+                    <p>@Editable(Model, x => x.TermsAndConditionsAlert)</p>
+                </div><!-- .alert -->
+            </div><!-- .collapse -->
+
+
+            <div class="collapse" id="collapse-missing-information">
+                <div class="alert alert-warning" role="alert">
+                    <p>@Editable(Model, x => x.ProceedWithoutEmailNote)</p>
+                    @* <a href="/owner/points-protection-plan" class="btn btn-primary">@Editable(Model, x => x.ProceedWithoutEmail)</a>*@
+                    <button class="btn btn-primary js-no-disable" id="proceed-without-email" name="btnSubmit">@Editable(Model, x => x.ProceedWithoutEmail)</button>
+
+                </div><!-- .alert -->
+            </div><!-- .collapse -->
+
+            <p>@Editable(Model, x => x.RequiredFields)</p>
+
+        </div>
+        <div class="hidden loading js-bookreservation" id="loading-overlay" aria-hidden="true"><div class="loading-icon"><i class="fa fa-refresh fa-spin"></i></div></div>
+    </div><!-- .row -->
+}
+

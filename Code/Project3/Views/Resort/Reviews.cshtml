@@ -1,0 +1,30 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortDetails>
+
+@{
+    var BazaarVoiceUrl = Sitecore.Configuration.Settings.GetSetting("BazaarVoiceReviewUrl");
+    var reviewId = Model.ReviewId;
+
+    bool trackBazaar = !string.IsNullOrEmpty(reviewId); // BazaarVoice JS will die if we do not have a reviewId
+
+    //var ReviewId = "Product3";
+}
+
+@if (trackBazaar)
+{
+    <script type="text/javascript" src="@BazaarVoiceUrl"></script>
+    <script type="text/javascript">
+	    $BV.configure('global', { productId : '@reviewId' });
+    </script>
+
+    <div id="BVRRContainer" class="resort-detail BVRRContainer" ></div>
+
+    <script type="text/javascript">
+        $BV.ui( 'rr', 'show_reviews', {doShowContent: function () {}});
+    </script>
+
+}

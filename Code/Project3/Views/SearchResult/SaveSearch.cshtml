@@ -1,0 +1,45 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+    Random rand = new Random();
+
+
+    var collapseId = "collapse-save-search" + rand.Next();
+}
+
+@if (Model != null && Model.searchParameters != null && Model.searchParameters.Destination != null && !Model.searchParameters.Destination.Contains("all-"))
+{
+    <div class="save-search filter-group js-savesearch">
+        <div class="form-fields">
+            <div class="form-group form-group-small text-center">
+                <a href="#@collapseId" class="collapsed btn btn-link" data-toggle="collapse" aria-expanded="false" aria-controls="@collapseId"><strong>Save Search</strong></a>
+            </div><!-- .form-group -->
+        </div><!-- .form-fields -->
+        <div class="collapse" id="@collapseId">
+            <div class="panel panel-narrow panel-inverse">
+                <div class="panel-body js-savesearchform">
+                    <div class="form-group ">
+                        <label for="search-name" class="control-label"><strong>Search Name</strong></label>
+                        <input type="text" name="search-name" id="search-name" maxlength="20" class="form-control js-save-searcn-name" value="" placeholder="Please name your search">
+                        <p id="js-missing-name" class="text-danger hidden js-missing-name">&nbsp;* Please supply a name</p>
+                        <p id="InvalidSearchOption" class="text-danger hidden js-invalid-search-option">&nbsp;* @Sitecore.Globalization.Translate.Text("search-savesearch-invalid-search-parameters")</p>
+                    </div><!-- .form-group -->
+
+                    <div class="form-group">
+                        <a id="save-search" href="#" class="btn btn-primary btn-block js-save-search">Save Search</a>
+                        <a id="save-search-wait" href="#" class="btn btn-primary btn-block disabled hidden"><i class="fa fa-refresh fa-spin fa-lg fa-fw"></i> <span class="sr-only">Loading...</span></a>
+                    </div>
+                </div>
+                <div id="save-search-info" class="hidden panel-body text-info js-save-search-info">
+                    <p>Your search was saved</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,92 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Components
+@using BGSitecore.Utils
+@using System.Text
+
+@model BGSitecore.Models.MenuItem
+
+@{
+    var host = Request.Url.Host;
+    var absoluteUri = Request.Url.AbsoluteUri.Trim().ToLower();
+    BlueGreenContext bgContext = new BlueGreenContext();
+    var logoImage = ImageUtils.BuildBackgroundImage(Model.Logo, Model.RemoteImageUrl);
+    bool isSelectAccountPage = absoluteUri.Contains("select-account") ? true : false;
+    var logoUrl = !isSelectAccountPage ? UrlMapper.Map(Model.Logo.ImageUrl.Url) : "#";
+
+    var imageCaption = Model.Logo.Caption;
+    var topMenu = new StringBuilder();
+    var myBlueGreen = "";
+    var searchUrl = UrlMapper.Map(Sitecore.Configuration.Settings.GetSetting("SearchUrl"));
+
+    var ot = bgContext.GetOwnerType();
+    if (!Model.ShowMenu || isSelectAccountPage)
+    {
+        ot = "";
+    }
+    if (string.IsNullOrEmpty(ot))
+    {
+        ot = Request.QueryString["ot"]; // try again for third partys
+    }
+
+    var ownerType = BlueGreenContext.MapOwnerTypeGuid(ot);
+
+    if ((Model != null) && (ownerType != null) && Model.Children != null)
+    {
+        foreach (var item in Model.Children)
+        {
+            if (item.Name == "mybluegreen")
+            {
+                myBlueGreen = item.ToHtml(ownerType);
+            }
+            else
+            {
+                var markup = item.ToHtml(ownerType);
+                if (markup != null)
+                {
+                    topMenu.Append(markup);
+                }
+            }
+        }
+    }
+
+}
+
+<div id="bgGlobalMenu">
+    <header class="site-header navbar navbar-inverse navbar-fixed-top" id="top" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+        <div class="container">
+
+            @if (!string.IsNullOrEmpty(ot) && ot.ToLower() != "thirdparty")
+            {
+                <a href="#search" class="pull-right search-trigger" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    <span class="sr-only">Ask Bluegreen</span>
+                    <i class="fa fa-fw fa-search icon-close" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-times icon-open" aria-hidden="true"></i>
+                </a>
+                @*<a href="@searchUrl" class="pull-right search-trigger" role="button">
+                    <span class="sr-only">Ask Bluegreen</span>
+                    <img src="//@host/images/search-icon.png" alt="search" />
+                </a>*@
+            }
+
+            <div class="navbar-header">
+                @if (!string.IsNullOrEmpty(ot))
+                {
+                    <button type="button" class="pull-left navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-menu-primary" aria-expanded="false">Menu</button>
+                }
+                <a href="@logoUrl" class="navbar-brand" target="_top" title="@imageCaption" @Html.Raw(logoImage)>@imageCaption</a>
+            </div><!-- .navbar-header -->
+            
+                <div class="collapse navbar-collapse" id="navbar-menu-primary">
+                    <ul class="nav navbar-nav navbar-menu navbar-right">
+                        @Html.Raw(myBlueGreen)
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-menu">
+                        @Html.Raw(topMenu.ToString())
+                    </ul>
+                </div><!-- .navbar-collapse -->
+          
+        </div>
+    </header>
+</div>

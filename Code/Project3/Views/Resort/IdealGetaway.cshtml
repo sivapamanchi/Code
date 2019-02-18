@@ -1,0 +1,16 @@
+﻿@using System.Data;
+@using BGSitecore.Utils;
+
+@model BGSitecore.Models.Wysiwyg
+
+@{
+   
+}
+
+@*@Editable(Model, x => x.PageTitle)*@
+
+
+<h2 class="h2 first-word">@Model.Title</h2>
+
+@Html.Raw(Model.Content)
+

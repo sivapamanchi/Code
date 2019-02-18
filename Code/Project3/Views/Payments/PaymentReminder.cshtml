@@ -1,0 +1,9 @@
+﻿@using Sitecore.Mvc
+@using BGSitecore.Models
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Wysiwyg>
+
+<div class="page-header">
+    <h1 class="h1 text-lowercase first-word">@Editable(Model, x => x.Title)</h1>
+</div>
+@Html.Raw(Editable(Model, x => x.Content))

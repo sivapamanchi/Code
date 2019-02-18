@@ -1,0 +1,65 @@
+﻿@model BGModern.Models.ExperienceFilterModel
+
+<div class="row" style="width: 100%; margin: 0 0 0 0; padding: 0 0 0 0;">
+    <div id="experienceFilter">
+        <h1 class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><span style="color: #ff9900;">Find A</span> Resort</h1>
+        <p class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            Get started by exploring all the exciting vacation resorts we have to offer. Or browse by your preferred vacation experience to the right.
+        </p>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h3>Choose a Destination</h3>
+            <div class="centered-group">
+                <select id="ddlDestination">
+                    <option value="choose, choose">Show All Resorts</option>
+                    @foreach (var destination in Model.Destinations)
+                    {
+                        <option data-city="@destination.City" data-state="@destination.State">@destination.Description</option>
+                    }
+                </select>
+                <button id="btnSelectDestination" class="goButton"></button>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <h3>Choose an Experience</h3>
+
+            <div class="centered-group">
+                <select id="ddlExperience">
+                    @foreach (var experience in Model.Experiences)
+                    {
+                        <option value="@experience.ID">@experience.Description</option>
+                    }
+                </select>
+                <button id="btnSelectExperience" class="goButton"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/Scripts/experienceFilter.js"></script>
+
+<style>
+    .centered-group > select, .centered-group > button {
+        vertical-align: middle;
+    }
+
+    #experienceFilter {
+        background: -webkit-linear-gradient(right, #cfcfcf 0%, white 25%, white 75%, #cfcfcf);
+        background: -moz-linear-gradient(right, #cfcfcf 0%, white 25%, white 75%, #cfcfcf);
+        background: -o-linear-gradient(right, #cfcfcf 0%, white 25%, white 75%, #cfcfcf);
+        background: linear-gradient(to right, #cfcfcf 0%, white 25%, white 75%, #cfcfcf);
+        padding: 0 0 0 0;
+        margin-bottom: 16px;
+        width: 100%;
+        height: 168px;
+        background-color: #efefef;
+    }
+
+    .goButton {
+        border: none;
+        background-image: url('@(Url.Content("~"))Content/Images/palette_gobtn.gif');
+
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+    }
+</style>

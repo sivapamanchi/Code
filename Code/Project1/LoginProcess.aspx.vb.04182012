@@ -1,0 +1,839 @@
+Imports BxgCorp.EncoreRewards
+Imports System.Collections.Generic
+Imports IBM.Data.DB2.iSeries
+
+
+Namespace BluegreenOnline
+
+    Partial Class LoginProcess
+        Inherits System.Web.UI.Page
+
+#Region " Web Form Designer Generated Code "
+
+        'This call is required by the Web Form Designer.
+        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+
+        End Sub
+
+
+        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+            'CODEGEN: This method call is required by the Web Form Designer
+            'Do not modify it using the code editor.
+            InitializeComponent()
+        End Sub
+
+#End Region
+
+        Dim owner As New Bluegreenowner
+        Dim VSSAcookie As HttpCookie
+
+        'Connect to the owner service
+        Dim ownerService As New OwnerWS.OwnerWS1
+        Dim bxgOwner As New OwnerWS.Owner
+
+        Dim bSuccess As Boolean
+        Dim theRedirectSet As String = "owner/home.aspx"
+
+        Public path_info As String
+        Public StartTime As DateTime = Nothing
+        Public StopTime As DateTime = Nothing
+        Public ElapsedTime As TimeSpan = Nothing
+        Public ChangePassword As Boolean = False
+
+        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+	   
+
+
+            'Session("StartTime") = Date.Now
+
+            Dim xx As String = Date.Now.Hour.ToString & ":" & Date.Now.Minute.ToString & ":" & Date.Now.Second.ToString
+
+
+            Dim loginEmail As String = Session("LoginEmail") 'VSSAcookie("email")
+            Dim LoginPassword As String = Session("LoginPassword") 'VSSAcookie("passwd")
+            Dim AgentUsername As String = Session("AgentLoginID") 'VSSAcookie("agent")
+
+            'Check for user redirected for login. Assign the path info to  
+            'a variable to re-assign to session variable in case of session values cleared
+            If Session("_path_info") <> "" Then
+                path_info = Session("_path_info")
+
+            End If
+            If Not IsPostBack Then
+                If IsAS400Available() Then
+                    DoLoginCheck(Session("LoginEmail"), Session("LoginPassword"))
+                Else
+                    LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "siteMaintenance.aspx", True)
+                End If
+            End If
+
+            'Close connections if all else fails
+            LoginEgress()
+
+        End Sub
+
+        Private Sub LoginEgress(Optional ByVal sRedirectTo As String = Nothing, Optional ByVal bStop As Boolean = True)
+
+            'Redirect to the page, where user redirected for sign on.
+            If Session("_path_info") <> "" Then
+                Dim strPathInfo As String = Session("_path_info")
+                Session("_path_info") = Nothing
+                Response.Redirect(strPathInfo, bStop)
+            End If
+
+            If sRedirectTo <> Nothing Then
+                '9/2/11 KO - added to redirect TPEmployee to the right page.  
+                If Session("IsTravelerPlusEmployee") = "TRUE" And sRedirectTo.IndexOf("error") > 0 Then
+                    Response.Redirect(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "TravelerPlus/loginUnsuccessful.aspx?ut=EMPLOYEE", bStop)
+                End If
+                Response.Redirect(sRedirectTo, bStop)
+            End If
+        End Sub
+
+        Private Sub DoLoginCheck(ByVal Username As String, ByVal UserPassword As String)
+
+            '####################
+            With owner
+                If Username <> "" And UserPassword <> "" Then
+
+
+                    'Set flag to hide submit buttons for bookings if vacationclub or saleskiosk
+                    If Session("AgentLoginID") = "SALESKIOSK" Then
+                        Session("DEMOMODE") = "TRUE"
+                        Session("IsTravelerPlusOwner") = "TRUE"
+                        .OwnerType = "TravelerPlus"
+                    End If
+
+                    'Loop through configured demo account list
+                    Dim sOmitItem() As String
+                    sOmitItem = System.Configuration.ConfigurationManager.AppSettings("DemoAccountList").Split("|")
+
+                    For x As Integer = 0 To UBound(sOmitItem)
+                        If (Username.ToLower.IndexOf(sOmitItem(x).ToLower()) > -1) Then Session("DEMOMODE") = "TRUE"
+                    Next
+
+                    'If an agent logs in or it is set to enabled then expose the bonus time pages
+                    checkExposeBonusTime()
+
+                    'Check for Traveler Plus employee login
+                    CheckForTravelerPlusEmployeeLogin()
+
+                    '------------------------------------------------------
+                    'Fetching Owner Information from WebService OwnerWS1
+                    '------------------------------------------------------
+                    fetchOwnerInfoFromOwnerService()
+
+                    If bxgOwner.Authenticated Then 'Found Owner Info
+
+                        'There is a legacy owner object that needs to be populated to ensure pages that 
+                        'still use it will remain to function.
+                        populateOwnerLegacyObject()
+
+                        populateOwnerLegacySessionVars()
+                        checkPasswordChange()
+
+                    Else
+                        LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "default.aspx?error=NoACK")
+
+                    End If
+
+                    Session("IsPendingOwner") = "FALSE"
+
+                    Dim success As Integer
+                    Dim iNonVCAccountCount As Integer = 0
+                    Dim alAccounts As New ArrayList
+
+                    Try
+
+                        'Get Authentication ID
+                        If System.Configuration.ConfigurationManager.AppSettings("AllowBooking") <> "FALSE" Then
+                        Else
+                            success = 1
+                        End If
+
+                        If success = 1 Then
+                            If System.Configuration.ConfigurationManager.AppSettings("AllowBooking") = "FALSE" Then
+                                LoadPaymentBalance()
+                            Else
+                            End If
+
+                            Bluegreenowner.CurrentOwner = owner
+
+                            '######################################################################################
+                            'End of account expiration
+                            '######################################################################################
+
+                            checkTravelerplusRedirect()
+                            CheckNonTravelerPlusRedirect()
+                            TrackOwnerLogin()
+                            bSuccess = True
+
+                        Else
+                            bSuccess = False
+
+                        End If
+
+                    Catch ex As Exception
+
+                        bSuccess = False
+                        Dim strEx = ex.Message
+
+                    End Try
+
+                    '#####################
+                Else
+                    If Session("SamplerOnlyUser") = "SAMPLER" Then
+                        LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "loginUnsuccessful.aspx?ut=SAMPLER")
+                    ElseIf Session("IsTravelerPlusEmployee") = "TRUE" Then
+                        LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "TravelerPlus/loginUnsuccessful.aspx?ut=EMPLOYEE")
+                    ElseIf Session("IsTravelerPlusOwner") = "TRUE" Then
+                        LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "TravelerPlus/loginUnsuccessful.aspx")
+                    ElseIf Session("IsEncoreRewardsOwner") = "TRUE" Then
+                        LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "BluegreenRewards/loginUnsuccessful.aspx")
+                    Else
+                        LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "loginUnsuccessful.aspx?error=10")
+                    End If
+                End If
+
+                '###################
+                'save object as session var 
+                Bluegreenowner.CurrentOwner = owner
+
+            End With
+
+            'Failed to log in
+            If bSuccess = False Then
+
+                redirectFailedLogin()
+
+            Else
+
+                LoginEgress(theRedirectSet)
+
+            End If
+
+        End Sub
+
+        Sub redirectFailedLogin()
+
+            If Session("SamplerOnlyUser") = "SAMPLER" Then
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "loginUnsuccessful.aspx?ut=SAMPLER")
+            ElseIf Session("SamplerOnlyUser") = "Players" Then
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "loginUnsuccessful.aspx?ut=Players")
+            ElseIf Session("IsTravelerPlusEmployee") = "TRUE" Then
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "loginUnsuccessful.aspx?ut=EMPLOYEE")
+            ElseIf Session("IsTravelerPlusOwner") = "TRUE" Then
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "default.aspx?error=11")
+            ElseIf Session("IsEncoreRewardsOwner") = "TRUE" Then
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "default.aspx?error=12")
+            Else
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "default.aspx?error=13")
+            End If
+
+            ownerService.Dispose()
+
+        End Sub
+
+        Sub CheckNonTravelerPlusRedirect()
+            Dim isPopuupRedirect As Boolean = False
+            With owner
+
+                'Non traveler plus owners
+                If Session("LoginAccountList").Count = 1 Then
+                    'Use the default account info if there was only one account
+
+                    'Set logo information for user session based on club membership
+                    If Session("OwnerContractType") = "Vacation Club" Then
+                        'Vacation Club Member
+                        Session("siteLogo") = "bgvc_logo2.gif"
+                        Session("sitePhoneNumberImg") = "hdrTag_x.gif"
+                        Session("sitePhoneNumberMouseover") = "hdrTag_o.gif"
+                        Session("sitePhoneNumber") = "800.456.CLUB (2582)"
+                        Session("siteLogoAlt") = "Bluegreen Vacation Club"
+                        Session("siteLogoHeight") = "63"
+                        If Session("IsTravelerPlusEligible") <> "TRUE" Then
+                            Session("siteNavjs") = "owner_data"
+                        End If
+                        Session("siteTemplateHeight") = "253"
+                        Session("siteTemplateImage") = "ownerBkgd1b_lft.gif"
+
+
+
+                        If Session("IsEncoreRewardsOwner") = "TRUE" Then
+                            .OwnerType = "EncoreRewards"
+                            If bxgOwner.ChPWDflag Then
+                                theRedirectSet = "owner/resetpassword.aspx"
+                                'LoginEgress("owner/resetpassword.aspx")
+                            Else
+                                theRedirectSet = "BluegreenRewards/index.aspx"
+                                'LoginEgress("BluegreenRewards/index.aspx")
+                            End If
+
+                        Else
+
+                            Session("BXGOwner") = bxgOwner
+
+                            If bxgOwner.ChPWDflag Then
+                                bSuccess = True
+                                theRedirectSet = "owner/resetpassword.aspx"
+
+                            ElseIf Session("IsTutorialTransfer") = "True" Then
+                                theRedirectSet = "owner/OwnerTutorial.aspx"
+                            Else
+
+                                If Session("sLOCATION") = "TravelerPlus" Then
+                                    theRedirectSet = "owner/vcTravelerplus.aspx"
+                                Else
+
+                                    'if the account is overdue we need to redirect. However is the owner is under Installment Payment (IP) just go to home page.
+                                    If bxgOwner.InstallmentPlan(0).InstallmentStatus = "IS" Or bxgOwner.InstallmentPlan(0).InstallmentStatus = "ID" Then
+
+                                        theRedirectSet = "owner/acctStatus.aspx"
+                                        isPopuupRedirect = True
+
+                                    ElseIf CDbl(bxgOwner.ReservationDuePaymentBalance) > 0.0 And bxgOwner.InstallmentPlan(0).InstallmentStatus <> "IP" Then
+
+                                        theRedirectSet = "owner/paymentReminder.aspx"
+                                        isPopuupRedirect = True
+
+                                    ElseIf bxgOwner.AnnualPointsExpiration.SavePointsEligible = True And bxgOwner.AnnualPointsExpiration.SavePointsPopup = True Then
+
+                                        theRedirectSet = "owner/myPoints.aspx?display=1"
+                                        isPopuupRedirect = True
+
+                                    ElseIf bxgOwner.TravelerPlusMembership.TPRenewPopup = True And isPopuupRedirect = False Then
+
+                                        Try
+
+                                            theRedirectSet = "TravelerPlus/owner/ownerrenewal.aspx?display=1"
+                                            isPopuupRedirect = True
+
+
+                                        Catch ex As Exception
+
+                                        End Try
+
+
+                                    Else
+
+                                        'This new logical address the new Marketing application "LCD".
+                                        'Any modification MUST be discussed to Creative Dept.
+                                        'The LCD application hardcode hidden info based on "travelerplus@bxgcorp.com" to log in on BGO without prompt and
+                                        'redirect to whatever page.
+                                        If Session("AgentLoginID") = "Sales_LCD" Then
+                                            theRedirectSet = Session("redirect_LCD")
+
+                                        Else
+                                            'otherwise just go to home page
+                                            theRedirectSet = "owner/home.aspx"
+
+                                        End If
+
+                                    End If
+
+                                End If
+                            End If
+
+                        End If
+
+                    Else
+
+                        'Some other club - Fixed, etc.
+                        Session("siteLogo") = "bgvc_logo2.gif"
+                        Session("sitePhoneNumberImg") = "nonclubowner_phone.gif"
+                        Session("sitePhoneNumberMouseover") = "nonclubowner_phone.gif"
+                        Session("sitePhoneNumber") = "877.688.9889"
+                        Session("siteLogoAlt") = "Bluegreen Resort Management"
+                        Session("siteLogoHeight") = "63"
+                        Session("siteNavjs") = "ownerNVC_data"
+                        Session("siteTemplateHeight") = "223"
+                        Session("siteTemplateImage") = "ownerBkgd1_lft.gif"
+
+
+
+                        If Session("IsEncoreRewardsOwner") = "TRUE" Then
+                            .OwnerType = "EncoreRewards"
+                            theRedirectSet = "BluegreenRewards/index.aspx"
+                        Else
+                            theRedirectSet = "owner/homeFixed.aspx"
+                        End If
+                    End If
+
+                ElseIf Session("LoginAccountList").Count > 1 Then
+                    'Go to an account selection screen and let the user pick
+
+                    theRedirectSet = "login.aspx"
+                Else
+                    bSuccess = False
+
+                End If
+
+            End With
+
+        End Sub
+
+
+
+        Sub checkTravelerplusRedirect()
+
+            With owner
+
+                Dim sIsTPEligible As String = "NO"
+                If (owner.OwnerTPLevel = Travelerpluslevel.TravelerPlusPlusLevel) Or (owner.OwnerTPLevel = Travelerpluslevel.TravelerPlusLevel) Or (owner.OwnerTPLevel = Travelerpluslevel.TravelerPlus3) Then
+                    sIsTPEligible = "YES"
+                    Session("IsTravelerPlusEligible") = "TRUE"
+                    Session("siteNavjs") = "ownerTP_data"
+                    .OwnerIsTravelerPlusEligible = True
+                Else
+                    sIsTPEligible = "NO"
+                    Session("IsTravelerPlusEligible") = "FALSE"
+                    .OwnerIsTravelerPlusEligible = False
+                End If
+
+
+
+                'Redirect for traveler plus logins if qualified
+                If Session("IsTravelerPlusOwner") = "TRUE" Then
+                    .OwnerType = "TravelerPlus"
+
+                    If sIsTPEligible = "YES" Then
+                        'Fill in our template as a vacation club user
+                        Session("siteLogo") = "bgvc_logo2.gif"
+                        Session("sitePhoneNumberImg") = "hdrTag_x.gif"
+                        Session("sitePhoneNumberMouseover") = "hdrTag_o.gif"
+                        Session("sitePhoneNumber") = "800.456.CLUB (2582)"
+                        Session("siteLogoAlt") = "Bluegreen Vacation Club"
+                        Session("siteLogoHeight") = "63"
+                        Session("siteTemplateHeight") = "253"
+                        Session("siteTemplateImage") = "ownerBkgd1b_lft.gif"
+
+
+
+                    End If
+
+                End If
+            End With
+
+        End Sub
+
+        Sub fetchOwnerInfoFromOwnerService()
+
+            Try
+                If System.Configuration.ConfigurationManager.AppSettings("PCEnvironment") = "Development" Then
+                    ownerService.Timeout = 50000
+                Else
+                    ownerService.Timeout = 25000
+                End If
+
+                bxgOwner = ownerService.Authenticate(Session("LoginEmail"), Session("LoginPassword"))
+                If bxgOwner.Authenticated Then
+                    '###########################################################################
+                    'Write owner to session. This is the new owner that is coming from the
+                    'owner web service.  This is the object you should be using for everything 
+                    'you create beyond 03/10/2009
+
+                    bxgOwner = ownerService.fetchOwner(bxgOwner.Arvact, "", "", "", "")
+
+                    'It looks weird the following since there is an initial condition above that through the code here. 
+                    'The execution of fetchowner method on this case wiped out the authenticad value. On this case, it will be was "False"!
+                    bxgOwner.Authenticated = True
+
+                    'OWner information retrieved from web service is saved to session variable.
+                    Session("BXGOwner") = bxgOwner
+
+                End If
+
+            Catch ex As Web.Services.Protocols.SoapException
+
+                Dim Path As String = Nothing
+                Dim errMsg As New StringBuilder
+
+                Dim sHost As String = (Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("PATH_INFO")).ToLower.Replace("www.", "")
+                Path = "http://" & Left(sHost, sHost.IndexOf("/")) & System.Configuration.ConfigurationManager.AppSettings("bxgwebImgPath")
+
+                errMsg.Append("Machine: " & sHost & "<br />")
+                errMsg.Append("Owner : " & bxgOwner.Arvact & "<br />")
+                errMsg.Append(ex.Message)
+                errMsg.Append(ownerService.ToString())
+
+                sendMessage("olpsupport@bluegreencorp.com", "", "Soap Exception - Error on Log in Process on BGO ", errMsg)
+
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "default.aspx?error=NoConn")
+
+            Catch ex As Exception
+
+                Dim Path As String = Nothing
+                Dim errMsg As New StringBuilder
+
+                Dim sHost As String = (Request.ServerVariables("HTTP_HOST") & Request.ServerVariables("PATH_INFO")).ToLower.Replace("www.", "")
+                Path = "http://" & Left(sHost, sHost.IndexOf("/")) & System.Configuration.ConfigurationManager.AppSettings("bxgwebImgPath")
+
+                errMsg.Append("Machine: " & sHost & "<br />")
+                errMsg.Append("Owner : " & bxgOwner.Arvact & "<br />")
+                errMsg.Append(ex.Message)
+                sendMessage("luiz.minas@bluegreencorp.com", "", "Error on Log in Process on BGO ", errMsg)
+
+                LoginEgress(System.Configuration.ConfigurationManager.AppSettings("bxgwebUnsecureURL") & "default.aspx?error=NoConn")
+
+            Finally
+                'close out the owner Service
+                ownerService = Nothing
+            End Try
+
+        End Sub
+
+        Private Sub LoadPaymentBalance()
+
+            With owner
+                Try
+                    Dim dTotal As Double = 0
+                    Dim sCurProj As String = ""
+                    Dim alAccounts As New ArrayList
+                    Dim bSamplerHolder As Boolean = False
+
+
+                    Dim counter As Integer = 0
+                    Do Until counter = bxgOwner.maintFees.Length
+
+                        With bxgOwner.maintFees(counter)
+
+                            'Accumulate all account information
+                            Dim AccountInfo As New clsLoginAccount
+                            Try
+
+                                AccountInfo.VIP = .vip
+                            Catch ex As Exception
+                                AccountInfo.VIP = False
+                            End Try
+
+                            Try
+
+                                If .saleType = "S" Or .saleType = "L" Then
+                                    AccountInfo.Sampler = True
+                                Else
+                                    AccountInfo.Sampler = False
+                                End If
+
+                            Catch ex As Exception
+                                AccountInfo.Sampler = False
+                            End Try
+
+
+                            AccountInfo.ProjNum = .projnum
+                            'AccountInfo.ContractID = .acctNum
+
+                            If .projnum = "50" Then
+                                AccountInfo.ContractType = "Vacation Club"
+                                AccountInfo.ResortName = "Vacation Club"
+                                AccountInfo.ResortID = 0
+                                Session("ProjNum") = .projnum
+                            Else
+                                AccountInfo.ContractType = StrConv(Trim(.proname), VbStrConv.ProperCase)
+                                Dim sTmpRes() As String = GetLocalResort(.projnum).Split("|")
+                                AccountInfo.ResortID = sTmpRes(0)
+                                AccountInfo.ResortName = StrConv((sTmpRes(1) & ""), VbStrConv.ProperCase)
+                            End If
+
+                            AccountInfo.Weeks = .weeks
+
+                            'Accumulate the same project, otherwise add new ones
+                            If sCurProj = AccountInfo.ResortID Then
+                                'need to do this if owner was a sampler prior to becoming an owner; owner holds multiple account
+                                If alAccounts.Count = 0 Then
+                                    If AccountInfo.ProjNum <> "32" Then
+                                        alAccounts.Add(AccountInfo)
+                                    Else
+                                        Session("Players") = "YES"
+                                        Session("SamplerOnlyUser") = "Players"
+                                    End If
+
+                                End If
+
+                                alAccounts(alAccounts.Count - 1).Weeks &= "," & AccountInfo.Weeks
+                                Dim cBal As Double = Convert.ToDouble(alAccounts(alAccounts.Count - 1).paymentBalance)
+                                cBal = cBal + Convert.ToDouble(AccountInfo.PaymentBalance)
+                                alAccounts(alAccounts.Count - 1).paymentBalance = cBal.ToString()
+                            Else
+                                'Filter Out Sampler Owners
+                                If AccountInfo.ProjNum <> "51" And AccountInfo.ProjNum <> "52" And Not AccountInfo.Sampler And AccountInfo.ProjNum <> "32" Then
+                                    alAccounts.Add(AccountInfo)
+
+                                Else
+                                    'Onwer Project is 50 and home project is 51 allow to access the web site.
+
+                                    bSamplerHolder = True
+                                    Session("Players") = "YES"
+                                End If
+                            End If
+
+                            sCurProj = AccountInfo.ResortID
+
+                            'Add up a total balance
+                            dTotal = dTotal + Convert.ToDouble(.amt)
+
+                        End With
+                        counter = counter + 1
+                    Loop
+
+                    'End While
+
+                    Session("OwnerPaymentBalance") = dTotal
+                    Session("EncoreMaintenanceFeeBalance") = Session("OwnerPaymentBalance")
+
+                    Session("LoginAccountList") = alAccounts
+
+                    'If user only holds a sampler account
+                    If bSamplerHolder And alAccounts.Count = 0 Then
+
+                        Session("SamplerOnlyUser") = "SAMPLER"
+
+                        If Session("Players") = "YES" Then
+                            Session("SamplerOnlyUser") = "Players"
+                        End If
+                    End If
+
+                    'If there was only one account then let's get it set up
+                    If alAccounts.Count = 1 Then
+                        .OwnerContractType = alAccounts(0).ContractType
+
+                        Session("OwnerContractType") = alAccounts(0).ContractType
+                        Session("OwnerHomeResort") = alAccounts(0).ResortID
+                        Session("OwnerHomeProjectNumber") = alAccounts(0).ProjNum
+                        Session("OwnerHomeResortWeeks") = alAccounts(0).Weeks
+                        Session("OwnerVIP") = alAccounts(0).VIP
+                    End If
+
+                    alAccounts = Nothing
+
+                Catch ex As Exception
+                    Response.Redirect(ex.Message)
+                    Dim sErr As String = ex.Message
+                Finally
+
+                End Try
+
+            End With
+
+        End Sub
+
+        Private Function GetLocalResort(ByVal sResortID As String) As String
+
+            Dim C As New clsDBConnectivity
+
+            'Declarations
+            Dim sLocalResort As String = " | "
+            Dim drResort As SqlClient.SqlDataReader
+
+            'Set up query
+            C.dbCmnd.CommandText = "uspSelectResortID"
+            C.dbCmnd.CommandType = System.Data.CommandType.StoredProcedure
+            C.dbCmnd.Parameters.Clear()
+            C.dbCmnd.Parameters.Add(New System.Data.SqlClient.SqlParameter("@ProjNum", System.Data.SqlDbType.Int, 4)).Value = Convert.ToInt32(sResortID)
+            drResort = C.dbCmnd.ExecuteReader()
+
+            While drResort.Read()
+                sLocalResort = drResort("ResortID") & "|" & Trim(drResort("ResortName") & "")
+            End While
+
+            'Cleanup
+            drResort.Close()
+            C.dbCmnd.Dispose()
+            C.Close()
+
+            Return sLocalResort
+
+        End Function
+
+        Private Sub TrackOwnerLogin()
+
+            Dim C As New clsDBConnectivity
+
+            C.dbCmnd.CommandText = "uspTrackClientLogin"
+            C.dbCmnd.CommandType = System.Data.CommandType.StoredProcedure
+            C.dbCmnd.Parameters.Clear()
+            C.dbCmnd.Parameters.Add(New System.Data.SqlClient.SqlParameter("@OwnerID", System.Data.SqlDbType.Int)).Value = bxgOwner.Arvact 'Session("OwnerIdentity")
+            C.dbCmnd.ExecuteNonQuery()
+
+            If ChangePassword Then
+
+                If Session("AgentLoginID") <> "" Then
+                    'LOG HERE to AS400
+                    Dim msg As New StringBuilder
+                    msg.Append("logged in as user from: ")
+                    msg.Append(HttpContext.Current.Request.UserHostAddress)
+
+                    insertAs400Comments(msg.ToString)
+                End If
+
+                LoginEgress("owner/resetpassword.aspx")
+            End If
+
+            'Log to general log if rep has logged in as an owner.
+            'If VSSAcookie IsNot Nothing Then
+            If Session("AgentLoginID") <> "" Then
+
+                'GeneralLogEntry(Session("ownernumber"), userIP, "logged in as user", "Audit", 0)
+                'LOG HERE to AS400
+                Dim msg As New StringBuilder
+                msg.Append("logged in as user from: ")
+                msg.Append(HttpContext.Current.Request.UserHostAddress)
+
+                insertAs400Comments(msg.ToString)
+
+            End If
+
+            C.dbCmnd.Dispose()
+            C.Close()
+
+        End Sub
+
+        Sub populateOwnerLegacySessionVars()
+
+            'Populate session objects here
+            Session("OwnerNumber") = bxgOwner.Arvact.ToString
+            Session("OwnerIdentity") = bxgOwner.ownerID
+            Session("OwnerNamePrefix") = StrConv(bxgOwner.namePrefix, VbStrConv.ProperCase)
+            Session("OwnerNameFirst") = StrConv(Trim(bxgOwner.firstName), VbStrConv.ProperCase)
+            Session("OwnerNameMiddle") = StrConv(bxgOwner.middleName, VbStrConv.ProperCase)
+            Session("OwnerNameLast") = StrConv(bxgOwner.lastName, VbStrConv.ProperCase)
+            Session("OwnerNameSuffix") = StrConv(bxgOwner.nameSuffix, VbStrConv.ProperCase)
+            Session("OwnerEmailAddress") = bxgOwner.Email.ToString
+            Session("OwnerAddress1") = bxgOwner.Address1
+            Session("OwnerAddress2") = bxgOwner.Address2
+            Session("OwnerCity") = bxgOwner.City
+            Session("OwnerPostalCode") = bxgOwner.PostalCode
+            Session("OwnerSubdivision") = bxgOwner.Subdivision
+            Session("OwnerStateAbr") = bxgOwner.StateAbr
+            Session("OwnerCountryCode") = bxgOwner.CountryCode
+            Session("OwnerHomePhone") = bxgOwner.HomePhone
+            Session("OwnerAlternatePhone") = bxgOwner.AlternatePhone
+            Session("OwnerLast4SSN") = Trim(Right("    " & bxgOwner.last4SSN, 4))
+            Session("OwnerEncoreDividends") = bxgOwner.encoreDividends
+            Session("OwnerPoints") = bxgOwner.PointsTotal
+            Session("OwnerOriginalPoints") = bxgOwner.PointsTotalAnnual
+            Session("OwnerSavedPoints") = bxgOwner.PointsTotalSaved
+            Session("AccountNumber") = bxgOwner.accountNumber
+            Session("Expires") = bxgOwner.OwnerExpiration
+
+        End Sub
+
+        Sub populateOwnerLegacyObject()
+            With owner
+                .OwnerVCNumber = bxgOwner.Arvact.ToString
+                .OwnerId = bxgOwner.ownerID
+                .OwnerNamePrefix = StrConv(bxgOwner.namePrefix, VbStrConv.ProperCase)
+                .OwnerFirstName = StrConv(Trim(bxgOwner.firstName), VbStrConv.ProperCase)
+                .OwnerMiddleName = StrConv(bxgOwner.middleName, VbStrConv.ProperCase)
+                .OwnerLastName = StrConv(bxgOwner.lastName, VbStrConv.ProperCase)
+                .OwnerNameSuffix = StrConv(bxgOwner.nameSuffix, VbStrConv.ProperCase)
+                .OwnerEmailAddress = bxgOwner.Email.ToString
+                .OwnerAddress1 = bxgOwner.Address1
+                .OwnerAddress2 = bxgOwner.Address2
+                .OwnerCity = bxgOwner.City
+                .OwnerPostalCode = bxgOwner.PostalCode
+                .OwnerSubdivision = bxgOwner.Subdivision
+                .OwnerStateAbr = bxgOwner.StateAbr
+                .OwnerCountryCode = bxgOwner.CountryCode
+                .OwnerHomePhone = bxgOwner.HomePhone
+                .OwnerAlternatePhone = bxgOwner.AlternatePhone
+                .OwnerLast4SSN = bxgOwner.last4SSN
+                .OwnerPaymentBalance = bxgOwner.PaymentBalance()
+                .OwnerEncoreDividends = bxgOwner.encoreDividends
+                .OwnerAnnualPoints = bxgOwner.PointsTotalAnnual
+                .OwnerSavedPoints = bxgOwner.PointsTotalSaved
+                .OwnerRestrictedPoints = bxgOwner.PointsTotalRestricted
+                .OwnerTotalPoints = bxgOwner.PointsTotal
+                .OwnerPaymentBalance = bxgOwner.PaymentBalance
+                .OwnerClubLevelDescription = bxgOwner.membershipLevelDesc
+                .OwnerMembershipType = bxgOwner.membershipLevel
+                .OwnerAccountNumber = bxgOwner.accountNumber
+                .OwnerTPLevel = bxgOwner.TravelerPlusMembership.TPLevel
+
+            End With
+
+        End Sub
+
+        Sub checkExposeBonusTime()
+
+            Dim sAgent As String = Session("AgentLoginID") & ""
+            Dim sBTBlockFixedOwners As String = System.Configuration.ConfigurationManager.AppSettings("BonusTimeBlockFixedOwners")
+            Dim sBTEnabled As String = System.Configuration.ConfigurationManager.AppSettings("BonusTimeEnabled")
+
+            With owner
+                If sAgent.Length > 0 Or sBTEnabled = "TRUE" Then
+                    Session("BonusTimeEnabled") = "TRUE"
+                    .BonusTimeEnabled = True
+                Else
+                    Session("BonusTimeEnabled") = "FALSE"
+                    .BonusTimeEnabled = False
+                End If
+
+                If sBTBlockFixedOwners = "TRUE" Then
+                    Session("BonusTimeBlockFixedOwners") = "TRUE"
+                    .BonusTimeBlockFixedOwners = True
+                Else
+                    Session("BonusTimeBlockFixedOwners") = "FALSE"
+                    .BonusTimeBlockFixedOwners = False
+                End If
+            End With
+
+        End Sub
+
+        Sub checkPasswordChange()
+
+            If bxgOwner.ChPWDflag Then
+
+                ChangePassword = bxgOwner.ChPWDflag
+            End If
+
+        End Sub
+
+        Sub checkForTravelerPlusEmployeeLogin()
+
+            Dim CVC As New clsDBConnectivityVC
+
+            If Session("IsTravelerPlusEmployee") = "TRUE" Then
+
+                'Check and Redirect for traveler plus logins
+                Dim sIsTPEligibleEmployee As String = "NO"
+                Dim drTPEmployee As SqlClient.SqlDataReader
+
+                CVC.dbCmnd.CommandText = "SamplerPlus.dbo.uspVerifyTPEmployeeEligibility"
+                CVC.dbCmnd.CommandType = System.Data.CommandType.StoredProcedure
+                CVC.dbCmnd.Parameters.Clear()
+                CVC.dbCmnd.Parameters.Add(New System.Data.SqlClient.SqlParameter("@EMAIL", System.Data.SqlDbType.VarChar, 50)).Value = Session("TPEmployeeEmail")
+                CVC.dbCmnd.Parameters.Add(New System.Data.SqlClient.SqlParameter("@PASSWORD", System.Data.SqlDbType.VarChar, 50)).Value = Session("TPEmployeePassword")
+                drTPEmployee = CVC.dbCmnd.ExecuteReader()
+
+                If drTPEmployee.HasRows Then
+                    sIsTPEligibleEmployee = "YES"
+                    While drTPEmployee.Read
+                        Session("EmployeeFirstName") = drTPEmployee("firstName")
+                        Session("EmployeeLastName") = drTPEmployee("lastName")
+                        Session("EmployeeEmail") = drTPEmployee("Email")
+                        Session("EmployeePhone") = drTPEmployee("Phone")
+                        Session("EmployeeID") = drTPEmployee("memberid")
+                        Session("EmployeeZip") = drTPEmployee("zip")
+                        Session("EmployeeExpireDate") = drTPEmployee("expiredate")
+                    End While
+                End If
+
+                'A little dab of cleanup
+                drTPEmployee.Close()
+
+                If sIsTPEligibleEmployee = "YES" Then
+                    LoginEgress("TravelerPlus/owner/home.aspx?", True)
+                Else
+                    bSuccess = False
+                End If
+            End If
+
+            CVC.dbCmnd.Dispose()
+            CVC.Close()
+
+        End Sub
+
+    End Class
+
+End Namespace

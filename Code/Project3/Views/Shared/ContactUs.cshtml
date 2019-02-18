@@ -1,0 +1,27 @@
+﻿@using BGSitecore.Models
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ContactUs>
+
+@{
+
+}
+
+<div class="container">
+    <div class="form-group">
+        <hr />
+        <div class="row">
+            <div class="col-xs-12 col-lg-10 col-lg-push-1 col-primary">
+                <div class="form-fields text-center">
+                    <div class="col-xs-12 col-md-11">
+                        <h2><strong class="control-label">@Editable(Model, x => x.Title)</strong></h2>
+                    </div>
+                </div>
+                <div class="form-fields text-center">
+                    <div class="col-xs-12 col-md-11">
+                        <a href="@Model.ContactUsLink" class="btn btn-primary" target="_top">@Editable(Model, x => x.ContactUsText)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

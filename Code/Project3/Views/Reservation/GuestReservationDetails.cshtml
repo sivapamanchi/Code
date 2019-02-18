@@ -1,0 +1,118 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Components
+@using BGSitecore.Models.ResortService.ScreeningBookReservationResponse
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<GuestInfo>
+
+@{
+    bool ShowAddGuest = SitecoreUtils.CanAddNewGuest();
+
+    string maxOccupancy = "2";
+
+    ReservationParameters reservationContext = ReservationUtils.GetContextReservation();
+    if (reservationContext != null)
+    {
+        maxOccupancy = string.Format("{0}",reservationContext.MaxOccupancy);
+    }
+
+    List<Guest> guestList = UiUtils.BuildGuestList(ShowAddGuest);
+}
+
+<script>
+    GuestInformation = [@Html.Raw(Json.Encode(guestList))];
+</script>
+<input type="hidden" id="MaxOccupancy" value="@reservationContext.MaxOccupancy" />
+
+<div class="col-md-6">
+    <div class="form-group is-required">
+        <label class="control-label"><strong>@Editable(Model, x => x.GuestCheckingIn)</strong>*</label>
+        <div class="input-group">
+            @Html.DropDownListFor(x => x.Guest_Selected, UiUtils.BuildGuestDropDown(ShowAddGuest, guestList), new { @class = "form-control" })
+            @Html.HiddenFor(m => m.Guest_AddNew)
+
+
+            @if (ShowAddGuest)
+            {
+            <span class="input-group-btn">
+                <button class="btn btn-secondary js-add-guest">
+                    @Editable(Model, x => x.GuestAddNewGuest)
+                </button>
+               
+            </span>
+            }
+        </div><!-- .input-group -->
+
+    </div><!-- .form-group -->
+</div>
+<div class="col-md-3 col-lg-2">
+    <div class="form-group is-required">
+        <label class="control-label"><strong>@Editable(Model, x => x.NumberOfGuest)</strong>***</label>
+        @Html.TextBoxFor(m => m.Guest_NumberOfGuest, new { data_min_value = "1", data_max_value = maxOccupancy, @class = "form-control input-spinner" })
+    </div><!-- .form-group -->
+</div>
+
+    <div class="col-xs-12">
+        <div class="hidden-print js-guest-details hidden" id="collapse-add-new-guest">
+
+
+            <fieldset>
+                <h2 class="h2 first-word" id="new-guest first-word">@Html.Raw(@Editable(Model, x => x.NewGuestInformation))</h2>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group is-required">
+                            <label class="control-label"><strong>@Editable(Model, x => x.GuestFirstName)</strong></label>
+                            @Html.TextBoxFor(m => m.Guest_FirstName, new { @class = "form-control " })
+                        </div><!-- .form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group is-required">
+                            <label class="control-label"><strong>@Editable(Model, x => x.GuestLastName)</strong></label>
+                            @Html.TextBoxFor(m => m.Guest_LastName, new { @class = "form-control " })
+                        </div><!-- .form-group -->
+                    </div>
+                </div><!-- .row -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"><strong>@Editable(Model, x => x.GuestEmail)</strong></label>
+                            @Html.TextBoxFor(m => m.Guest_Email, new { @class = "form-control " })
+                        </div><!-- .form-group -->
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label"><strong>@Editable(Model, x => x.GuestPhoneNumber)</strong></label>
+                            @Html.TextBoxFor(m => m.Guest_PhoneNumber, new { @class = "form-control " })
+                        </div><!-- .form-group -->
+                    </div>
+                </div><!-- .row -->
+                <div class="row">
+                    <div class="col-xs-12 col-md-3">
+                        <div class="form-group">
+                            <label class="control-label"><strong>@Editable(Model, x => x.GuestCity)</strong></label>
+                            @Html.TextBoxFor(m => m.Guest_City, new { @class = "form-control " })
+                        </div><!-- .form-group -->
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="form-group">
+                            <label class="control-label"><strong>@Editable(Model, x => x.GuestState)</strong></label>
+                            @Html.DropDownListFor(x => x.Guest_State, State.BuildStateDropdown(), new { @class = "form-control", title = "Not Selected" })
+
+                        </div><!-- .form-group -->
+                    </div>
+                    <div class="col-xs-12 col-md-3">
+                        <div class="form-group is-required">
+                            <label class="control-label"><strong>@Editable(Model, x => x.GuestRelationship)</strong></label>
+                            @Html.DropDownListFor(x => x.Guest_Relationship, Lookup.BuildRelationshipDropdown(), new { @class = "form-control", title = "Not Selected" })
+                        </div><!-- .form-group -->
+                    </div>
+                </div><!-- .row -->
+
+            </fieldset>
+        </div><!-- .collapse -->
+    </div>
+

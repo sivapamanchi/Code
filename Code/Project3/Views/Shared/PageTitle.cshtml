@@ -1,0 +1,14 @@
+﻿@using System.Text
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<BasePage>
+
+
+<div class="page-header">
+    <h1 class="h1 text-lowercase first-word">@Editable(Model, x => x.PageTitle)</h1>
+    @Html.Sitecore().Placeholder("pagesubtitle")
+</div><!-- .page-header -->

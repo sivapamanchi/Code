@@ -1,0 +1,224 @@
+﻿@*@model BGModern.Models.OurResortsModel*@
+@inherits UmbracoViewPage<BGModern.Models.OurResortsModel>
+
+@{
+    Layout = "~/Views/MasterLayout.cshtml";
+}
+
+@section PageScript{
+    <link href="~/css/OurResortsPager.css" rel="stylesheet" rev="stylesheet">
+}
+
+<div class="container" style="width:100%; padding:0 0 0 0;">
+    <div class="row" style="width:100%; margin:0 0 0 0; padding:0 0 0 0;">
+        <div>
+            @{
+                Html.RenderPartial("BreadcrumbNavigation", Model);
+                String filterString = "";
+                if (!String.IsNullOrWhiteSpace(Model.FilterCity))
+                {
+                    filterString += String.Format("&FilterCity={0}", Model.FilterCity);
+                }
+                if (!String.IsNullOrWhiteSpace(Model.FilterState))
+                {
+                    filterString += String.Format("&FilterState={0}", Model.FilterState);
+                }
+                if (!String.IsNullOrWhiteSpace(Model.FilterExperience))
+                {
+                    filterString += String.Format("&FilterExperience={0}", Model.FilterExperience);
+                }
+            }
+        </div>
+    </div>
+    <div class="row" style="width:100%; margin:0 0 0 0; padding:0 0 0 0;">
+        <div class="page-title">
+            @Model.Title
+        </div>
+        <div id="ourResortsHeader"></div>
+        <br />
+        <input type="hidden" id="FilterCity" value="@Model.FilterCity" />
+        <input type="hidden" id="FilterState" value="@Model.FilterState" />
+        <input type="hidden" id="FilterExperience" value="@Model.FilterExperience" />
+        @{
+            if (Model.PagerModel != null)
+            {
+                <div class="pnlPrevNextUpper">
+                    <div class="leftColumn">
+                        @{
+                if (Model.PagerModel.ShowPreviousControl)
+                {
+                    <a href="?Page=@Model.PagerModel.PriorPage@filterString">« Previous</a>
+                }
+                        }
+                        &nbsp;
+                    </div>
+                    <div class="centerColumn">
+                        <div style="margin:0 auto;">
+                            @{
+
+                for (int x = 0; x < Model.PagerModel.PageCount; x++)
+                    {
+                        String aText = (x + 1).ToString();
+                        String hrefString = "?Page=" + aText + filterString;
+
+                        if (x == Model.PagerModel.CurrentPage - 1)
+                        {
+                            // if page 10 or greater (remember, 0-based indexes), need to override padding in class.
+                            if (x > 8)
+                            {
+                    <span class="numberCircle pageSelected"><a style="padding:0px;" href="@hrefString">@aText</a></span>
+                            }
+                            else
+                            {
+                    <span class="numberCircle pageSelected"><a href="@hrefString">@aText</a></span>
+                            }
+                        }
+                        else
+                        {
+                            // if page 10 or greater (remember, 0-based indexes), need to override padding in class.
+                            if (x > 8)
+                            {
+                    <span class="numberCircle pageOther"><a style="padding:0px;" href="@hrefString">@aText</a></span>
+                            }
+                            else
+                            {
+                    <span class="numberCircle pageOther"><a href="@hrefString">@aText</a></span>
+                            }
+                        }
+                    }
+                            }
+                        </div>
+                        <div style="margin:0 auto;">
+                            <a href="?Page=-1 @filterString">Show All</a>
+                        </div>
+                    </div>
+                    <div class="rightColumn">
+                        @{
+                if (Model.PagerModel.ShowNextControl)
+                {
+                    <a href="?Page=@Model.PagerModel.NextPage@filterString">Next »</a>
+                }
+                        }
+                        &nbsp;
+                    </div>
+                </div>
+                <br />
+                <br />
+                <br />
+            }
+        }
+        @{
+            foreach (BGModern.Models.ResortModel resort in Model.OurResorts)
+            {
+                <div class="row" style="width:100%; margin:auto 0 auto auto; padding:0 0 0 0;">
+                    @{Html.RenderPartial("ResortSummary", resort);}
+                </div>
+            }
+        }
+        <br />
+        <br />
+        @{
+            if (Model.PagerModel != null)
+            {
+                <div class="pnlPrevNextLower">
+                    <div class="leftColumn">
+                        <div style="margin:0 auto;">
+                            &nbsp;
+                        </div>
+                        @{
+                if (Model.PagerModel.ShowPreviousControl)
+                {
+                    <a href="?Page=@Model.PagerModel.PriorPage@filterString">« Previous</a>
+                }
+                        }
+                        &nbsp;
+                    </div>
+                    <div class="centerColumn">
+                        <div style="margin:0 auto;">
+                            <div style="margin:0 auto;">
+                                <a href="?Page=-1 @filterString">Show All</a>
+                            </div>
+                            @{
+
+                for (int x = 0; x < Model.PagerModel.PageCount; x++)
+                {
+                    String aText = (x + 1).ToString();
+                    String hrefString = "?Page=" + aText + filterString;
+
+                    if (x == Model.PagerModel.CurrentPage - 1)
+                    {
+                        // if page 10 or greater (remember, 0-based indexes), need to override padding in class.
+                        if (x > 8)
+                        {
+                            <span class="numberCircle pageSelected"><a style="padding:0px;" href="@hrefString">@aText</a></span>
+                        }
+                        else
+                        {
+                            <span class="numberCircle pageSelected"><a href="@hrefString">@aText</a></span>
+                        }
+                    }
+                    else
+                    {
+                        // if page 10 or greater (remember, 0-based indexes), need to override padding in class.
+                        if (x > 8)
+                        {
+                            <span class="numberCircle pageOther"><a style="padding:0px;" href="@hrefString">@aText</a></span>
+                        }
+                        else
+                        {
+                            <span class="numberCircle pageOther"><a href="@hrefString">@aText</a></span>
+                        }
+                    }
+                }
+                            }
+                        </div>
+                    </div>
+                    <div class="rightColumn">
+                        <div style="margin:0 auto;">
+                            &nbsp;
+                        </div>
+                        @{
+                if (Model.PagerModel.ShowNextControl)
+                {
+                    <a href="?Page=@Model.PagerModel.NextPage@filterString">Next »</a>
+                }
+                        }
+                        &nbsp;
+                    </div>
+                </div>
+                <br />
+                <br />
+                <br />
+            }
+        }
+        @section OwnerPaletteInfo {
+            <ul id="oLinks">
+                <li><a class="submenu" style="color: rgb(255, 153, 0);" href="@Html.GetFullSitePath()/home"><b>Reservations</b></a></li>
+                <li><span style="visibility:hidden;"><br /></span></li> @*TODO: Added for space, is there a cleaner way????*@
+                @if (@Model.VacationClubOwner)
+                {
+                <li><a class="submenu" href="@Html.GetFullSitePath()/reservation-list">My Reservations</a></li>
+                <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                <li><a class="submenu" href="@Html.GetFullSitePath()/home.aspx" target="_blank">Make Points Reservations</a></li>
+                <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                <li><a class="submenu" href="@Html.GetFullSitePath()/home.aspx?srch=bt">Make Bonus Time Reservations</a></li>
+                <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                <li><a class="submenu" href="@Html.GetParentSitePath()/owner/ReservationReminder.aspx">Reservation Reminder</a></li>
+                <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                <li><a class="submenu" href="@Html.GetParentSitePath()/owner/calcPoints.aspx">Calculate Points</a></li>
+                <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                }
+                <li><a class="submenu" href="@Html.GetParentSitePath()/owner/vacationWeekCal.aspx">Vacation Week Calendar</a></li>
+                <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+                <li><a class="submenu" href="@Html.GetFullSitePath()/our-resorts">Our Resorts</a></li>
+                <li><img width="183" height="11" alt="" src="@Html.GetFullSitePath()/Content/Images/subnavDiv.gif" border="0"></li>
+            </ul>
+
+            @if (@Model.VacationClubOrSamplerOwner)
+            {
+                @Html.Action("GetPartialView", "ResortLocator")
+            }
+        }
+    </div>
+
+</div>

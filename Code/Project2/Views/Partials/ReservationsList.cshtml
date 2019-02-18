@@ -1,0 +1,168 @@
+﻿@model BGModern.Models.ReservationListModel
+<div class="col-lg-12 col-xs-12" id="pnlResList" style="padding-left: 0px;">
+    @if (@Model.ErrorText != null && @Model.ErrorText != "")
+    {
+        <img id="imgAlert" src="@Html.GetFullSitePath()/Content/Images/alert.gif" alt="" />
+        <span id="lblErrors">@Html.Raw(@Model.ErrorText)</span>
+    }
+    @*<asp:Panel runat="server" ID="pnlResList">*@
+        @*<%--Begin FUTURE Reservations --%>*@
+    <table class="col-lg-12 col-xs-12" id="rptPendingReservations" style="padding:0; border-collapse:separate; border-spacing:1px; border-color:white">
+        <thead>
+            <tr>
+                <td colspan="8">
+                    <h2>Future Reservations</h2>
+                </td>
+            </tr>
+            <tr style="font-size: 9px; background-color: #333333; padding: 3px;">
+                <th class="resortDataw" style="text-align: center; padding: 3px;">Conf.<br />Number</th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF">
+                    Resort
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Check-<br />In
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Check-<br />Out
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px; ">
+                    Villa Size
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Type
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Points
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    <a href="#" style="color: #ffffff; text-decoration: underline" onclick="newWin = window.open('@Html.GetParentSitePath()/Owner/PPP_Popup.aspx?ID=490', 'newWin3', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=550px,height=650px,left=30,top=30'); newWin.focus(); return false;">PPP Status</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int x = 0;}
+
+            @if(@Model.PendingReservations != null)
+            {
+                foreach (var datavalue in Model.PendingReservations)
+                {
+                    x++;
+                    string rowColor;
+                    if (x % 2 == 0)
+                    { rowColor = "#efefef;"; }
+                    else
+                    { rowColor = "#cfcfcf"; }
+
+                    <tr style="font-size: 11px; background-color: @rowColor; color: Black; padding: 3px;" class="resDetail">
+                        <td align="center"><a href="@Html.GetFullSitePath()/reservation-detail?reservationNo=@datavalue.ReservationNumber&amp;resortNo=@datavalue.ResortNo&amp;type=Future" style="color: black">@datavalue.ReservationNumber</a></td>
+                        <td style="padding: 3px;" align="left">@datavalue.ResortName</td>
+                        <td style="padding: 3px;" align="center">@string.Format("{0:MM/dd/yyyy}", datavalue.CheckInDate)</td>
+                        <td style="padding: 3px;" align="center">@string.Format("{0:MM/dd/yyyy}", datavalue.CheckOutDate)</td>
+                        <td style="padding: 3px;" align="left">@datavalue.VillaType</td>
+                        <td style="padding: 3px;" align="center">@datavalue.ReservationType</td>
+                        <td style="padding: 3px;" align="center">@String.Format("{0:#,###}", datavalue.Points.Trim())</td>
+                       @if (@datavalue.PPPStatus.ToUpper() == "BUY NOW!")
+                       {
+                        <td align="center" style="color: Black; padding: 3px;">@Html.ActionLink(@datavalue.PPPStatus, "ViewPPP", new { reservationNo = @datavalue.ReservationNumber, resortNo = @datavalue.ResortNo }, new { @id = "lnkReservationNumber", @Style = "color: Green;" })</td>
+                       }
+                       else if (@datavalue.PPPStatus == "-")
+                       {
+                            <td align="center" style="color: Black; padding: 3px;"></td>
+                        }
+                        else
+                        {
+                            <td align="center" style="color: Black; padding: 3px;">@datavalue.PPPStatus</td>
+                        }
+                        
+                       </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td valign="middle" align="center" bgcolor="#333333" colspan="9" style="padding: 3px;"></td>
+            </tr>
+        </tfoot>
+    </table>
+    <br />
+    <br />
+    <label id="lblMessages2"> </label>
+    @*So far I can't find anything that this validates*@
+    <table id="tblError" border="0" cellpadding="0" cellspacing="0" class="textRed" style="display:none;">
+        <tr>
+            <td align="right" style="width: 50px;" valign="top">
+                <img id="imgError" src="@Html.GetFullSitePath()/Content/Images/alert.gif" alt="" />
+            </td>
+            <td align="left" class="textRed" style="width: 447px;">
+                @Html.ValidationSummary()
+                @*<asp:ValidationSummary ID="lstErrors" CssClass="textRed" DisplayMode="BulletList"
+                    ForeColor="red" ShowSummary="true" />*@
+            </td>
+        </tr>
+    </table>
+    <br />
+
+    <label id="lblPastErr"> </label>
+    <table class="col-lg-12 col-xs-12" id="rptPastReservations" style="padding: 0; border-collapse:separate; border-spacing:1px; border-color:white">
+        <thead>
+            <tr>
+                <td colspan="8">
+                    <h2>Past Reservations</h2>
+                </td>
+            </tr>
+            <tr style="font-size: 9px; background-color: #333333; padding: 3px;">
+                <th class="resortDataw" style="text-align: center; padding: 3px;">Conf.<br />Number</th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF">
+                    Resort
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Check-<br />In
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Check-<br />Out
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px; ">
+                    Villa Size
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Type
+                </th>
+                <th class="resortDataw" style="text-align: center; color:#FFFFFF; padding: 3px;">
+                    Points
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int y = 0;}
+
+                @if (@Model.PastReservations != null)
+                {
+                    foreach (var datavalue in Model.PastReservations)
+                    {
+                        y++;
+                        string rowColor;
+                        if (y % 2 == 0)
+                        { rowColor = "#efefef;"; }
+                        else
+                        { rowColor = "#cfcfcf"; }
+
+                    <tr style="font-size: 11px; background-color: @rowColor; color: Black; padding: 3px;" class="resDetail">
+                        <td align="center"><a href="@Html.GetFullSitePath()/reservation-detail?reservationNo=@datavalue.ReservationNumber&amp;resortNo=@datavalue.ResortNo&amp;type=Past" style="color: black">@datavalue.ReservationNumber</a></td>
+                        <td style="padding: 3px;" align="left">@datavalue.ResortName</td>
+                        <td style="padding: 3px;" align="center">@string.Format("{0:MM/dd/yyyy}", datavalue.CheckInDate)</td>
+                        <td style="padding: 3px;" align="center">@string.Format("{0:MM/dd/yyyy}", datavalue.CheckOutDate)</td>
+                        <td style="padding: 3px;" align="left">@datavalue.VillaType</td>
+                        <td style="padding: 3px;" align="center">@datavalue.ReservationType</td>
+                        <td style="padding: 3px;" align="center">@String.Format("{0:#,###}", datavalue.Points.Trim())</td>
+                    </tr>
+                }
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td valign="middle" align="center" bgcolor="#333333" colspan="9" style="padding: 3px;"></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+

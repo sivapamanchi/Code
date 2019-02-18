@@ -1,0 +1,132 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using BGSitecore.Components;
+@using BGSitecore.Utils;
+
+@using Sitecore.Mvc.Configuration
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<BonusTimeReservation>
+
+@{
+    BlueGreenContext bgContext = new BlueGreenContext();
+    string ownerName = bgContext.GetOwnerFullname();
+    int maxChars = Int32.Parse(Sitecore.Configuration.Settings.GetSetting("MaxCharsInSpecialRequests"));
+    int maxRows = Int32.Parse(Sitecore.Configuration.Settings.GetSetting("MaxRowsInSpecialRequests"));
+    ReservationParameters reservationContext = ReservationUtils.GetContextReservation();
+    if (reservationContext == null)
+    {
+        ReservationUtils.HandelMissingReservationContext();
+    }
+
+    string doubleRate = ResortUtils.CheckDoubleRate(reservationContext.ResortId, reservationContext.ReservationType, reservationContext.Duration);
+
+}
+
+@using (Html.BeginRouteForm(MvcSettings.SitecoreRouteName, FormMethod.Post, new { id = "form-submit-ppp" }))
+{
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary() 
+
+    @Html.Sitecore().FormHandler("Reservation", "BonusTimeReservationSubmit")
+
+    @Html.Raw(doubleRate);
+
+    <div class="col-border col-border-default">
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <p class="callout">@Html.Raw(@FormatUtils.FormatFancyAmount(reservationContext.DailyPrice))</p>  
+                <p>@Editable(Model, x => x.DailyRateLabel)</p>
+            </div>
+            <div class="col-xs-12 col-md-4">
+                <p class="callout">@Html.Raw(@FormatUtils.FormatFancyAmount(reservationContext.TaxRate))</p> 
+                <p>@Editable(Model, x => x.LocalItemPerDayLabel)</p>
+            </div>
+
+            <div class="col-xs-12 col-md-4">
+                <p class="callout text-dark">@Html.Raw(@FormatUtils.FormatFancyAmount(reservationContext.BT_TotalCost.ToString()))</p> 
+                <p>@Editable(Model, x => x.TotalPaymentLabel)</p>
+            </div>
+        </div><!-- .row -->
+    </div><!-- .col-border -->
+
+    @Html.Sitecore().Placeholder("resortdetailsummary")
+
+
+    <hr>
+
+    <h2 class="h2 first-word" id="reservation-information">@Editable(Model, x => x.ReservationTitleLabel)<small> (<strong>@Editable(Model, x => x.OwnerLabel)</strong> @ownerName)</small></h2>
+
+    <div class="row">
+
+        @Html.Sitecore().Placeholder("guestdetailscontent")
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label class="control-label"><strong>@Editable(Model, x => x.SpecialRequestLabel)</strong>****</label>
+                @Html.TextAreaFor(m => m.text_SpecialRequests, new { @class = "form-control", @rows= maxRows, maxlength = maxChars })
+                <div class="help-block">@Editable(Model, x => x.SpecialRequestInstruction)</div>
+            </div><!-- .form-group -->          
+            <hr>            
+            <div class="" id="jumpto-contact-information">
+                <h2 class="h2 billing-information first-word">@Editable(Model, x => x.BillingInformationTitle)</h2>
+                @Html.Sitecore().Placeholder("addressdetailcontent")
+            </div>
+
+            
+
+            <h2 class="h2 payment-information first-word">@Editable(Model, x => x.PaymentInformationTitle)</h2>
+
+            @Html.Sitecore().Placeholder("creditcardcontent")
+
+
+            <p>@Editable(Model, x => x.PrivacyPolicymessage)</p>
+
+
+            <div class="row">
+                <div class="col-xs-12">
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-3">
+                            <div class="col-border col-border-default">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <p class="callout text-dark">@Html.Raw(@FormatUtils.FormatFancyAmount(reservationContext.BT_TotalCost.ToString()))</p>   
+                                        <p>@Editable(Model, x => x.TotalPaymentLabel)</p>
+                                    </div>
+                                </div><!-- .row -->
+                            </div><!-- .col-border -->
+                        </div>
+                    </div><!-- .row -->
+
+                    <div class="form-group form-group-small">
+                        <div class="checkbox">
+                            <span class="required"></span><label class="control-label"><input type="checkbox" name="confirm_toc" id="confirm_toc" value="1">@Editable(Model, x => x.TermsAndConditionsMessage)</label>
+                        </div><!-- .checkbox -->
+                    </div>
+
+                    <div class="collapse" id="confirm-toc-alert">
+                        <div class="alert alert-warning" role="alert">
+                            <p>@Editable(Model, x => x.TermsAndConditionsAlert)</p>
+                        </div><!-- .alert -->
+                    </div>
+
+                    <div class="form-group">
+                        <a href="#" class="btn btn-primary check-toc" value="action:usecreditcard" name="btnSubmit">@Editable(Model, x => x.ConfirmReservationButton)</a>
+
+                    </div><!-- .form-group -->
+
+                    <p>@Editable(Model, x => x.FooterMessage)</p>
+
+                    <p><span class="required"></span> @Editable(Model, x => x.RequiredLabel)</p>
+                    <div class="legal small">
+                        @Editable(Model, x => x.Footnote)
+                    </div><!-- .legal -->
+
+                </div>
+
+            </div><!-- .row -->
+        </div>
+    </div>
+}

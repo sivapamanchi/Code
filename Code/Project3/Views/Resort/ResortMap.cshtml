@@ -1,0 +1,35 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ResortMap>
+
+@{
+
+}
+@if (Model != null)
+{
+ 
+        <div class="panzoom-wrapper">
+            <div class="panzoom-parent">
+                <div class="panzoom">
+                    <p>@Html.Raw(ImageUtils.BuildImageTag(Model, Model.RemoteImageUrl))</p>
+                </div><!-- .panzoom -->
+            </div><!-- .panzoom-parent -->
+
+    @*TODO Fix zoom buttons for the image*@
+            <div class="panzoom-controls panzoom-controls-vertical">
+                <div class="panzoom-buttons panzoom-zoom">
+                    <button class="btn btn-secondary zoom-in" tabindex="-1"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-secondary zoom-out" tabindex="-1"><i class="fa fa-minus"></i></button>
+                </div><!-- .panzoom-buttons -->
+                <div class="panzoom-buttons panzoom-reset">
+                    <button class="btn btn-secondary zoom-reset" tabindex="-1"><i class="fa fa-undo"></i></button>
+                </div><!-- .panzoom-buttons -->
+            </div><!-- .panzoom-control -->
+
+        </div><!-- .panzoom-wrapper -->
+  
+}

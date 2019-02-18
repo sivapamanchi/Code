@@ -1,0 +1,146 @@
+﻿@using BGSitecore.Models.Reward
+@using BGSitecore.Components;
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Grid>
+
+@{
+    var gridHeaderArray = Model.GridHeaders != null ? Model.GridHeaders.GetColumnList() : new string[0];
+    var ownerArvact = ""; var EncoreOWnerId = 0;
+    string defaultCheckInDate = DateTime.Now.AddDays(1).ToString("MM/dd/yyyy");
+    string defaultCheckOutDate = Convert.ToDateTime(defaultCheckInDate).AddDays(4).ToString("MM/dd/yyyy");
+
+    BlueGreenContext bgContext = new BlueGreenContext();
+    if (bgContext != null && bgContext.bxgOwner != null && bgContext.bxgOwner.EncoreBenefits != null)
+    {
+        ownerArvact = bgContext.bxgOwner.Arvact;
+        EncoreOWnerId = bgContext.bxgOwner.EncoreBenefits.EncoreOwnerID;
+    }
+}
+
+@if (Model.GridRowsData != null && Model.GridRowsData.Count() > 0)
+{
+    <table class="table-collapse table-striped">
+        <thead>
+            <tr>
+                @foreach (var column in gridHeaderArray)
+                {
+                    if (gridHeaderArray.First() == column)
+                    {
+                        <th>@column</th>
+                    }
+                    else
+                    {
+                        <th class="text-right">@column</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (GridRowData row in Model.GridRowsData)
+            {
+                string isHidden = row.IsMoreInfo ? "" : "hidden";
+                var defaultDisableAttr = row.QuantityColumnRequired ? "disabled" : "";
+                var defaultgreyOutClass = row.QuantityColumnRequired ? "btn-secondary" : "btn-primary";
+                <tr>
+                    <td>
+                        <strong class="details">@Editable(row, x => x.ItemTitle)</strong>
+                        @if (!string.IsNullOrEmpty(row.ItemDesc))
+                        {
+                            <span class="sub-details" style="text-transform:none;">@Editable(row, x => x.ItemDesc)</span>
+                        }
+                    </td>
+                    <td class="text-right" data-label="Rewards">@row.ItemValue<span class="sr-only"> Rewards</span></td>
+                    @if (row.QuantityColumnRequired)
+                    {
+
+                        <td class="text-right" data-label="Quantity">
+                            <input name="quantity" class="form-control input-spinner js-maxlengthCheck js-quantity" style="min-width:104px !important;" role="spinbutton" type="number" data-min-value="0" data-max-value="999" value="0" autocomplete="off">
+                        </td>
+                    }
+                    @if (row.IsMoreInfo)
+                    {
+                        <td class="text-right">
+                            <a href="#@row.UniqueId" class="collapsed" data-toggle="collapse" aria-expanded="false" aria-controls="@row.UniqueId">
+                                @row.MoreInfoTitle
+                                <i class="fa fa-caret-down rotate-text" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-right">
+                            @*<a href="#" class="btn btn-sm btn-primary btn-block">Add to Cart</a>*@
+                            <button href="#" @defaultDisableAttr
+                                    data-OwnerArvact="@ownerArvact" data-EncoreOwnerId="@EncoreOWnerId" data-GiftCardItemId="@row.GiftCardId"
+                                    data-ItemName="@row.ItemTitle" data-UnitPrice="@row.ItemValue" data-isMore="@row.IsMoreInfo" data-transtype="@row.TransactionType"
+                                    class="btn btn-sm @defaultgreyOutClass btn-block js-AddToCartClick">
+                                @Sitecore.Globalization.Translate.Text("RR_AddToCart")
+                            </button>
+                        </td>
+
+                    }
+
+                </tr>
+                if (row.IsMoreInfo)
+                {
+                    <tr class="@isHidden">
+                        <td colspan="6" class="hidden-print flush">
+                            <div class="collapse no-form-focus" id="@row.UniqueId">
+
+                                <div class="panel panel-narrow panel-default margin-bottom-xs-0">
+                                    <div class="panel-body">
+                                        <div class="alert alert-warning margin-bottom-xs-15" role="alert">
+                                            <p>@row.ItemAlertInfo</p>
+                                        </div><!-- .alert -->
+                                    </div>
+                                    <table class="table-collapse">
+                                        <thead>
+                                            <tr>
+                                                <th>Check-in &ndash; Check-out</th>
+                                                <th class="text-right">Bedrooms</th>
+                                                <th class="text-right">Adults</th>
+                                                <th class="text-right">Children</th>
+                                                <th class="text-right">&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <label class="hidden-md hidden-lg"><strong>Check-in &ndash; Check-out</strong></label>
+                                                    <div class="input-group input-daterange">
+                                                        <input type="date" name="rewards-check-in" id="CheckInDate_@row.GiftCardId" class="form-control input-sm input-datepicker-check-in dropdown-datepicker" style="max-width:128px !important;" default-value="@defaultCheckInDate" value="@defaultCheckInDate" placeholder="@defaultCheckInDate" autocomplete="off">
+                                                        <span class="input-group-addon">&ndash;</span>
+                                                        <input type="date" name="rewards-check-out" id="CheckOutDate_@row.GiftCardId" class="form-control input-sm datepicker-align-right input-datepicker-check-out dropdown-datepicker" style="max-width:128px !important;" default-value="@defaultCheckOutDate"  value="@defaultCheckOutDate" placeholder="@defaultCheckOutDate" autocomplete="off">
+                                                    </div>
+                                                </td>
+                                                <td class="text-right" data-label="# of Bedrooms">
+                                                    <input type="number" id="NumOfBedrooms" name="bedrooms" class="form-control input-sm input-spinner js-maxlengthCheck js-ignore" style="min-width:104px !important;" value="1" data-min-value="1" data-max-value="4">
+                                                </td>
+                                                <td class="text-right" data-label="# of Adults">
+                                                    <input type="number" id="NumOfAdults" name="adults" class="form-control input-sm input-spinner js-maxlengthCheck js-ignore" style="min-width:104px !important;" value="2" data-min-value="1" data-max-value="10">
+                                                </td>
+                                                <td class="text-right" data-label="# of Children">
+                                                    <input type="number" id="NumOfchildren" name="children" class="form-control input-sm input-spinner js-maxlengthCheck js-ignore" style="min-width:104px !important;" value="0" data-min-value="0" data-max-value="10">
+                                                </td>
+                                                <td class="text-right">
+                                                    <button href="#"
+                                                            data-OwnerArvact="@ownerArvact" data-EncoreOwnerId="@EncoreOWnerId" data-GiftCardItemId="@row.GiftCardId"
+                                                            data-ItemName="@row.ItemTitle" data-UnitPrice="@row.ItemValue" data-isMore="@row.IsMoreInfo" data-transtype="@row.TransactionType"
+                                                            class="btn btn-sm btn-primary btn-block js-AddToCartClick">
+                                                        @Sitecore.Globalization.Translate.Text("RR_AddToCart")
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- .panel -->
+
+                            </div><!-- .collapse -->
+                        </td>
+                    </tr>
+                }
+
+            }
+        </tbody>
+    </table>
+}

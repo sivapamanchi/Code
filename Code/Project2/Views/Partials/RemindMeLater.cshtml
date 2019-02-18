@@ -1,0 +1,17 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@using (Html.BeginUmbracoForm("RemindMeClick", "RemindMeLater"))
+{
+<div id="updpanelRemind">
+    <div id="pnlRemind">
+        <table width="450" border="0" cellpadding="10" cellspacing="0">
+            <tr>
+                <td align="center">
+                    @Html.ActionLink("Remind Me Later", "RemindMeLaterClick","", new { @Class = "tpRenew-RemindMeLater", @id = "RemindMeLater" })
+                    @Html.ActionLink("Don't Remind Me", "DontRemindMeClick","", new { @Class = "tpRenew-DontRemindMe", @id = "DontRemindMe" })
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<br clear="all" />
+}

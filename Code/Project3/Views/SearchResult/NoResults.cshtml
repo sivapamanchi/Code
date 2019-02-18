@@ -1,0 +1,88 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using BGSitecore.Utils
+
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+}
+
+<div class="search-results js-search-results js-searchresultdisplay">
+    @if (Model.ShowNotAllResortUsed)
+    {
+        <div class="alert alert-success js-updateSearchQuery" role="alert" data-checkin-date='@Model.searchParameters.CheckInDate.ToString("MM/dd/yyyy")' data-checkout-date='@Model.searchParameters.CheckOutDate.ToString("MM/dd/yyyy")' data-duration="@Model.searchParameters.Duration">
+            <p>
+                @Html.Raw(Model.NotAllResortUsedMessage)
+            </p>
+        </div>
+    }
+    <!-- NOTE: Toggle "hidden" class to activate loading overlay -->
+
+    <div class="hidden loading js-loadingsearchresult" id="loading-overlay" aria-hidden="true"><div class="loading-icon"><i class="fa fa-refresh fa-spin"></i></div></div>
+    <h1>No matching resorts found</h1>
+
+    <div class="alert alert-info" role="alert">
+        <p>
+            @if (Model.ShowInternalError)
+            {
+                @Html.Raw(Model.NoResultFoundmessage);
+                Sitecore.Diagnostics.Log.Error("Model.ShowInternalError is triggered", this);
+            }
+            else if (Model.ShowBookingDurationError)
+            {
+                @Html.Raw(Model.BookingDurationError)
+            }
+            else if (Model.ShowCheckinMoreThen48BT)
+            {
+                @Html.Raw(Model.CheckinBetween48)
+            }
+            else if (Model.ShowCheckinOutsideSearchWindowBT)
+            {
+                @Html.Raw(Model.CheckinOutsideSearchWindowBT)
+            }
+            else if (Model.ShowCheckinOutsideSearchWindowPoints)
+            {
+                @Html.Raw(Model.CheckinOutsideSearchWindowPoints)
+            }
+            else if (Model.ShowSampler2NightStayMessage)
+            {
+                @Html.Raw(Model.Sampler2NightStayMessage)
+            }
+            else if (Model.ShowSummerHolidayError)
+            {
+                @Html.Raw(Model.SamplerSummerError)
+            }
+            else if (Model.ShowSamplerHolidayError)
+            {
+                @Html.Raw(Model.SamplerHolidayError)
+            }
+            else if (Model.resortList == null)
+            {
+                @Html.Raw(Model.NoResultFoundmessage);
+            }
+            else if (Model.resortList.Count() <= 0)
+            {
+                @Html.Raw(Model.NoResultFoundmessage);
+            }
+        </p>
+    </div>
+    @if (DebugUtils.IsDebug())
+    {
+        <div class="alert alert-danger" role="alert">
+            <p>
+                <h3>@Html.Raw(Model.InternalErrorMessage)</h3>
+                @Html.Raw(Model.RawServiceError)
+            </p>
+        </div>
+    }
+    @if (Model.ShowSearchBar)
+    {
+        <div id="tabs-content">
+            @Html.Partial("/Views/SearchResult/SearchParameters.cshtml", Model)
+
+        </div>
+    }
+</div><!-- .search-results -->

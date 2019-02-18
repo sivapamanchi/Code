@@ -1,0 +1,29 @@
+﻿<script type="text/javascript" src="~/Scripts/ResortLocator.js"></script>
+
+<script type="text/javascript">
+    $rl.siteRoot = "@Html.GetFullSitePath()";
+    $rl.destinations = @Html.Raw(Model.DestinationMap);
+    jQuery(document).ready(function () {
+        jQuery("#resortLocationList").on("change", $rl.populateResortList);
+        jQuery("#btnExploreResort").on("click", $rl.selectResort);
+        $rl.populateResortList();
+    });
+</script>
+
+<link href="@Html.GetFullSitePath()/css/resortLocator.css" rel="stylesheet" rev="stylesheet">
+
+<div style="margin-top: 11px;" id="resortLocator">
+    <h4>Resort Locator</h4>
+    <img id="divider" src="@Html.GetFullSitePath()/Content/Images/ResortLocatorDivider.png" />
+    <select id="resortLocationList">
+        <option>Choose your destination</option>
+        @foreach (string city in Model.Cities)
+        {
+            <option>@city</option>
+        }
+    </select>
+
+    <select id="resortList" ></select>
+
+    <button id="btnExploreResort">Explore</button>
+</div>

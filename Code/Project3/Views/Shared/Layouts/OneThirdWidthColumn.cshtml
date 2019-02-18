@@ -1,0 +1,11 @@
+﻿@using Sitecore.Mvc
+@using BGSitecore.Extensions
+
+<div class="col-md-4">
+    @if (Sitecore.Context.PageMode.IsExperienceEditorEditing)
+    {
+        <p>[1/3 Width Column]</p>
+    }
+    @Html.Sitecore().DynamicPlaceholder("flex-content")
+
+</div>

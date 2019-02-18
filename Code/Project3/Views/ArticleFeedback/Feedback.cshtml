@@ -1,0 +1,47 @@
+﻿@using BGSitecore.Models
+@using System.Web.Mvc.Ajax
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ArticleRating>
+
+<div class="container">
+    <div class="form-group">
+        <hr />
+        @using (Ajax.BeginForm("Feedback", "ArticleFeedback", new AjaxOptions { HttpMethod = "POST", OnSuccess = "articles.OnArticleFeedbackOnSuccess", OnFailure = "articles.OnArticleFeedbackOnFailure" }, new { id = "feedbackForm", name = "feedbackForm" }))
+        {
+            @Html.HiddenFor(m => m.ThumbsRating, new { @class = "js-clickarticle-rating" })
+            @Html.HiddenFor(m => m.FeedbackReference, new { @class = "js-clickarticle-FeedbackReference" })
+            <div class="form-group table-bordered">
+                <div class="form-group js-clickarticle-display">
+                    <div class="row row-collapse">
+                        <div class="col-xs-12 col-md-12 col-sm-12">
+                            <h2><strong class="control-label">@Editable(Model, x => x.RatingRequestDetails)</strong></h2>
+                        </div>
+                    </div>
+                    <div class="form-fields">
+                        <div class="row row-collapse">
+                            <div class="col-xs-9 col-md-11 col-lg-11">
+                                <div class="form-group is-required">
+                                    <label class="sr-only">@Editable(Model, x => x.GrayedOutFeedbackText)</label>
+                                    @Html.TextBoxFor(m => m.ReviewDetails, new { @name = "js-clickarticle-review", @id = "js-clickarticle-review", @class = "form-control js-clickarticle-review alphanumeric-Only", @autocomplete = "off", @maxlength = Editable(Model, x => x.RatingCharacterLimit), @placeholder = Editable(Model, x => x.GrayedOutFeedbackText) })
+                                </div>
+                            </div>
+                            <div class="col-xs-3 col-md-1 col-lg-1">
+                                <div class="input-group">
+                                    <a role="button" class="js-clickarticle-thumsup"><span title="Thumbs up" class="fa fa-2x fa-fw fa-thumbs-up"></span><span class="sr-only">Thumbs Up</span></a>
+                                    <a role="button" class="js-clickarticle-thumsdown"><span title="Thumbs down" class="fa fa-2x fa-fw fa-thumbs-down"></span><span class="sr-only">Thumbs Down</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- .form-group -->
+                <div class="alert alert-success text-center js-clickarticle-success collapse" role="alert">
+                    <p>@Html.Raw(Model.RatingSuccessMessage)</p>
+                </div>
+                <div class="alert alert-danger text-center js-clickarticle-failed collapse" role="alert">
+                    <p><strong>Error while saving the data, please Try later</strong></p>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

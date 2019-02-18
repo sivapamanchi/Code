@@ -1,0 +1,199 @@
+﻿@using BGSitecore.Models
+@using BGSitecore.Components
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<ContactInfo>
+
+@{
+
+    BlueGreenContext bgContext = new BlueGreenContext();
+
+    if (!bgContext.IsAuthenticated)
+    {
+        Response.Redirect(UrlMapper.Map(Model.SiteSettings.SignInPage.Url));
+    }
+    else if (bgContext != null && bgContext.bxgOwner != null)
+    {
+        Model.Address_OwnerNumber = bgContext.bxgOwner.Arvact;
+        Model.Address_FirstName = bgContext.bxgOwner.firstName;
+        Model.Address_LastName = bgContext.bxgOwner.lastName;
+        Model.Address_AddressLine1 = bgContext.bxgOwner.Address1;
+        Model.Address_AddressLine2 = bgContext.bxgOwner.Address2;
+        Model.Address_AddressLine3 = bgContext.bxgOwner.Address3;
+        if (bgContext.bxgOwner.CountryCode.Equals("us", StringComparison.CurrentCultureIgnoreCase))
+        {
+            if (bgContext.bxgOwner.Address1.Length > 30 && string.IsNullOrEmpty(bgContext.bxgOwner.Address2))
+            {
+                Model.Address_AddressLine1 = bgContext.bxgOwner.Address1.Substring(0, 30);
+                Model.Address_AddressLine2 = bgContext.bxgOwner.Address1.Substring(30, (bgContext.bxgOwner.Address1.Length - 30) >= 30 ? 30 : bgContext.bxgOwner.Address1.Length - 30);
+            }
+        }
+        else
+        {
+            if (bgContext.bxgOwner.Address1.Length > 30 && bgContext.bxgOwner.Address1.Length < 60 && string.IsNullOrEmpty(bgContext.bxgOwner.Address2))
+            {
+                Model.Address_AddressLine1 = bgContext.bxgOwner.Address1.Substring(0, 30);
+                Model.Address_AddressLine2 = bgContext.bxgOwner.Address1.Substring(30, bgContext.bxgOwner.Address1.Length - 30);
+            }
+            else if (bgContext.bxgOwner.Address1.Length > 60 && string.IsNullOrEmpty(bgContext.bxgOwner.Address2) && string.IsNullOrEmpty(bgContext.bxgOwner.Address3))
+            {
+                Model.Address_AddressLine1 = bgContext.bxgOwner.Address1.Substring(0, 30);
+                Model.Address_AddressLine2 = bgContext.bxgOwner.Address1.Substring(30, 30);
+                Model.Address_AddressLine3 = bgContext.bxgOwner.Address1.Substring(60, bgContext.bxgOwner.Address1.Length - 60);
+            }
+        }
+
+        Model.Address_City = bgContext.bxgOwner.City;
+        Model.Address_State = bgContext.bxgOwner.StateAbr;
+        Model.Address_ZipCode = bgContext.bxgOwner.PostalCode;
+        Model.Address_EmailAddress = bgContext.bxgOwner.Email;
+        Model.Address_HomePhone = bgContext.bxgOwner.HomePhone;
+        Model.Address_AlternatePhoneNumber = bgContext.bxgOwner.AlternatePhone;
+        Model.Address_Country = bgContext.bxgOwner.CountryCode;
+        if (!IsPost)
+        {
+            Session["ChangedCountry"] = null;
+        }
+    }
+    var countryList = Country.BuildCountryDropdown();
+
+    if (!string.IsNullOrEmpty(Model.Address_Country))
+    {
+        countryList.ForEach(x => x.Selected = false);
+        if (IsPost && Session["ChangedCountry"] != null)
+        {
+            countryList.ForEach(x => { if (x.Value.ToLower() == Session["ChangedCountry"].ToString().ToLower()) { x.Selected = true; } });
+        }
+        else
+        {
+            countryList.ForEach(x => { if (x.Value.ToLower() == Model.Address_Country.ToLower()) { x.Selected = true; } });
+        }
+    }
+
+    var topCountries = new[] { "US", "CA", "GB" };
+    var filteredTopCountries = countryList.Where(o => topCountries.Contains(o.Value.ToUpper())).OrderBy(x => x.Value.ToUpper() == topCountries[0]).OrderBy(x => x.Value.ToUpper() == topCountries[1]).OrderBy(x => x.Value.ToUpper() == topCountries[2]);
+    var remainingCountries = countryList.Where(o => !topCountries.Contains(o.Value.ToUpper()));
+    var isSuggestion = ViewData["SuggestedAddress"] != null ? "suggestdisable" : "suggestenable";
+
+
+}
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group  ">
+            <label class="control-label"><strong>@Model.OwnerNumberLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_OwnerNumber, new { @class = "form-control", @disabled = "disabled" , id = "profile-ownerNumber" , name = "profile-ownerNumber" })
+            @Html.HiddenFor(m => m.Address_OwnerNumber, new { @Id = "Address_OwnerNumber_disabled" })
+
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group ">
+            <label class="control-label"><strong>@Model.FirstNameLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_FirstName, new { @class = "form-control", @disabled = "disabled", id = "profile-FirstName", name = "profile-FirstName" })
+            @Html.HiddenFor(m => m.Address_FirstName, new { @id = "Address_FirstName_disabled" })
+        </div><!-- .form-group -->
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group">
+            <label class="control-label"><strong>@Model.LastNameLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_LastName, new { @class = "form-control", @disabled = "disabled", id = "profile-LastName", name = "profile-LastName" })
+            @Html.HiddenFor(m => m.Address_LastName, new { @id = "Address_LastName_disabled" })
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group is-required">
+            <label class="control-label"><strong>@Model.CountryLabel</strong></label>
+            <!-- TODO get list of Country-->
+            <select name="Address_Country" id="profile-country" class="form-control selectpicker @(isSuggestion) " data-live-search="true">
+                @foreach (var country in filteredTopCountries)
+                {
+                    <option value="@country.Value" selected="@country.Selected">@country.Text</option>
+                }
+                <option data-divider="true" disabled>&nbsp;</option>
+                @foreach (var country in remainingCountries)
+                {
+                    <option value="@country.Value" selected="@country.Selected">@country.Text</option>
+                }
+            </select>
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+ 
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group is-required">
+            <label class="control-label"><strong>@Model.AddressLine1Label</strong></label>
+            @Html.TextBoxFor(m => m.Address_AddressLine1, new { @class = "form-control "+ isSuggestion, @isSuggestion,  maxlength = "30", id = "profile-AddressLine1", name = "profile-AddressLine1" })
+            
+        
+        <div class="help-block">Enter only your street address</div>
+        </div><!-- .form-group -->
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group ">
+            <label class="control-label"><strong>@Model.AddressLine2Label</strong></label>
+            @Html.TextBoxFor(m => m.Address_AddressLine2, new { @class = "form-control "+ isSuggestion, maxlength = "30", id = "profile-AddressLine2", name = "profile-AddressLine2" })
+            <div class="help-block">If applicable enter your apartment, unit or building number</div>
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+
+<div class="row non-us">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group">
+            <label class="control-label"><strong>@Model.AddressLine3Label</strong></label>
+            @Html.TextBoxFor(m => m.Address_AddressLine3, new { @class = "form-control " + isSuggestion, maxlength = "30", id = "profile-AddressLine3", name = "profile-AddressLine3" })
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+
+<div class="row only-us">
+    <div class="col-xs-12 col-md-4">
+        <div class="form-group  @(Model.isUS?"is-required":"")">
+            <label class="control-label"><strong>@Model.CityLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_City, new { @class = "form-control " + isSuggestion, id = "profile-City", name = "profile-City", maxlength = "30" })
+        </div><!-- .form-group -->
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <div class="form-group  @(Model.isUS?"is-required":"")">
+            <label class="control-label"><strong>@Model.StateLabel</strong></label>
+            @Html.DropDownListFor(x => x.Address_State, State.BuildProfileStateDropdown(), new { @class = "form-control " + isSuggestion, id = "profile-State", name = "profile-State", data_live_search = "true" })
+        </div><!-- .form-group -->
+    </div>
+    <div class="col-xs-12 col-md-4">
+        <div class="form-group  @(Model.isUS?"is-required":"")">
+            <label class="control-label"><strong>@Model.ZipCodeLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_ZipCode, new { @class = "form-control " + isSuggestion, id = "profile-ZipCode", name = "profile-ZipCode", maxlength = "10" })
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group is-required">
+            <label class="control-label"><strong>@Model.HomePhoneLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_HomePhone, new { @class = "form-control " + isSuggestion, maxlength = "10", id = "profile-HomePhone", name = "profile-HomePhone" })
+        </div><!-- .form-group -->
+    </div>
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group">
+            <label class="control-label"><strong>@Model.AlternatePhoneNumberLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_AlternatePhoneNumber, new { @class = "form-control " + isSuggestion, maxlength = "10", id = "profile-AltPhone", name = "profile-AltPhone" })
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->
+
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        <div class="form-group is-required">
+            <label class="control-label"><strong>@Model.EmailAddressLabel</strong></label>
+            @Html.TextBoxFor(m => m.Address_EmailAddress, new { @class = "form-control " + isSuggestion, maxlength = "50", id = "profile-EmailAddress", name = "profile-EmailAddress" })
+            <div class="help-block">Your email address is also used as your sign in username</div>
+        </div><!-- .form-group -->
+    </div>
+</div><!-- .row -->

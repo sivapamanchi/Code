@@ -1,0 +1,61 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<AverageWeatherList>
+
+@{
+    var showSection = false;
+    if (Model.AverageWeather != null)
+    {
+        foreach (AverageWeather item in Model.AverageWeather)
+        {
+            if (!string.IsNullOrEmpty(item.High) && !string.IsNullOrEmpty(item.Low) && !string.IsNullOrEmpty(item.Precipitation))
+            {
+                showSection = true;
+                break;
+            }
+        }
+    }
+}
+
+@if (showSection)
+{
+    <div class="expandable">
+        <div class="expandable-content expandable-content-md">
+            <table class="table-collapse table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th class="text-right">High</th>
+                        <th class="text-right">Low</th>
+                        <th class="text-right">Precipitation</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (AverageWeather item in Model.AverageWeather)
+                    {
+                        if (!string.IsNullOrEmpty(item.High) && !string.IsNullOrEmpty(item.Low) && !string.IsNullOrEmpty(item.Precipitation))
+                        {
+                            <tr>
+                                <td><strong>@item.Month</strong></td>
+                                <td class="text-right" data-label="High">@item.High° <abbr title="Fahrenheit">F</abbr></td>
+                                <td class="text-right" data-label="Low">@item.Low° <abbr title="Fahrenheit">F</abbr></td>
+                                <td class="text-right" data-label="Precipitation">@item.Precipitation <abbr title="Inches">in</abbr></td>
+                               
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+        </div><!-- .expandable-content -->
+        <a href="#" class="expandable-trigger"><i class="fa fa-plus" aria-hidden="true"></i>More Info</a>
+    </div><!-- .expandable -->
+   
+}
+
+ 

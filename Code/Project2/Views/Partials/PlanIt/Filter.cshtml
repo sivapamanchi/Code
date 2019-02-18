@@ -1,0 +1,39 @@
+﻿<div id="ReservationSearch_filter_noAvailability" class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  style="display: none;">
+    <span class="error">There is no current availability matching your search. You can:</span>
+    <ul>
+        <li>Select an alternate destination</li>
+        <li>Reduce the number of nights</li>
+        <li>Select an alternate month</li>
+    </ul>
+</div>
+
+@*****************************************************************************@
+@* Destination search filter                                                 *@
+@* By resort and unit type                                                   *@
+@*****************************************************************************@
+
+<div id="ReservationSearch_filter" class="col-xs-12 col-sm-12 col-md-5 col-lg-5" style="display: none;">
+    <b>Filter results:</b><br />
+    <div name="filter_resort" class="hiddenTemplate">
+        <div name="resort_heading" class="resortRow">
+            <div><input type="checkbox" /></div>
+            <div><label name="resortName"></label></div>
+        </div>
+
+        <div name="resort_unit" class="unitRow hiddenTemplate">
+            <div><input type="checkbox" /></div>
+            <div><label name="unitTypeName"></label></div>
+        </div>
+    </div>
+</div>
+
+@*****************************************************************************@
+@* Date search filter                                                        *@
+@* By unit type                                                              *@
+@*****************************************************************************@
+
+<div id="ReservationSearch_unitFilter" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-left: 10px;">
+    <label class="hiddenTemplate col-xs-6 col-sm-6 col-md-3 col-lg-3">
+        <input type="checkbox" />
+    </label>
+</div>

@@ -1,0 +1,368 @@
+﻿@model BGModern.Models.ReservationDetailModel
+
+@using (Html.BeginUmbracoForm("GetGuestForm", "ReservationDetails"))
+{
+<div id="pnlresDetail">
+    <br />
+    <br />
+    <div id="showButtonsOnTop" class="row">
+        <div class="tab-content clearfix">
+            <div class="twelve columns">
+                <div class="six columns left" style="float: left">
+                    <a href="myReservations.aspx" id="imgBackLinkButtonTop" onclick="hideResDetail();">
+                        <img src="../Content/Images/backMyReservBtn.gif" border="0" alt="" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <table border="0" class="text" width="100%">
+        <tr>
+            <td align="left" valign="top" width="35%">
+                <table cellspacing="1" cellpadding="2" width="106" bgcolor="#000000" border="0">
+                    <tr>
+                        <td bgcolor="#ffffff">
+                            <a id="imgResort" href="./resortDetail.aspx?ShowAvail=No&amp;ResortID=15"><img src="../MS/ResortImages/HAM_E2_th.jpg" alt="" style="border-width:0px;" /></a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td align="left" valign="top" width="65%">
+                <a id="hlResortName" href="./resortDetail.aspx?ShowAvail=No&amp;ResortID=15">@Model.ResortName</a><br />
+                <span id="lblRAddress">@Model.ResortAddress</span><br />
+                <span id="lblRCityState">@Model.ResortCityState</span><br />
+                <span id="lblRPhone">@Model.ResortPhone</span>
+            </td>
+        </tr>
+    </table>
+    <img src="images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 694px" />
+    <table border="0" class="text">
+        <tr>
+            <td nowrap width="35%">
+                <strong>Confirmation #:</strong>
+            </td>
+            <td align="left" width="65%">
+                <span id="lblConfNum">@Model.ReservationNo</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Date Confirmed:</strong>
+            </td>
+            <td align="left">
+                <span id="lblDtConfirmed">@Model.ConfirmationDate</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Check-In Date:</strong>
+            </td>
+            <td>
+                <span id="lblCheckIn">@Model.CheckIn</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Check-Out Date:</strong>
+            </td>
+            <td>
+                <span id="lblCheckOut">@Model.CheckOut</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Person Checking In<sup id="sup1">(1)</sup>:</strong>
+            </td>
+            <td style="width: 100%">
+                <span id="lblGuestName">@Model.GuestName</span>
+                
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@if (@Model.CanUpdateanUpdate){<input type="submit" name="btnUpdateGoo" value="Edit" id="btnUpdateGoo" style="font-weight:bold;" />}&nbsp;&nbsp;<input type="submit" name="btnCancelGoo" value="Cancel" id="btnCancelGoo" style="font-weight:bold; display:none;" />
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="lblUpdateGooStatus" style="font-weight:bold;"></span>
+            </td>
+        </tr>
+        <tr>
+            <td nowrap="nowrap">
+                <strong></strong>
+            </td>
+            <td valign="top">
+                   <select id="ddlGuestCheckingIn" name="ddlGuestCheckingIn" onchange="this.form.submit();" style="display:none">
+                        @{
+                            foreach (OptionDropDownList.OptionGroupItem guest in Model.GuestList)
+                            {
+                                if (@guest.OptionGroup != "")
+                                {
+                                        <optgroup label="@guest.OptionGroup"><option value="@guest.Value">@guest.Text</option></optgroup>
+                                }
+                                else
+                                {
+                                        <option value="@guest.Value">@guest.Text</option>
+                                }
+                            }
+                        }
+                    </select>
+            </td>
+        </tr>
+        <tr>
+            <td nowrap width="35%" align="left">
+                <font color="red">*</font><b>Number of Guests<sup>(2)</sup>:</b>
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                <select name="ddlOccupancy" id="ddlOccupancy">
+                    @{
+                        if (@Model.Occupancy != null)
+                        {
+                            foreach (int occ in @Model.Occupancy)
+                            { 
+                                <option value="@occ">@occ</option>
+                            }
+                        }   
+                        
+                    }
+                </select>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </td>
+        </tr>
+    </table>
+    <img src="images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 694px" />
+        <div id="pnlNewGuest" style="display: none;">
+            <table style="background-color: #efefef" width="100%" cellspacing="3">
+                <tr>
+                    <td width="35%">
+                        <font color="red">*</font><strong>Guest First Name:</strong>
+                    </td>
+                    <td>
+                        <input name="" type="text" maxlength="20" id="txtGuestFirstName" tabindex="1" size="18" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <font color="red">*</font><b>Guest Last Name:</b>
+                    </td>
+                    <td>
+                        <input name="txtGuestLastName" type="text" maxlength="20" id="txtGuestLastName" tabindex="1" size="18" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Guest Email:</b>
+                    </td>
+                    <td>
+                        <input name="txtGuestEmail" type="text" maxlength="50" id="txtGuestEmail" tabindex="1" style="width:200px;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <font color="red"></font><b>Guest City:</b>
+                    </td>
+                    <td>
+                        <input name="txtGuestCity" type="text" maxlength="20" id="txtGuestCity" tabindex="1" size="18" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <font color="red"></font><b>Guest State:</b>
+                    </td>
+                    <td>
+                        <select name="ddlState" id="ddlState" tabindex="1" style="width:200px;">
+                            @foreach (SelectListItem state in Model.States)
+                            {
+                                <option value="@state.Value">@state.Text</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Guest Phone:</b>
+                    </td>
+                    <td>
+                        <input name="txtGuestPhone" type="text" maxlength="20" id="txtGuestPhone" tabindex="1" size="18" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <font color="red">*</font><b>Relationship:</b>
+                    </td>
+                    <td>
+                        <select name="ddlGuessRelationshipType" id="ddlGuessRelationshipType" tabindex="1" style="width:200px;">
+                            @foreach (String relationshipType in Model.RelationshipTypes)
+                            {
+                                <option value="@relationshipType">@relationshipType</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table border="0" width="100%" class="text">
+            <tr>
+                <td width="35%">
+                    <strong>Villa Size</strong>:
+                </td>
+                <td align="left" width="65%">
+                    <span id="lblVillaSize">@Model.VillaSize</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td align="left">
+                    <strong>Villa Description</strong>:
+                </td>
+                <td align="left">
+                    <span id="lblVillaDescription">@Model.VillaDescription</span>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <strong>Max. Occupancy</strong>:
+                </td>
+                <td align="left">
+                    <span id="lblMacOcc">@Model.MaxOccupancy</span>
+                </td>
+            </tr>
+        </table>
+        <img src="images/reservDotRule.gif" border="0" alt="" />
+        <table border="0" width="100%" class="text">
+            <tr>
+                <td nowrap width="35%" align="left">
+                    <strong>Reservation Type:</strong>
+                </td>
+                <td width="65%" align="left">
+                    <span id="lblResType">@Model.ReservationType</span>
+                </td>
+            </tr>
+            <tr>
+                <td align="left">
+                    <strong>
+                        <span id="lblPayType">Points:</span>
+                    </strong>
+                </td>
+                <td align="left">
+                    <span id="lblPoints">@Model.Points</span>
+                </td>
+            </tr>
+            <tr>
+                <td nowrap width="35%" align="left">
+                    <strong>PPP Status:</strong>
+                </td>
+                <td width="65%" align="left">
+                    <span id="lblPolicyStatus">@Model.PolicyStatus</span>
+                </td>
+            </tr>
+        </table>
+        <img src="images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 694px" />
+        <table border="0" width="100%" class="text">
+            <tr>
+                <td colspan="2">
+                    <span id="lblDesc">@Model.Description</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p id="policy">
+                        <br />
+                        <br />
+                        <span id="lblCancellationPolicy" class="text">
+                            @Model.CancellationPolicy
+                        </span>
+                    <br />
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="myReservations.aspx" id="imgBackLinkBottom">
+                        <img src="images/backMyReservBtn.gif" border="0" alt="" />
+                    </a>
+                </td>
+                <td>
+                    <input type="image" name="imgbtnImageCancel" id="imgbtnImageCancel" src="images/cancelReserv_Btn.gif" onclick="javascript:WebForm_DoPostBackWithOptions(new&#32;WebForm_PostBackOptions(&quot;imgbtnImageCancel&quot;,&#32;&quot;&quot;,&#32;false,&#32;&quot;&quot;,&#32;&quot;reservCancelPts.aspx&quot;,&#32;false,&#32;false))" style="border-color:#000000;border-width:0px;" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+
+                    <div id="detailFoot">
+                        <table cellspacing="0" cellpadding="0" width="497" border="0">
+                            <tr>
+                                <td align="center" colspan="497" style="height: 32px">
+                                    <table cellspacing="0" cellpadding="0" width="100%" border="0">
+                                        <tr>
+                                            <td align="center" width="497" background="images/reservDotRule.gif"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+        <img src="images/reservDotRule.gif" border="0" alt="" style="height: 1px; width: 694px" />
+        <table border="0" width="100%" class="text">
+            <tr>
+                <td colspan="2">
+                    <asp:Label runat="server" ID="lblDesc" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p runat="server" id="policy">
+                        <br />
+                        <br />
+                        <asp:Label ID="lblCancellationPolicy" runat="server" CssClass="text" Text="here"></asp:Label>
+                    </p>
+                    <br />
+                    <br />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="myReservations.aspx" runat="server" id="imgBackLinkBottom" visible="false">
+                        <img src="images/backMyReservBtn.gif" border="0" alt="" />
+                    </a>
+                </td>
+                <td>
+                    <asp:ImageButton ID="imgbtnImageCancel" Visible="false" ImageUrl="images/cancelReserv_Btn.gif"
+                                        runat="server" BorderColor="0" AlternateText="" PostBackUrl="reservCancelPts.aspx" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div runat="server" id="detailFoot">
+                        <table cellspacing="0" cellpadding="0" width="497" border="0">
+                            <tr>
+                                <td align="center" colspan="497" style="height: 32px">
+                                    <table cellspacing="0" cellpadding="0" width="100%" border="0">
+                                        <tr>
+                                            <td align="center" width="497" background="images/reservDotRule.gif"></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <table class="text" cellspacing="1" cellpadding="3" width="300" border="0" runat="server"
+                            id="msgExchange2" visible="False">
+                        <tr>
+                            <td>
+                                <br />
+                                <font size="1">
+                                    *This reservation was deposited with an <a href="#" class="textlink"
+                                                                                onclick="newWin=window.open('HelpwinExchange.aspx','newWin3','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=no,width=220px,height=414px');newWin.focus();return false;">
+                                        exchange
+                                    </a> company.
+                                </font>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+}

@@ -1,0 +1,110 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<LastMinuteAvailability>
+
+@{
+    int maxMonths = 3;
+    var activeMonths = Model.Children.Where(x => ((x.StartDate == DateTime.MinValue && x.EndDate == DateTime.MinValue) || (x.StartDate != DateTime.MinValue && x.EndDate != DateTime.MinValue && x.EndDate >= DateTime.Now && x.StartDate <= DateTime.Now) || (x.StartDate == DateTime.MinValue && x.EndDate >= DateTime.Now) || (x.StartDate != DateTime.MinValue && x.EndDate == DateTime.MinValue && x.StartDate <= DateTime.Now)))
+                                     .Select(monthToBeShown => monthToBeShown).ToList();
+}
+<div id="last-minute-availability">
+    <div class="page-header">
+        <h1 class="h1 first-word">@Editable(Model, x => x.PageTitle)</h1>
+    </div><!-- .page-header -->
+
+    @Editable(Model, x => x.Contents)
+
+    <p>@Editable(Model, x => x.Reservation)</p>
+
+    <ul class="nav nav-tabs">
+        @{
+            int i = 0;
+            string cssClass = "active";
+        }
+        @foreach (var item in activeMonths)
+        {
+            string itemClass = item.BuildItemCss();
+            if (item.DisplayOnSite && item.IsFuture())
+            {
+                <li role="presentation" class="@cssClass"><a href="#@itemClass" id="tab-@itemClass" role="tab" data-toggle="tab" aria-controls="@itemClass">@item.DisplayName @item.Year</a></li>
+                cssClass = "";
+
+                i++;
+                if (i >= maxMonths)
+                {
+                    break;
+                }
+            }
+        }
+    </ul>
+
+    <div class="tab-content">
+        @{
+            i = 0;
+            string tabClass = "active";
+        }
+        @foreach (var item in activeMonths)
+        {
+            string itemClass = item.BuildItemCss();
+            if (item.DisplayOnSite && item.IsFuture())
+            {
+                <div role="tabpanel" class="tab-pane @tabClass" id="@itemClass">
+
+                    @{
+                        var sorted = ResortUtils.SortResortByResortName(item.AvailableResorts);
+                    }
+                    @foreach (var resort in sorted)
+                    {
+                        if (SitecoreUtils.EvaluateRules(resort.RestrictionsPoints, resort.InnerItem))
+                        {
+                                <div class="media resort-preview-details" itemscope itemtype="http://schema.org/LocalBusiness">
+                                    <div class="media-left" itemscope itemtype="http://schema.org/ImageObject">
+                                        <a href="@resort.Url"><img src="@resort.MainResortImage.ImageFullUrl()" class="media-object img-responsive" alt="@resort.ResortName" itemprop="contentUrl"></a>
+                                    </div>
+                                    <div class="media-body">
+                                        <h2 class="h2 resort-name"><a href="@resort.Url" itemprop="name">@resort.ResortName</a></h2>
+                                        @if (resort.ClubAffiliation != null)
+                                        {
+                                            <div class="resort-designation"><i class='fa fa-circle' aria-hidden='true' style='color:#@resort.ClubAffiliation.Color'></i>@resort.ClubAffiliation.DisplayName</div>
+                                        }
+
+                                        <address class="resort-address" itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+                                            <span itemprop="streetAddress">@resort.AddressLine1</span>
+                                            @if (!string.IsNullOrEmpty(resort.AddressLine2))
+                                            {
+                                                <span itemprop="streetAddress">@resort.AddressLine2</span>
+                                            }
+
+                                            <br><span itemprop="addressLocality">@resort.City</span>, <span itemprop="addressRegion">@resort.State.Code</span> <span itemprop="postalCode">@resort.ZipCode</span>
+                                        </address>
+
+                                        <a href="@resort.Url" class="btn btn-primary">Explore Resort</a>
+
+                                    </div><!-- .media-body -->
+                                </div><!-- .media.resort-preview-details -->
+
+                            }
+                        }
+
+                    </div><!-- .tab-pane -->
+                        tabClass = "";
+
+                        i++;
+                        if (i >= maxMonths)
+                        {
+                            break;
+                        }
+
+                    }
+                    }
+
+                </div><!-- .tab-content -->
+
+                        <div class="legal">
+                            @Editable(Model, x => x.Footnotes)
+                        </div><!-- .legal -->
+                    </div>

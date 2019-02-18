@@ -1,0 +1,98 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Components
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SideWidget>
+
+
+@if (Model != null && Model.WidgetContents != null && Model.WidgetContents.Count() > 0)
+{
+
+
+    bool containsSubwidget = Model.WidgetContents.Where(x => !string.IsNullOrEmpty(x.SubWidgetText) || x.SubWidgetLink != null).Any();
+    string sideBarClass = Model.InnerItem.Name.ToLower().Replace(' ', '-');
+
+
+    <div class="widget widget-manage-account @sideBarClass">
+        <div class="panel panel-default panel-narrow">
+            <div class="panel-heading">
+                <h3 class="h2 panel-title first-word">@Model.WidgetTitle</h3>
+            </div><!-- .panel-heading -->
+            <div class="panel-body">
+                @if (containsSubwidget)
+                {
+
+                    foreach (SideWidgetContent item in Model.WidgetContents)
+                    {
+                        if (item.isVisible)
+                        {
+                            <dl class="@item.CssClass">
+                                @if (item.WidgetLink != null)
+                                {
+                                    <dt>
+                                        @RenderLink(item, x => x.WidgetLink)
+                                    </dt>
+                                }
+                                @if (!string.IsNullOrEmpty(item.WidgetText))
+                                {
+                                    <dt>
+                                        @Editable(item, x => x.WidgetText)
+                                    </dt>
+                                }
+                                @if (!string.IsNullOrEmpty(item.SubWidgetText))
+                                {
+                                    <dd>
+                                        @Editable(item, x => x.SubWidgetText)
+                                    </dd>
+                                }
+                                @if (item.SubWidgetLink != null)
+                                {
+                                    <dd>
+                                        @RenderLink(item, x => x.SubWidgetLink)
+                                    </dd>
+                                }
+                            </dl>
+                        }
+                    }
+                }
+                else
+                {
+                    <ul class="list-unstyled list-item-space">
+                        @foreach (SideWidgetContent item in Model.WidgetContents)
+                        {
+                            if (item.isVisible)
+                            {
+                                if (item.WidgetLink != null)
+                                {
+                                    <li>
+                                        @RenderLink(item, x => x.WidgetLink)
+                                    </li>
+                                }
+                                if (!string.IsNullOrEmpty(item.WidgetText))
+                                {
+                                    <li>
+                                        @Editable(item, x => x.WidgetText)
+                                    </li>
+                                }
+                                if (!string.IsNullOrEmpty(item.SubWidgetText))
+                                {
+                                    <li>
+                                        @Editable(item, x => x.SubWidgetText)
+                                    </li>
+                                }
+                                if (item.SubWidgetLink != null)
+                                {
+                                    <li>
+                                        @RenderLink(item, x => x.SubWidgetLink)
+                                    </li>
+                                }
+                            }
+                        }
+                    </ul>
+                }
+            </div><!-- .panel-body -->
+        </div><!-- .panel -->
+    </div><!-- .widget -->
+}

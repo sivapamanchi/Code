@@ -1,0 +1,69 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+
+<DIV class="footer">
+	<DIV class="pagewrap">
+		<DIV class="links">
+			<UL>
+				<LI>
+                    <a class="foottextlink" href="@Html.GetFullSitePath()/home">Home</a>
+				</LI>
+				<LI>
+					<A class="foottextlink" href="http://www.bluegreenvacations.com/" target="_blank">Bluegreen Vacations</A>
+				</LI>
+				<LI>
+					<A class="foottextlink" href="http://www.colorfulplaces.com/" target="_blank">Colorful Places</A>
+				</LI>
+				<LI>
+                    <a class="foottextlink" onclick="newWin = window.open('@Html.GetParentSitePath()/privacy.aspx?Area=OWN', 'newWin', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=650,height=450,left=100,top=10'); return false;" href="@Html.GetParentSitePath()/owner/home.aspx#">Privacy</a>
+				</LI>
+				<LI>
+                    <a class="foottextlink" onclick="newWin = window.open('@Html.GetParentSitePath()/legal.aspx?Area=OWN', 'newWin', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=650,height=450,left=50,top=20'); return false;" href="@Html.GetParentSitePath()/owner/home.aspx#">Legal</a>
+				</LI>
+				<LI>
+                    <a class="foottextlink" onclick="newWin = window.open('@Html.GetParentSitePath()/terms.aspx?Area=OWN', 'newWin', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=650,height=450,left=50,top=20'); return false;" href="@Html.GetParentSitePath()/owner/home.aspx#">Terms</a>
+				</LI>
+				<LI>
+                    <a class="foottextlink" href="@Html.GetParentSitePath()/sitemap.aspx?Area=OWN">Site Map</a>
+				</LI>
+			</UL>
+		</DIV>
+
+        <ul class="social-media">
+            <li>
+                <a class="facebook" href="http://www.facebook.com/bluegreenvacations" target="_blank">Facebook</a>
+            </li>
+            <li>
+                <a class="google-plus" href="https://plus.google.com/+bluegreenvacations" target="_blank">Google Plus</a>
+            </li>
+            <li>
+                <a class="twitter" href="http://www.twitter.com/bluegreentweets" target="_blank">Twitter</a>
+            </li>
+            <li>
+                <a class="youtube" href="http://www.youtube.com/user/BluegreenVacations" target="_blank">YouTube</a>
+            </li>
+            <li>
+                <a class="colorful-places" href="http://www.colorfulplaces.com/" target="_blank">Colorful Places</a>
+            </li>
+        </ul>
+					
+		<!-- .links -->                  
+		<P>*Accommodations subject to availability.</P>
+		<P>ENTIRE SITE COPYRIGHT © @DateTime.Now.Year BLUEGREEN VACATIONS UNLIMITED, INC. ALL RIGHTS 
+		RESERVED.</P>
+		<P><STRONG>THIS ADVERTISING MATERIAL IS BEING USED FOR THE PURPOSE OF SOLICITING 
+		THE SALE OF TIMESHARE INTERESTS.</STRONG></P>
+		<P><STRONG>THIS ADVERTISING MATERIAL IS BEING USED FOR THE PURPOSE OF SOLICITING 
+		SALES OF A VACATION OWNERSHIP PLAN.</STRONG></P>
+		<P><STRONG>THIS ADVERTISING MATERIAL IS BEING USED FOR THE PURPOSE OF SOLICITING 
+		THE SALE OF TIME-SHARE PROPERTY OR INTERESTS IN TIME-SHARE 
+		PROPERTY.</STRONG></P>
+		<P>All trademarks, service marks, brand names and logos not owned by Bluegreen 
+		Corporation remain the property of their respective owners.</P>
+		<DIV class="logo-bxg">Bluegreen</DIV>
+		<DIV class="logo-eho">Equal Housing Opportunity</DIV>
+	</DIV><!-- .pagewrap --> 
+</DIV>
+<!-- .footer -->
+<IMG width="10" height="10" src="@Html.GetFullSitePath()/Content/Images/blank.gif" border="0"> 
+			
+<!-- end footer -->   

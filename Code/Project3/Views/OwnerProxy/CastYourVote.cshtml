@@ -1,0 +1,67 @@
+﻿@using System.Text
+@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models.OwnerProxy
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<Candidates>
+
+@if (Model != null & Model.AllCandidates != null && Model.AllCandidates.Count() > 0)
+{
+    <div id="cast-your-vote-form">
+        @{
+            var isDisabled = "";
+         }
+
+        @foreach (Candidate candidate in Model.AllCandidates)
+        {
+            var hrefId = Convert.ToString("#read-" + candidate.FullName.ToLower().Replace(" ", string.Empty));
+            var descriptionId = Convert.ToString("read-" + candidate.FullName.ToLower().Replace(" ", string.Empty));
+            //isDisabled = (candidate.isValidVotingPeriod) ? " " : "disabled";
+
+            <div class="form-group">
+                <div class="radio">
+                    <label class="control-label">
+                        <input type="radio" name="owner_proxy_vote" @isDisabled value="@candidate.VoteSubmissionValue"><strong>@Editable(candidate, x => x.FullName)</strong>
+                    </label>
+                    (<a href="@hrefId" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample">@Sitecore.Globalization.Translate.Text("Proxy_Owner_Read_About_Text")</a>) 
+                        @*@Editable(candidate, x => x.DisplayName)*@
+                </div><!--.radio -->
+                <div class="collapse padding-left-xs-25" id="@descriptionId">
+                    @Editable(candidate, x => x.Description)
+                </div><!-- .collapse -->
+            </div><!-- .form-group -->
+
+        <!--This Section displays "OR" after each radio Button if its not candidate -->
+            if (!candidate.isCandidate)
+            {
+                <p class="padding-left-xs-25 color-heading"><strong>or</strong></p>
+            }
+        }
+        <div class="form-group">
+            <div class="radio">
+                <label class="control-label"><input type="radio" name="owner_proxy_vote" @isDisabled id="writeIn" value="writeIn"><strong>@Sitecore.Globalization.Translate.Text("Proxy_Owner_Write_In_Text")</strong></label>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="padding-left-xs-25">
+                            <input id="writeInName" type="text" name="inputname" @isDisabled class="form-control" maxlength="30">
+                            @*@Html.TextBoxFor(m => m.txtEmail, new
+                                {
+                                    @class = "form-control",
+                                    id = "referral-email-address",
+                                    maxlength = "70"
+
+                                })*@
+                            <div class="help-block">Please provide name.</div>
+                        </div>
+                    </div>
+                </div><!-- .row -->
+            </div><!--.radio -->
+        </div><!-- .form-group -->
+        <div class="form-group">
+            @*<button class="btn btn-primary">Submit my Vote</button>*@
+            <button class="btn btn-primary js-no-disable js-CastVote" aria-expanded="false" @isDisabled id="submit-Vote" name="submit-vote">Submit My Vote</button>
+        </div><!-- .form-group -->
+    </div><!--#cast-your-vote-form-->
+}

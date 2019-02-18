@@ -1,0 +1,81 @@
+﻿@inherits UmbracoViewPage<BGModern.Models.MasterModel>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>	Bluegreen Vacations - Share Happiness </title>
+    <!-- CSS
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href="~/css/owner.css" rel="stylesheet" rev="stylesheet">
+    <link href="~/css/ucmenu.css" rel="stylesheet" type="text/css">
+    <!-- SCRIPTS -->
+    @*<script src="~/scripts/dtagent61_n_7888.js" type="text/javascript" data-dtconfig="rid=RID_1103586947|rpid=1017960642|domain=bluegreenowner.com|tp=500,50,0|reportUrl=/dynatrace/js/dynaTraceMonitor"></script>*@
+    <script src="~/scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="~/scripts/prototype.js" type="text/javascript"></script>
+    <script src="~/scripts/scriptaculous.js" type="text/javascript"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        #nav_links_background {
+            background-color: #c0c0c0;
+            width: 20em;
+        }
+
+        .auto-style1 {
+            height: 23px;
+        }
+    </style>
+    <style type="text/css">
+        .roundedPanel {
+            width: 500px;
+            background-color: #E8E8E8;
+            padding-top: 10px;
+        }
+    </style>
+    @RenderSection("PageScript", false)
+</head>
+<body class="center">
+    <div class="container" style="max-width:800px;">
+        <br />
+        <div class="row">
+            <div class="col-xs-12 center" style="padding: 0 0 0 0;">
+                <div style="float:right;">
+                    <img src="~/Content/Images/phone.gif" />
+                </div>
+                <div style="float:left;">
+                    <a href="/home">
+                        <img src="~/Content/Images/ResortsLogo.gif" />
+                    </a>
+                </div>
+            </div>
+            <br />
+            <br />
+            <br />
+        </div>
+        <div class="row" id="SiteMenu">
+            <div class="col-xs-12">
+                @{Html.RenderAction("Index", "SiteTopNav");}
+            </div>
+        </div>
+        <div class="row">
+            @*<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" id="OwnersPalette">
+                    @{Html.RenderAction("OwnersPalette", "OwnersPalette");}
+                    @RenderSection("OwnerPaletteInfo", false)
+                </div>*@
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                @RenderBody()
+            </div>
+        </div>
+        <div class="row">
+            <div>
+                @{Html.RenderPartial("SiteFooter");}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

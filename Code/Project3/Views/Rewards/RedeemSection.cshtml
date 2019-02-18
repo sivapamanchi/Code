@@ -1,0 +1,186 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Utils
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models.Reward
+@using BGSitecore.Components;
+
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<RewardsSections>
+
+@{
+    BlueGreenContext bgContext = new BlueGreenContext();
+    decimal dividentsBalance = 0;
+    decimal rewardsExpiring = 0;
+    DateTime expirationDate = DateTime.MinValue;
+    string arvact = ""; int encoreOwnerId = 0;
+    if (bgContext != null && bgContext.bxgOwner != null && bgContext.bxgOwner.EncoreBenefits != null)
+    {
+        dividentsBalance = bgContext.bxgOwner.EncoreBenefits.DividendsBalance;
+        rewardsExpiring = bgContext.bxgOwner.EncoreBenefits.ExpiringDividends;
+        expirationDate = bgContext.bxgOwner.EncoreBenefits.NextDividendsExpiringDate;
+        arvact = bgContext.bxgOwner.Arvact;
+        encoreOwnerId = bgContext.bxgOwner.EncoreBenefits.EncoreOwnerID;
+    }
+}
+<div class="hidden alert alert-danger js-alertmessage"></div>
+
+@if (Model.AllSections != null && Model.AllSections.Count() > 0)
+{
+    foreach (Section item in Model.AllSections)
+    {
+        var itemList = new List<Sitecore.Data.Items.Item>();
+        foreach (Sitecore.Data.Items.Item childItem in Sitecore.Context.Database.GetItem(item.Id.ToString()).Children)
+        {
+            itemList.Add(childItem);
+        }
+
+        if (ResortUtils.SectionHasChildItem(item) && !item.HideSection)
+        {
+            var sectionItemId = string.IsNullOrEmpty(item.JumpUniqueId) ? "section_" + item.classname : item.JumpUniqueId;
+            var jumpto = item.BuildJumpToLink();
+            var customClass = (item.HideSectionWhenPrinting) ? "hidden-print" : "";
+            var isPageMedia = (item.AllImages != null && item.AllImages.Count() > 0) ? "page-media" : "";
+            var print = "";
+            var visiblePrint = "";
+            var hiddenPrint = "";
+            if (item.Id.ToString().Equals("8E6F919D-84AC-4425-ACBC-A87E6B69A871", StringComparison.CurrentCultureIgnoreCase))
+            {
+                <div class="col-border col-border-default">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="callout">@Convert.ToString(dividentsBalance.ToString("#,##0"))<span class="sr-only"> @Sitecore.Globalization.Translate.Text("RR_Available")</span></div>
+                            <p>@Sitecore.Globalization.Translate.Text("RR_Available")</p>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="callout">@Convert.ToString(rewardsExpiring.ToString("#,##0"))<span class="sr-only"> @Sitecore.Globalization.Translate.Text("RR_Expiring")</span></div>
+                            <p>@Sitecore.Globalization.Translate.Text("RR_Expiring") @( (expirationDate == DateTime.MinValue) ? "" : Convert.ToString(expirationDate.ToString("MM/dd/yyyy")))</p>
+                        </div>
+                    </div><!-- .row -->
+                </div><!-- .col-border -->
+                <input id="Totaldividentbalance" type="hidden" value="@Convert.ToString(dividentsBalance.ToString())" />
+            }
+            <div class="@isPageMedia @customClass" id="@jumpto">
+                @Html.Raw(visiblePrint) @*Can not put title h3 as the first-word JS kicks in and breaks the h3*@
+
+
+                <h3 class="@hiddenPrint @(item.HideName ? "hidden " : "")">
+                    @if (item.isHeaderNumbering)
+                    {<span class="badge badge-lg badge-round badge-default">@Model.AllSections.ToList().IndexOf(item)</span>} <span class="h2 text-lowercase first-word">@Editable(item, x => x.Displayname)@Html.Raw(print)</span>
+                </h3>
+
+                @foreach (var row in itemList)
+                {
+                    if (row.TemplateID.ToString().Equals("{54DDFD1F-71AA-4AA7-91D6-80EA91DB1B79}") && item.AllRichText.ToList().Where(x => (x.ItemId == row.ID)).Any())
+                    {
+                        //Richtext Content
+                        @Html.Partial("/Views/Rewards/RichText.cshtml", item.AllRichText.ToList().Where(x => (x.ItemId == row.ID)).FirstOrDefault());
+                    }
+                    if (row.TemplateID.ToString().Equals("{E16D0E46-BB1C-4A7E-8636-DF20B0302472}") && item.TableGrid.ToList().Where(x => (x.ItemId == row.ID)).Any())
+                    {
+                        //Grid Content
+                        @Html.Partial("/Views/Rewards/TableGrid.cshtml", item.TableGrid.ToList().Where(x => (x.ItemId == row.ID)).FirstOrDefault());
+                    }
+                    //Exceptional Case for maintenance Fees*@
+                    if (row.TemplateID.ToString().Equals("{DD218605-4205-405C-A514-0D2A188735CD}") && item.Id.ToString().Equals("81B9B868-1636-4C1A-A15A-D8419860F24F", StringComparison.CurrentCultureIgnoreCase) && item.MaintenanceHeaders != null)
+                    {
+
+                        <table class="table-collapse table-striped">
+                            <thead>
+                                <tr>
+                                    @{
+                                        var maintenanceHeaderArray = item.MaintenanceHeaders != null ? item.MaintenanceHeaders.GetColumnList() : new string[0];
+                                    }
+
+                                    @foreach (var column in maintenanceHeaderArray)
+                                    {
+                                        if (maintenanceHeaderArray.First() == column)
+                                        {
+                                            <th>@column</th>
+                                        }
+                                        else
+                                        {
+                                            <th class="text-right">@column</th>
+                                        }
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-label="item">
+                                        <span><strong class="details"><span id="maintenancefees-rowValue">Vacation Maintenance Fees</span></strong> (will be reflected within 3 business days)</span>
+                                        <span class="sub-details"></span>
+                                    </td>
+                                    <td class="text-right" data-label="Balance Due"><span id="maintenancefees-balancedue">@item.BalanceDue</span></td>
+                                    <td class="text-right" data-label="Maintenance Fee*"><span id="maintenancefees-maintenancefee">@item.MaintenanceFee</span></td>
+                                    <td class="text-right" data-label="Rewards to be Applied">
+                                        <div class="input-group input-group-sm">
+                                            <input type="number" min="0" max="@dividentsBalance" name="calculate-amountwith-dividents" id="calculate-amountwith-dividents" class="form-control" value="">
+                                            <span class="input-group-btn">
+                                                @*<a href="calculate-maintenance-fees" role="button" id="calculate-maintenance-fees" class="btn btn-secondary">Calculate</a>*@
+                                                <button role="button" id="calculate-maintenance-fees" class="btn btn-secondary">Calculate</button>
+                                            </span>
+                                        </div><!-- .input-group -->
+                                    </td>
+                                    <td class="text-right" data-label="Cash Value**">$<span id="maintenancefees-cashvalue">0.00</span></td>
+                                    <td class="text-right"><button id="maintenancefees-addtocart" disabled href="#" class="btn btn-sm btn-secondary btn-block" onclick="rewardsCart.maintenanceFees(@arvact,@encoreOwnerId)">@Sitecore.Globalization.Translate.Text("RR_AddToCart")</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                                            }
+                                        }
+
+                @*//Exceptional Case for Cart Total*@
+                @if (item.Id.ToString().Equals("E661FC73-9B93-47B3-BD11-27F06781AC72", StringComparison.CurrentCultureIgnoreCase))
+                {
+
+                    var checkOutPage = Sitecore.Context.Database.GetItem("{D1D5A702-2C04-4DB6-AA5F-4F8DE42CCABF}");
+                    var options = Sitecore.Links.LinkManager.GetDefaultUrlOptions();
+                    options.AlwaysIncludeServerUrl = true;
+                    options.SiteResolving = true;
+                    var checkOutPageURL = Sitecore.Links.LinkManager.GetItemUrl(checkOutPage, options);
+
+                    <div class="checkout-cart">
+                        @Html.Partial("/Views/Rewards/RewardsCart.cshtml", Model.cartItemsList)
+                    </div>
+                    <div class="row">
+                        <div class="pull-right col-xs-12 col-sm-6 col-md-5 col-lg-4">
+                            <div id="rewardsCartTotal">
+                                @Html.Partial("/Views/Rewards/RewardsCartTotal.cshtml", Model.CartTotal)
+                            </div>
+                            <div class="form-group text-right-md">
+                                <a href="@checkOutPageURL" id="proceed-to-checkout" class="btn btn-primary">Proceed to Checkout</a>
+                            </div>
+                        </div>
+                    </div><!-- .row -->
+                    <p>If you have questions about your Rewards balance, please contact the Bluegreen Rewards Service Center at 866.362.6733, <a href="https://sc.bluegreenowner.com/Search/FAQ/Hours-of-Operation-and-Telephone-Numbers">Hours of Operation.</a></p>
+                    <div class="legal">
+                        <p>* See <a href="/DOPs/BGR-OR">Official Rules</a> as availability of Bluegreen Rewards® varies by state of residence.</p>
+                    </div>
+
+                }
+
+                @if (item.ShowLineAfterSection)
+                {
+                    <hr />
+                }
+            </div>
+                                                }
+                                            }
+                                        }
+<style type="text/css">
+    .list-group + .panel-footer {
+        border-top-width: 0;
+    }
+
+    .panel .panel-heading + table {
+        top: -1px;
+    }
+
+    .panel > .panel-collapse > table, .panel > .table-responsive > table, .panel > table {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+</style>
+
+

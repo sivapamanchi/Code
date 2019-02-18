@@ -1,0 +1,19 @@
+﻿@using System.Data;
+@using BGSitecore.Utils;
+@using Sitecore.Mvc
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<BGSitecore.Models.Wysiwyg>
+@using (Html.BeginRouteForm(Sitecore.Mvc.Configuration.MvcSettings.SitecoreRouteName, FormMethod.Post))
+{
+    @Html.Sitecore().FormHandler(Model.ControllerName, Model.ActionName)
+<div class="row">
+    <div class="col-xs-12 wysiwyg">
+        @if (!string.IsNullOrWhiteSpace(Model.Title))
+        {
+            <h2 class="h2 first-word">@Editable(Model, x => x.Title)</h2>
+        }
+        @Html.Raw(Editable(Model, x => x.Content))
+
+    </div>
+</div>
+}
+

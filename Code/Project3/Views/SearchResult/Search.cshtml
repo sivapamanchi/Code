@@ -1,0 +1,59 @@
+﻿@using Sitecore.Mvc
+@using Sitecore.Mvc.Presentation
+@using BGSitecore.Models.Resort
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Utils
+@using BGSitecore.Models
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SearchResult>
+
+@{
+    var disabled = Model.ShowRevervationTypeSection ? "enabled" : "disabled";
+    var classhide = Model.ShowRevervationTypeSection ? "" : "hidden";
+
+}
+
+<div class="form-group form-group-small text-center">
+    <button class="btn btn-link control-label js-clearallfilters"><strong>Clear Filters</strong></button>
+</div>
+
+@if (!Model.ShowDateSearchOptions)
+{
+    <fieldset id="resort-availability" class="form-group filter-group">
+        <label class="control-label"><strong>Resort Availability</strong></label>
+        @foreach (ResortDetails item in Model.AllResorts)
+        {
+
+            <div class="checkbox disabled">
+                @{string resortid = ViewData.TemplateInfo.GetFullHtmlFieldId("ResortAvailability" + @item.ResortId);}
+                <label class="control-label" for="@resortid">
+                    <input type="checkbox" name="@resortid" id="@resortid" class="js-ResortAvailability" value="@item.ResortId" disabled>@item.ResortName
+                </label>
+            </div>
+        }
+
+    </fieldset><!-- .form-group -->
+}
+
+<fieldset id="room-availability" class="form-group filter-group">
+    <label class="control-label"><strong>Room Availability</strong></label>
+    @foreach (RoomSize item in Model.AllRoomSize)
+    {
+        if (Model.AvailableUnitTypeForDestination == null || Model.AvailableUnitTypeForDestination.Contains(item.RoomSizeCode))
+        {
+            <div class="checkbox disabled">
+                @{string id = ViewData.TemplateInfo.GetFullHtmlFieldId("RoomSizeAvailability_" + @item.RoomSizeCode);}
+
+                <label class="control-label" for="@id">
+                    <input type="checkbox" name="@id" id="@id" class="js-RoomSizeAvailability" value="@item.RoomSizeCode" disabled> @item.DisplayName
+                </label>
+            </div>
+        }
+    }
+
+    <div class="checkbox disabled">
+        <label class="control-label" for="accessibleOption">
+            <input type="checkbox" name="" id="accessibleOption" class="js-accessibleFilter" value="accessible" disabled> <span class="fa fa-wheelchair"></span> @Sitecore.Globalization.Translate.Text("Resort_Search_WheelchairAccessible")
+        </label>
+    </div>
+</fieldset><!-- .form-group -->

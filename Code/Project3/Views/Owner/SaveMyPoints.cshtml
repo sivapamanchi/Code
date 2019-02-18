@@ -1,0 +1,71 @@
+﻿@using System.Data;
+@using Sitecore.Mvc.Configuration
+@using BGSitecore.Models
+@using BGSitecore.Utils
+@using BGSitecore.Components
+@using Sitecore.Mvc
+
+@inherits Glass.Mapper.Sc.Web.Mvc.GlassView<SaveMyPoints>
+
+@{
+    BlueGreenContext bgContext = new BlueGreenContext();
+}
+
+<div class="hidden-print alert alert-info hidden js-ConfirmationMessage" role="alert">
+    <div class="row">
+        <div class="col-md-10">
+            @Editable(Model, x => x.SaveMyPointsConfirmationMessage)
+        </div>
+        <div class="col-md-2 js-button-savepoints hidden">
+            <a href="/owner/confirm-reservation" role="button" class="pull-right-md btn btn-primary">Continue</a>
+        </div>
+    </div>
+</div>
+<div class="save-points-form js-pointsform" id="save-points-form">
+    <fieldset>
+        <legend>@Editable(Model, x => x.Legend)</legend>
+
+        <div class="hidden-print alert alert-danger hidden js-savePointsAlertmessage" role="alert">
+
+        </div><!-- .alert-upgrade -->
+
+        @Html.Sitecore().Placeholder("creditcardcontent")
+
+        <div class="row">
+            <div class="col-xs-12 col-md-4">
+                <div class="col-border col-border-default">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="callout">@Html.Raw(@FormatUtils.FormatFancyAmount(bgContext.GetSavePointsFee))</p>
+                            <p>@Editable(Model, x => x.TotalPayment)</p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .row -->
+        </div><!-- .col-border -->
+
+        <div class="form-group form-group-small">
+            <div class="checkbox">
+                <label class="control-label"><input type="checkbox" name="confirm_toc_savePoints" id="confirm_toc_savePoints" value="1"> @Editable(Model, x => x.TermsAndConditions)</label>
+            </div>
+        </div><!-- .form-group -->
+
+        <div class="collapse" id="confirm-toc-alert-savePoints">
+            <div class="alert alert-warning" role="alert">
+                <p>@Editable(Model, x => x.TermsAndConditionsAlert)</p>
+            </div><!-- .alert -->
+        </div>
+
+        <div class="form-group">
+            <a href="#" class="btn btn-primary js-savemypoints" value="action:usecreditcard" name="btnSubmit">@Editable(Model, x => x.SaveMyPointsBtn)</a>
+            <a href="#" class="btn btn-link js-click-me js-nothanks" data-click-id="#save-my-points">@Editable(Model, x => x.NoThankYouBtn)</a>
+        </div><!-- .form-group -->
+
+        <p>@Editable(Model, x => x.RequiredFields)</p>
+        <div class="legal small">
+            <p>@Editable(Model, x => x.SecureTransmissionText)</p>
+        </div><!-- .legal -->
+
+        <hr>
+    </fieldset>
+</div>

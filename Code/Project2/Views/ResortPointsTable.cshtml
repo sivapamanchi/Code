@@ -1,0 +1,10 @@
+﻿@model BGModern.Models.ResortModel
+@{
+    Layout = "~/Views/ResortMasterLayout.cshtml";
+}
+
+<div>
+    <object data="@Model.ResortPointsTable.PointsTableFile" type="application/pdf" style="width:100%; height:500px; z-index:99;">
+        alt : <a href="@Model.ResortPointsTable.PointsTableFile">Points Table File</a>
+    </object>
+</div>

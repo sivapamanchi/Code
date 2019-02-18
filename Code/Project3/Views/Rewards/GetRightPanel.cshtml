@@ -1,0 +1,70 @@
+﻿@model BGSitecore.Models.Reward.RightPanel
+@using BGSitecore.Components;
+
+@{
+    var checkOutPageURL = UrlMapper.Map("https://sc.bluegreenowner.com/rewards/redeem-rewards-cart");
+
+    var classnameString = (Model.RewardCartItemCount > 0 ? "btn btn-primary btn-block" : "btn btn-secondary btn-block");
+
+}
+
+@if (Model != null && Model.RightSections != null && Model.RightSections.Any())
+{
+    foreach (BGSitecore.Models.Reward.RightSection eachRightSection in Model.RightSections)
+    {
+        if (!eachRightSection.HideSection)
+        {
+            if (eachRightSection.enableRewardsCart)
+            {
+
+                <div class="widget widget-btn">
+                    <a href="@checkOutPageURL" role="button" class="@classnameString">
+                        <i class="fa fa-lg fa-shopping-cart"></i> Rewards Cart @( Model.RewardCartItemCount > 0 ? "(" + Model.RewardCartItemCount.ToString() + ")" : "")
+                    </a>
+                </div>
+            }
+
+            var orderedList = new List<Sitecore.Data.Items.Item>();
+            foreach (Sitecore.Data.Items.Item childItem in Sitecore.Context.Database.GetItem(eachRightSection.Id.ToString()).Children)
+            {
+                orderedList.Add(childItem);
+            }
+            foreach (var row in orderedList)
+            {
+                if (row.TemplateID.ToString().Equals("{54DDFD1F-71AA-4AA7-91D6-80EA91DB1B79}") && eachRightSection.AllRichText.ToList().Where(x => (x.ItemId == row.ID)).Any())
+                {
+                    //Richtext Content
+                    var item = eachRightSection.AllRichText.ToList().Where(x => (x.ItemId == row.ID)).FirstOrDefault();
+
+
+                    <div class="widget widget-resorts-@item.ClassId">
+                        @Html.Partial("/Views/Rewards/RichText.cshtml", item)
+                    </div>
+                }
+                if (row.TemplateID.ToString().Equals("{75B346B5-C4F6-4ADA-BB82-81F64E160A3B}") && eachRightSection.AllBanners.ToList().Where(x => (x.ItemId == row.ID)).Any())
+                {
+                    //Optional banner
+                    var promoBanner = eachRightSection.AllBanners.ToList().Where(x => (x.ItemId == row.ID)).FirstOrDefault();
+
+                    if (promoBanner != null)
+                    {
+                        var firstOrDefault = promoBanner.PromotionalBanner.ToList().FirstOrDefault();
+                        if (firstOrDefault != null)
+                        {
+
+                            <div class="widget widget-banner">
+                                <a href="@(firstOrDefault.ImageUrl != null ? firstOrDefault.ImageUrl.Url : "#")">
+                                    <img src="@firstOrDefault.ImageFullUrl()" class="img-responsive" alt="ALT TAG GOES HERE">
+                                </a>
+                            </div>
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+

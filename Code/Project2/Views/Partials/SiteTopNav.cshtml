@@ -1,0 +1,324 @@
+﻿
+@using System.Configuration
+@model BGModern.Models.SiteTopNavModel
+
+<script src="~/scripts/jQscripts.js" type="text/javascript"></script>
+<script src="~/scripts/qm.js" type="text/JavaScript"></script>
+
+<div class="col-lg-12" style="padding: 0 0 0 0;">
+    <div style="padding:0 0 0 0; margin:0 0 0 0;">
+        <div class="qmmc" id="qm0">
+            <a class="home" href="@Html.GetParentSitePath()@Model.HomeURL">HOME</a>
+            @if (Model.EnableHome)
+            {
+                <div>
+                    @if (Model.EnableTutorialsAndWebinars)
+                    {
+                        <a class="submenu" href="@Model.TutorialsAndWebinars">Tutorials &amp; Webinars</a>
+                    }
+                    <a class="submenu" href="http://ownerupdate.bluegreenvacations.com/" target="_blank">Owner Update</a>
+                    <a class="submenu" href="@ConfigurationManager.AppSettings["SitecoreResortUrl"]/book/bluegreen-resorts/last-minute-availability">Last Minute Availability</a>
+                    <a class="submenu" href="@Html.GetParentSitePath()/colorfulplaces/index.html" target="_blank">Colorful Places</a>
+                    <a class="submenu" href="@Html.GetParentSitePath()/owner/specialDetail.aspx?ID=555">Colorful Ways to Play</a>
+                    <a class="submenu" href="@ConfigurationManager.AppSettings["SitecoreResortUrl"]/get-inspired/resort-locator">Resort Locator</a>
+					<a href="@Html.GetFullSitePath()/our-resorts">Our Resorts</a>
+                    @if (Model.EnableBluegreenMemories)
+                    {
+                        <a href="@Html.GetParentSitePath()/owner/specialDetail.aspx?ID=575">Bluegreen Memories</a>
+                    }
+                </div>
+            }
+            <a class="reservations" href="@Html.GetParentSitePath()@Model.HomeURL">RESERVATIONS</a>
+            <div>
+                <a href="@Html.GetFullSitePath()/reservation-list">My Reservations</a>
+
+                @if (Model.EnablePointsReservations)
+                {
+                    <a href="@Html.GetParentSitePath()@Model.HomeURL">Points Reservations</a>
+                }
+                @if (Model.EnableBonusTimeReservations)
+                {
+                    <a href="@Html.GetParentSitePath()/owner/vcBonus.aspx">Bonus Time Reservations</a>
+                }
+                
+                @if (Model.IsPremierOwner)
+                {
+                    <a href="#">Premier Wait List</a>
+                    <div>
+                        <a href="@Html.GetParentSitePath()/owner/PremierSearch.aspx">Request</a>
+                        <a href="@Html.GetParentSitePath()/owner/PremierPending.aspx" class="noborder">Pending/Serviced</a>
+                    </div>
+                }
+
+                <a href="@Html.GetParentSitePath()@Model.ReservationTravelServicesURL">Travel Services</a>
+                <div>
+                    <a href="@Html.GetParentSitePath()/owner/carRentals.aspx">Car Rentals</a>
+                    <a href="@Html.GetParentSitePath()@Model.CruisesURL">Cruises</a>
+                    <a href="@Html.GetParentSitePath()/TaviscaRedirectWait.aspx?type=flight">Flights</a>
+                    <a class="noborder" href="@Html.GetParentSitePath()/TaviscaRedirectWait.aspx?type=hotel">Hotels</a>
+                </div>
+                @{if (Model.EnableResMenuResReminder)
+                {
+                    <a href="@Html.GetParentSitePath()/owner/ReservationReminder.aspx">Reservation Reminder</a>
+                }
+                }
+                @if (Model.EnablePointsReservations)
+                {
+                    <a href="@Html.GetParentSitePath()/owner/calcPoints.aspx">Calculate Points</a>
+                }
+                <a href="@Html.GetParentSitePath()/owner/vacationWeekCal.aspx">Vacation Week Calendar</a>
+                @if (Model.EnableReservationsOurResorts)
+                {
+                    <a href="@Html.GetFullSitePath()/our-resorts">Our Resorts</a>
+                }
+                @{if (Model.EnableChoiceHotels) 
+                { 
+                    <a class="noborder" href="http://www.choicehotels.com/ires/en-us/html/Choice-bluegreenowners?clientid=SKq4GBBjs%2Buy" target="_blank">Access Choice Hotels® VIP Rate</a>
+                }
+                }
+            </div>
+            @if(Model.EnablePayments)
+            { 
+            <a class="payments" href="@Html.GetParentSitePath()/owner/payAcctBal.aspx">PAYMENTS</a>
+            <div>
+                    @if (@Model.NavigatorType == "Sampler")
+                    {
+                        <a class="noborder" href="@Html.GetParentSitePath()/owner/mortgagesummary.aspx">Mortgage Summary</a>
+                        <div>
+                            <a href="@Html.GetParentSitePath()/owner/mortgagetransactionhistory.aspx">Transaction History</a>
+                            <a href="@Html.GetParentSitePath()/owner/mortgagechangeautopayment.aspx">Change Automatic Payment</a>
+                            <a href="@Html.GetParentSitePath()/owner/mortgagechangeborrowerinfo.aspx">Change Borrower Information</a>
+                            <a href="@Html.GetParentSitePath()/owner/mortgageonlinepaymentservice.aspx">Mortgage Payment Services</a>
+                            <a href="@Html.GetParentSitePath()/owner/mortgagerequestpayoff.aspx?flag=intent" class="noborder">
+                                Request Payoff
+                            </a>
+                        </div>
+                    }
+                    else 
+                    {
+                        <a href="@Html.GetParentSitePath()/owner/payAcctBal.aspx">Maintenance Fees / Club Dues</a>
+                        <div>
+                            <a href="@Html.GetParentSitePath()/owner/payAcctBal.aspx">Make a Payment</a>
+
+                        @if (@Model.EnablePrePayment)
+                            {
+                                <a href="@Html.GetParentSitePath()/owner/prePayment.aspx">Make a Pre-Payment</a>
+                            }
+
+                            <a class="noborder" href="@Html.GetParentSitePath()/owner/MaintenanceFeeHistory.aspx">Maintenance Fee History</a>
+                            
+                            @if (Model.EnableViewInstallmentPlan)
+                            {
+                                <a href="@Html.GetParentSitePath()/owner/payInstallPmts.aspx">View Installment Plan</a>
+                            }
+                            @if (Model.EnableChangeInstallPlanCC)
+                            {
+                                <a class="noborder" href="@Html.GetParentSitePath()/owner/payUpdateCard.aspx">Change Installment Plan Credit Card</a>
+                            }
+                        </div>
+                    if (!@Model.EnablePayInstallPmts)
+                    {
+                        <a class="noborder" href="@Html.GetParentSitePath()/owner/mortgagesummary.aspx">Mortgage Summary</a>
+                        <div>
+                            <a href="@Html.GetParentSitePath()/owner/mortgagetransactionhistory.aspx">Transaction History</a> 
+                            <a href="@Html.GetParentSitePath()/owner/mortgagechangeautopayment.aspx">Change Automatic Payment</a> 
+                            <a href="@Html.GetParentSitePath()/owner/mortgagechangeborrowerinfo.aspx">Change Borrower Information</a> 
+                            <a href="@Html.GetParentSitePath()/owner/mortgageonlinepaymentservice.aspx">Mortgage Payment Services</a> 
+                            <a href="@Html.GetParentSitePath()/owner/mortgagerequestpayoff.aspx?flag=intent" class="noborder">Request Payoff</a>
+                        </div>
+                    }
+                }
+            </div>
+            }
+            else
+            {
+                <a class="payments" href="#">PAYMENTS</a>
+            }
+            @if (Model.EnableMyAccount)
+            { 
+            <a class="myaccount" href="@Model.MyPointsURL">MY ACCOUNT</a>
+            <div>
+                @if(Model.EnableMyPoints)
+                { 
+                    <a href="~/my-points">My Points</a>
+                }
+                <a href="@Html.GetParentSitePath()/owner/ownerAccount.aspx">Edit Account</a>
+                @if (Model.EnableGoGreen)
+                {
+                    <a href="@Html.GetParentSitePath()/owner/ownerPaperless.aspx">Go Green</a>
+                }
+                <a href="@Html.GetParentSitePath()/owner/changepassword.aspx">Change Password</a>
+                <a href="@Html.GetParentSitePath()/owner/vacationProfile.aspx">My Vacation Profile</a>
+                @if (Model.EnableMyAccountBluegreenPremier)
+                {
+                    <a href="@ConfigurationManager.AppSettings["BluegreenPremierRedirect"]">Bluegreen Premier</a>
+                    <div>
+                        <a href="@ConfigurationManager.AppSettings["BluegreenPremierRedirect"]">Overview</a>
+                        <a href="@Html.GetParentSitePath()/owner/vcPremierProfile.aspx">Guest Profile</a>
+                        @if (Model.EnableFreeStayCertificate)
+                        {
+                            <a href="@Html.GetParentSitePath()/owner/vcPremierCertificate.aspx">Free Stay Certificate</a>
+                        }
+                    </div>
+                }
+                @if (Model.EnableChoicePrivileges)
+                {
+                    <a class="noborder" href="@Html.GetParentSitePath()/owner/cpaccounts.aspx">Choice Privileges®</a>
+                }
+            </div>
+            }
+            else
+            {
+                <a class="myaccount" href="#">MY ACCOUNT</a>
+            }
+            @if (Model.EnableBluegreenRewards)
+            {
+            <a class="encorerewards" href="@Html.GetParentSitePath()/BluegreenRewards/index.aspx">BLUEGREEN REWARDS&reg;</a>
+            <div>
+                @if (Model.EnableRegisterFriends)
+                {
+                        <a href="@Html.GetParentSitePath()/BluegreenRewards/index.aspx">Register Friends</a>
+                    }
+
+                @if (Model.EnableSendOffersToFriends)
+                    {
+                        <a href="@Html.GetParentSitePath()/BluegreenRewards/index.aspx">Send Offers to Friends</a>
+                    }
+                    else
+                    {
+                        <a href="@Html.GetParentSitePath()/BluegreenRewards/index.aspx">Send Offer</a>
+                    }
+                    <a href="@Html.GetParentSitePath()/BluegreenRewards/trackReferrals.aspx">Account Activity</a>
+                <a href="@Html.GetParentSitePath()/BluegreenRewards/redeemRewards.aspx">Redeem Rewards</a>
+                    <a href="@Html.GetParentSitePath()/owner/faq.aspx?C=48">Help / FAQs</a>
+                    <a class="foottextlink" onclick="newWin = window.open('@Html.GetParentSitePath()/BluegreenRewards/dop.aspx', 'newWin', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=650,height=450,left=100,top=10'); return false;" href="#">Official Rules</a>
+                @if (Model.EnableReferralParties)
+                    { 
+                    <a href="http://ownerupdate.bluegreenvacations.com/referral-parties/bluegreen-vacations-referral-parties/">Referral Parties</a>
+                    }
+                    <a class="noborder" href="@Html.GetParentSitePath()/BluegreenRewards/checkout.aspx">Checkout</a>
+            </div>
+                }
+                else
+                {
+                <a class="encorerewards" href="#">BLUEGREEN REWARDS&reg;</a>
+                <div>
+                    @{
+                        <text>
+                            The Bluegreen Rewards® program is not available to Sampler members.<br />
+                            To learn more about becoming a Bluegreen Vacation Club owner, please call 866.850.4999.
+                        </text>
+                }
+            </div>
+            }
+            
+            @if (Model.TravelerPlusGoesNowhere)
+            {
+            <a class="travelerplus" href="#">TRAVELER PLUS&trade;</a>
+            }
+            else
+            {
+            <a class="travelerplus" href="@Html.GetParentSitePath()@Model.TravelerPlusURL">TRAVELER PLUS&trade;</a>
+            }
+            @if (Model.EnableTravelerPlus && Model.NavigatorType != "Fixed")
+            {
+                <div>
+                    <a href="@Html.GetParentSitePath()/TravelerPlus/owner/pointsmartCashsmart.aspx">PointSmart<sup class="text9">SM</sup></a>
+                    <div>
+                        <a href="@Html.GetParentSitePath()/TravelerPlus/owner/hotweeksSearch.aspx">Hot Weeks Getaways</a>
+                        <a href="@Html.GetParentSitePath()/TravelerPlus/owner/RCINightlyStays.aspx">RCI Nightly Stays</a>
+                        @if (Model.TravelerPlusLevel > 1)
+                        {
+                            <a href="@Html.GetParentSitePath()/TravelerPlus/owner/DirectExchange.aspx">Direct Exchange</a>
+                        }
+                        <a href="@Html.GetParentSitePath()/Travelerplus/owner/HotelPointStays.aspx">Hotel PointStays</a>
+                        <a href="@Html.GetParentSitePath()/travelerplus/owner/cruises.aspx">Cruises</a>
+                        <a href="@Html.GetParentSitePath()/travelerplus/owner/ownerAdventures.aspx">Owner Adventures</a>
+                        <a class="noborder" href="@Html.GetParentSitePath()/TravelerPlus/owner/RvCamping.aspx">RV Resort Camping</a>
+                    </div>
+                    <a href="@Html.GetParentSitePath()/TravelerPlus/owner/pointsmartCashsmart.aspx#cs">CashSmart<sup class="text9">SM</sup></a>
+                    <div>
+                        <a href="@Html.GetParentSitePath()/owner/home.aspx#">Resort Accommodations</a>
+                        <div>
+                            <a href="http://travelerplus.condodirect.com/web/cs?a=5&amp;loginID=430142&amp;phoneNumber=8004562582">Resort Deals</a>
+                            <a class="noborder" href="@Html.GetParentSitePath()/Travelerplus/owner/greatescapessearch.aspx">Great Escapes</a>
+                        </div>
+                        <a href="@Html.GetParentSitePath()/TaviscaRedirectWait.aspx?type=hotel">Hotels</a>
+                        <a href="@Html.GetParentSitePath()/TravelerPlus/owner/cruises.aspx">Cruises</a>
+                        <a href="@Html.GetParentSitePath()/owner/home.aspx#">Outdoor Traveler Experiences</a>
+                        <div>
+                            @if (Model.TravelerPlusLevel >= 2)
+                            {
+                                <a href="@Html.GetParentSitePath()/Travelerplus/owner/gyc.aspx">Grand Yacht Club</a>
+                            }
+                            @if (Model.TravelerPlusLevel >= 3)
+                            {
+                                <a href="@Html.GetParentSitePath()/Travelerplus/owner/OutdoorSportsman.aspx">Outdoor Sportsman</a>
+                            }
+                            <a href="@Html.GetParentSitePath()/Travelerplus/owner/RvCamping.aspx">RV Resort Camping</a>
+                            @if (Model.TravelerPlusLevel >= 3)
+                            {
+                                <a href="@Html.GetParentSitePath()/Travelerplus/owner/GolfCard.aspx">Golf Card</a>
+                                <a href="@Html.GetParentSitePath()/Travelerplus/owner/SkiSnowboard.aspx">Ski &amp; Snowboard</a>
+                            }
+                            <a class="noborder" href="@Html.GetParentSitePath()/Travelerplus/owner/ownerAdventures.aspx">Owner Adventures</a>
+                        </div>
+                        <a href="@Html.GetParentSitePath()/owner/TravelServices.aspx">Travel Services</a>
+                        <div>
+                            <a href="@Html.GetParentSitePath()/TaviscaRedirectWait.aspx?type=flight">Flights</a>
+                            <a href="@Html.GetParentSitePath()/owner/carRentals.aspx">Car Rentals</a>
+                            <a href="@Html.GetParentSitePath()/travelerplus/owner/rentAdditionalPoints.aspx">Rent Additional Points</a>
+                            <a class="noborder" href="@Html.GetParentSitePath()/Travelerplus/owner/specialsDetail.aspx?ID=177">Irresistible Travel Deals</a>
+                        </div>
+                        @if (Model.TravelerPlusLevel >= 3)
+                        {
+                            <a class="noborder" href="@Html.GetParentSitePath()/Travelerplus/owner/EverydayServices.aspx">Everyday Services</a>
+                        }
+                    </div>
+                    <a href="@Html.GetParentSitePath()/owner/faq.aspx?C=47">Traveler Plus Help/FAQs</a>
+                    @if (Model.EnableRenewTravelerPlus)
+                    {
+                        <a class="noborder" href="@Html.GetParentSitePath()/Travelerplus/owner/ownerrenewal.aspx">Renew Traveler Plus</a>
+                    }
+                </div>
+            }
+            
+            @* the Using The Club href MUST CHANGE when push to Production, as it will point to a URL in Salesforce. NOTE: the only change required will be to remove the @Html helper before the @Model *@
+            <a class="vacationclub" href="@Html.GetParentSitePath()@Model.UsingTheClubURL">USING THE CLUB</a>
+            @if (Model.EnableVacationClubFixedMenu)
+            {
+                <div>
+                    <a href="@Html.GetParentSitePath()@Model.BluegreenVacationClub">Bluegreen Vacation Club<sup>&reg;</sup></a>
+                    <a href="@Html.GetParentSitePath()@Model.HowItWorks">How it Works</a>
+                    <a href="@Html.GetParentSitePath()@Model.OwnerTestimonials">Owner Testimonials</a>
+                    <a href="@Html.GetParentSitePath()@Model.OurResorts">Our Resorts</a>
+                    <a href="@Html.GetParentSitePath()@Model.TellMeMore">Tell Me More</a>
+                </div>
+            }
+            else if (Model.EnableVacationClub)
+            {
+                <div>
+                    <a href="@Model.ClubOverview">Club Overview</a>
+                    <a href="@Model.TutorialsAndWebinars">Tutorials &amp; Webinars</a>
+                    <a href="@Model.QuickStartGuide">Quick Start Guide</a>
+                    <a href="@Model.HowPointsWork">How Points Work</a>
+                    <a href="@Model.pointsProtectionPlan">Points Protection Plan</a>
+                    <a href="@Model.ReservationGuidelines">Reservation Guidelines</a>
+                    <a href="@Model.MakingExchanges">Making Exchanges</a>
+                    @if(Model.EnableBluegreenPremier)
+                    { 
+                        <a href="@ConfigurationManager.AppSettings["BluegreenPremierRedirect"]">Bluegreen Premier<sup>™</sup> </a>
+                    }
+                    <a class="noborder" href="@Model.BeforeYouGo">Before You Go</a>
+                </div>
+            }
+            <a class="help" href="@Model.HelpFAQs">HELP/FAQs</a>
+            <a class="contact" href="@Model.ContactUs">CONTACT US</a>
+            <span class="qmclear">&nbsp;</span>
+            <span id="NavBarBottomSpan" style="display: block;"></span>
+        </div>
+    </div>
+</div>
+
+<script type="text/JavaScript">	qm_create(0, false, 0, 500, false)</script>
+
